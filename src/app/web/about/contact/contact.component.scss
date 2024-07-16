@@ -1,0 +1,27 @@
+input,
+textarea
+{
+  width: 78vw;
+  // background-color: #ececec;
+  border: 1px solid #aaaab6;
+  padding: 0.6em 1.5rem;
+  border-radius: 5px;
+}
+.con-contact {
+  margin-bottom: 3em;
+}
+.con-contact label {
+  display: none;
+}
+.con-contact li {
+  margin-bottom: 1.2em;
+}
+.con-contact input::placeholder {
+  color: #969696;
+}
+editor {
+  width: 78vw;
+  margin: 0 auto;
+  border: 1px solid #aaaab6;
+  border-radius: 5px;
+}

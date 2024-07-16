@@ -1,0 +1,113 @@
+<div class="wrap">
+  <div class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <span>Membership</span>
+    </div>
+    <div class="con-info">
+      <h2>Student</h2>
+      <p class="info-text">
+        If payment is done, <br />your membership will be vaild by
+        <b> {{ nextYearDate | date : "MM/dd/yyyy" }}. </b>
+      </p>
+
+      <br />
+      <br />
+
+      <div *ngIf="membership && membership.customerId" class="center">
+        <div class="input-g">
+          <div *ngIf="membership.schoolInfo">
+            <label for="type" class="form-label">School Type:</label>
+            <select
+              id="type"
+              [(ngModel)]="membership.schoolInfo.type"
+              name="type"
+            >
+              <option value="Graduate">Graduate</option>
+              <option value="Undergraduate">Undergraduate</option>
+            </select>
+          </div>
+          <div *ngIf="membership.schoolInfo">
+            <label for="name" class="form-label">School Name:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              #name="ngModel"
+              [(ngModel)]="membership.schoolInfo.name"
+            />
+          </div>
+        </div>
+
+        <br />
+        <br />
+
+        <ngx-stripe-card
+          *ngIf="
+            membership.schoolInfo && membership.schoolInfo.type === 'Graduate'
+          "
+          class="stripe"
+          [options]="cardOptions"
+          [elementsOptions]="elementsOptions"
+        ></ngx-stripe-card>
+
+        <div *ngIf="errorMessage" class="alert alert-warning">
+          {{ errorMessage | json }}
+        </div>
+
+        <div class="g-button">
+          <button type="button" (click)="cancel()" class="btn_gray">
+            Cancel
+          </button>
+
+          <button
+            *ngIf="
+              membership.schoolInfo &&
+              membership.schoolInfo.type === 'Undergraduate'
+            "
+            type="button"
+            (click)="updateMembership(null)"
+            [disabled]="
+              loading ||
+              !membership.schoolInfo ||
+              !membership.schoolInfo.name ||
+              !membership.schoolInfo.type
+            "
+            class="btn_blue"
+          >
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="loading"
+            ></span>
+            Join free membership
+          </button>
+
+          <button
+            *ngIf="
+              membership.schoolInfo && membership.schoolInfo.type === 'Graduate'
+            "
+            type="button"
+            (click)="makePayment()"
+            [disabled]="
+              loading ||
+              !membership.schoolInfo ||
+              !membership.schoolInfo.name ||
+              !membership.schoolInfo.type
+            "
+            class="btn_blue"
+          >
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="loading"
+            ></span>
+            Pay
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

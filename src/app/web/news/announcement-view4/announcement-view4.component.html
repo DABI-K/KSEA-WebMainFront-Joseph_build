@@ -1,0 +1,48 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-news-header></app-news-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>News</li>
+    <li>Announcement</li>
+  </ul>
+  <div class="scon-center pd10">
+    <h2 class="font-ksea">Announcement</h2>
+    <h3>Korean-American Scientists and Engineers Association (KSEA)</h3>
+    <div class="wrap-table">
+      <table class="basic-table-view">
+        <thead>
+          <tr>
+            <th>
+              <h3 class="title">
+                Season’s Greeting Message from the President of KSEA
+              </h3>
+              <p class="date">December 18, 2022</p>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <img src="assets/images/announcement/greeting.png" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="view-footer">
+        <button
+          class="btn-basic-line"
+          routerLink="/announcement"
+          routerLinkActive="active"
+        >
+          List
+        </button>
+        <!-- <button class="btn-basic-line">
+                   Next
+               </button> -->
+      </div>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

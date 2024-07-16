@@ -1,0 +1,98 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-activity-header></app-activity-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>Activity</li>
+    <li>UKC</li>
+  </ul>
+  <div class="scon-activity">
+    <div class="con-event">
+      <img src="https://ksea-ukc.s3.amazonaws.com/UKC2024-poster.jpg" alt="ukc 2024" />
+      <!-- <img src="assets/images/activity/ukc/ukc2023.jpg" alt="ukc 2023" /> -->
+
+      <br>
+      <br>
+      <button class="btn_blue">
+        <a href="https://ukc.ksea.org/" target="_blank"> UKC Home</a>
+      </button>
+    </div>
+    <div class="con-event-info">
+      <div class="content-info">
+        <ul>
+          <li class="info-title">
+            <img src="assets/images/icon_star.png" alt="event" />
+            Event
+          </li>
+          <li>US Korea Conference</li>
+          <li>
+            <a
+              href="https://ukc.ksea.org/"
+              target="_blank"
+              style="padding: 3px"
+            >
+              <button class="btn-event">UKC Home</button>
+            </a>
+            <a
+              routerLink="/ukc-call4paper"
+              routerLinkActive="active"
+              target="_blank"
+            >
+              <button style="width: 7.5em" class="btn-event" disabled>
+                Call for Paper
+              </button>
+            </a> 
+            <a
+              href="https://www.ksea.org/ukc-registration"
+              target="_blank"
+              style="padding: 3px"
+            >
+              <button style="width: 7em" class="btn-event" >
+                Registration
+              </button>
+            </a>
+          </li>
+          <!--
+          <li>
+            <a
+              href="https://ksea-ukc.s3.amazonaws.com/UKC2023_One_Page_Paper_Template.docx"
+              target="_blank"
+              style="padding: 2px; color: blue"
+              >Paper Template</a
+            >
+          </li>
+          --> 
+        </ul>
+      </div>
+      <div class="content-info">
+        <ul>
+          <li class="info-title">
+            <img src="assets/images/icon_calendar.png" alt="calendar" />
+            Date
+          </li>         
+          <li>Registration – Starts on June 10th, 2024</li> 
+          <li>Call for Papers – The submission period is closed.</li>
+          <!-- <li>Registration - <span class="txt_red">closed</span></li>  -->
+        </ul>
+      </div>
+      <div class="content-info">
+        <ul>
+          <li class="info-title">
+            <img src="assets/images/icon_location.png" alt="calendar" />
+            Location
+          </li>
+          <li>
+            <a
+              style="color: blue"
+              href="https://maps.app.goo.gl/sD26HHGzBb873JN38"
+              target="_blank"
+            >
+            Hyatt Regency San Francisco Airport</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

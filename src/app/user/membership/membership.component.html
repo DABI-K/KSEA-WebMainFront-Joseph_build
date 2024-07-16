@@ -1,0 +1,426 @@
+<div *ngIf="membership.type === 'Lifetime'">
+  <!-- <p class="info-mymembership">
+    You have been a lifetime member since
+    {{ membership.lifetimeDate | date : "MM/dd/yyyy" }}.
+  </p> -->
+  <div class="membership-type type-lifetime">
+    <img src="assets/images/img_star.png" alt="Star image" />
+    <div class="type-info-text">{{ membership.type }}</div>
+    <p>
+      You have been a lifetime member since
+      {{ membership.lifetimeDate | date : "MM/dd/yyyy" }}.
+    </p>
+  </div>
+  <div class="profile-footer">
+    <button type="button" (click)="donateKSEA()" class="btn-membership">
+      Donate KSEA
+    </button>
+  </div>
+  <!-- <button type="button" (click)="backToProfile()" class="btn btn-sm btn-dark">
+        Okay
+    </button> -->
+</div>
+
+<div
+  *ngIf="membership.type === 'Student' && isExpired(membership.expirationDate)"
+>
+  <p class="info-mymembership">
+    My membership type: {{ membership.type }} - Expired
+  </p>
+  <p *ngIf="membership.numberOfPayments && membership.numberOfPayments === 19">
+    This is last payment, please pay $35 for lifetime membership.
+  </p>
+  <div class="wrap-card">
+    <div class="card-membership">
+      <dl class="member-type">
+        <dt>Regular</dt>
+        <dd>Member</dd>
+      </dl>
+      <dl class="info-price">
+        <dt>$ 35</dt>
+        <dd>Billed Annually</dd>
+        <dd>cancel anytime</dd>
+      </dl>
+      <button
+        class="btn-member"
+        *ngIf="!membership.numberOfPayments || membership.numberOfPayments < 19"
+        type="button"
+        (click)="payRegularMember()"
+      >
+        Get started
+      </button>
+    </div>
+    <div class="card-membership">
+      <dl class="member-type">
+        <dt>Lifetime</dt>
+        <dd>Member</dd>
+      </dl>
+      <dl class="info-price">
+        <dt>$ {{ calLifeTimeFee() }}</dt>
+        <dd>Billed Onetime</dd>
+        <dd>Forever</dd>
+      </dl>
+      <button class="btn-member" (click)="payLifeTime()">Get started</button>
+    </div>
+    <div class="card-membership">
+      <dl class="member-type">
+        <dt>Student</dt>
+        <dd>Member</dd>
+      </dl>
+      <dl class="info-price">
+        <dt class="text-small">Discounts</dt>
+        <dd>Graduate: $15</dd>
+        <dd>Undergraduate: Free</dd>
+      </dl>
+      <button
+        class="btn-member"
+        *ngIf="!membership.numberOfPayments || membership.numberOfPayments < 19"
+        type="button"
+        (click)="paySchoolMember()"
+      >
+        Get started
+      </button>
+    </div>
+    <div class="card-membership">
+      <dl class="member-type">
+        <dt>ALL</dt>
+        <dd>Member</dd>
+      </dl>
+      <dl class="info-price">
+        <dt class="text-small">Donation</dt>
+        <dd>Any amounts</dd>
+        <dd>Will be posted</dd>
+      </dl>
+      <button
+        class="btn-member"
+        *ngIf="!membership.numberOfPayments || membership.numberOfPayments < 19"
+        type="button"
+        (click)="donateKSEA()"
+      >
+        Get started
+      </button>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="membership.type === 'Student' && !isExpired(membership.expirationDate)"
+>
+  <p class="info-mymembership">
+    My membership type: Student({{
+      membership.schoolInfo ? membership.schoolInfo.type : "No Type"
+    }})
+  </p>
+  <p>Expiring Date: {{ membership.expirationDate | date : "MM/dd/yyyy" }}</p>
+  <div class="info-g">
+    <p>
+      School:
+      {{ membership.schoolInfo ? membership.schoolInfo.name : "No Name" }}
+    </p>
+  </div>
+  <div class="profile-footer">
+    <button type="button" (click)="payLifeTime()" class="btn-membership">
+      Pay Lifetime ${{ calLifeTimeFee() }}
+    </button>
+    <button type="button" (click)="donateKSEA()" class="btn-membership">
+      Donate KSEA
+    </button>
+  </div>
+</div>
+
+<div
+  *ngIf="membership.type === 'Regular' && isExpired(membership.expirationDate)"
+>
+  <p class="info-mymembership">
+    My membership type: {{ membership.type }} - Expired
+  </p>
+  <p *ngIf="membership.numberOfPayments && membership.numberOfPayments === 19">
+    This is last payment, please pay $35 for lifetime membership.
+  </p>
+  <div class="wrap-card">
+    <div class="card-membership">
+      <dl class="member-type">
+        <dt>Regular</dt>
+        <dd>Member</dd>
+      </dl>
+      <dl class="info-price">
+        <dt>$ 35</dt>
+        <dd>Billed Annually</dd>
+        <dd>cancel anytime</dd>
+      </dl>
+      <button
+        class="btn-member"
+        *ngIf="!membership.numberOfPayments || membership.numberOfPayments < 19"
+        type="button"
+        (click)="payRegularMember()"
+      >
+        Get started
+      </button>
+    </div>
+    <div class="card-membership">
+      <dl class="member-type">
+        <dt>Lifetime</dt>
+        <dd>Member</dd>
+      </dl>
+      <dl class="info-price">
+        <dt>$ {{ calLifeTimeFee() }}</dt>
+        <dd>Billed Onetime</dd>
+        <dd>Forever</dd>
+      </dl>
+      <button class="btn-member" (click)="payLifeTime()">Get started</button>
+    </div>
+    <div class="card-membership">
+      <dl class="member-type">
+        <dt>Student</dt>
+        <dd>Member</dd>
+      </dl>
+      <dl class="info-price">
+        <dt class="text-small">Discounts</dt>
+        <dd>Graduate: $15</dd>
+        <dd>Undergraduate: Free</dd>
+      </dl>
+      <button
+        class="btn-member"
+        *ngIf="!membership.numberOfPayments || membership.numberOfPayments < 19"
+        type="button"
+        (click)="paySchoolMember()"
+      >
+        Get started
+      </button>
+    </div>
+    <div class="card-membership">
+      <dl class="member-type">
+        <dt>ALL</dt>
+        <dd>Member</dd>
+      </dl>
+      <dl class="info-price">
+        <dt class="text-small">Donation</dt>
+        <dd>Any amounts</dd>
+        <dd>Will be posted</dd>
+      </dl>
+      <button
+        class="btn-member"
+        *ngIf="!membership.numberOfPayments || membership.numberOfPayments < 19"
+        type="button"
+        (click)="donateKSEA()"
+      >
+        Get started
+      </button>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="
+    membership.type === 'Regular' &&
+    currentSubscription &&
+    !isExpired(membership.expirationDate)
+  "
+>
+  <p class="info-mymembership">
+    <!-- My membership type: {{ membership.type }} (Subscription
+    {{ currentSubscription.status }}) -->
+  </p>
+  <div class="membership-type type-regular">
+    <img src="assets/images/img_star.png" alt="Star image" />
+    <div class="type-info-text">
+      {{ membership.type }} (Subscription {{ currentSubscription.status }})
+    </div>
+    <p>
+      Your next billing date:
+      {{ membership.expirationDate | date : "MM/dd/yyyy" }}
+    </p>
+  </div>
+  <div class="profile-footer">
+    <button
+      *ngIf="membership.subscriptionStatus === 'subscribed'"
+      type="button"
+      (click)="changePaymentMethod()"
+      class="btn-membership"
+    >
+      Change Payment method
+    </button>
+
+    <button
+      *ngIf="membership.subscriptionStatus === 'subscribed'"
+      type="button"
+      (click)="cancelSubscription()"
+      class="btn-membership"
+    >
+      Cancel Subscription
+    </button>
+
+    <button
+      *ngIf="membership.subscriptionStatus === 'canceled'"
+      type="button"
+      (click)="resumeSubscription()"
+      class="btn-membership"
+    >
+      Resume Subscription
+    </button>
+
+    <button type="button" (click)="payLifeTime()" class="btn-membership">
+      Pay Lifetime ${{ calLifeTimeFee() }}
+    </button>
+
+    <button type="button" (click)="donateKSEA()" class="btn-membership">
+      Donate KSEA
+    </button>
+  </div>
+</div>
+
+<div
+  *ngIf="
+    membership.type === 'Regular' &&
+    !currentSubscription &&
+    !isExpired(membership.expirationDate)
+  "
+>
+  <p class="info-mymembership">
+    My membership type: {{ membership.type }} (Unsubscribed)
+  </p>
+  <div class="info-g">
+    <p>
+      Your membership will be expired on:
+      {{ membership.expirationDate | date : "MM/dd/yyyy" }}
+    </p>
+  </div>
+  <div class="profile-footer">
+    <button type="button" (click)="payLifeTime()" class="btn-membership">
+      Pay Lifetime ${{ calLifeTimeFee() }}
+    </button>
+
+    <button type="button" (click)="donateKSEA()" class="btn-membership">
+      Donate KSEA
+    </button>
+  </div>
+</div>
+
+<div *ngIf="membership.type === 'Unpaid'">
+  <p class="info-mymembership">My membership type: {{ membership.type }}</p>
+  <p *ngIf="membership.numberOfPayments && membership.numberOfPayments === 19">
+    This is last payment, please pay $35 for lifetime membership.
+  </p>
+  <div class="wrap-card">
+    <div class="card-membership">
+      <dl class="member-type">
+        <dt>Regular</dt>
+        <dd>Member</dd>
+      </dl>
+      <dl class="info-price">
+        <dt>$ 35</dt>
+        <dd>Billed Annually</dd>
+        <dd>cancel anytime</dd>
+      </dl>
+      <button
+        class="btn-member"
+        *ngIf="!membership.numberOfPayments || membership.numberOfPayments < 19"
+        type="button"
+        (click)="payRegularMember()"
+      >
+        Get started
+      </button>
+    </div>
+    <div class="card-membership">
+      <dl class="member-type">
+        <dt>Lifetime</dt>
+        <dd>Member</dd>
+      </dl>
+      <dl class="info-price">
+        <dt>$ {{ calLifeTimeFee() }}</dt>
+        <dd>Billed Onetime</dd>
+        <dd>Forever</dd>
+      </dl>
+      <button class="btn-member" (click)="payLifeTime()">Get started</button>
+    </div>
+    <div class="card-membership">
+      <dl class="member-type">
+        <dt>Student</dt>
+        <dd>Member</dd>
+      </dl>
+      <dl class="info-price">
+        <dt class="text-small">Discounts</dt>
+        <dd>Graduate: $15</dd>
+        <dd>Undergraduate: Free</dd>
+      </dl>
+      <button
+        class="btn-member"
+        *ngIf="!membership.numberOfPayments || membership.numberOfPayments < 19"
+        type="button"
+        (click)="paySchoolMember()"
+      >
+        Get started
+      </button>
+    </div>
+    <div class="card-membership">
+      <dl class="member-type">
+        <dt>ALL</dt>
+        <dd>Member</dd>
+      </dl>
+      <dl class="info-price">
+        <dt class="text-small">Donation</dt>
+        <dd>Any amounts</dd>
+        <dd>Will be posted</dd>
+      </dl>
+      <button
+        class="btn-member"
+        *ngIf="!membership.numberOfPayments || membership.numberOfPayments < 19"
+        type="button"
+        (click)="donateKSEA()"
+      >
+        Get started
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="membership && membership.paymentHistory">
+  <p class="profile-title">Payment History</p>
+  <table class="membership-history">
+    <tr>
+      <th>Date</th>
+      <th>Action</th>
+      <th>Amount</th>
+      <th>Description</th>
+    </tr>
+    <tr *ngFor="let item of membership.paymentHistory">
+      <td>{{ item.date }}</td>
+      <td>{{ item.action }}</td>
+      <td>{{ item.amounts }}</td>
+      <td>{{ item.description }}</td>
+    </tr>
+  </table>
+  <div *ngFor="let item of membership.paymentHistory">
+    <table class="mobile-payment-hitory">
+      <tr>
+        <th>Date</th>
+        <td>{{ item.date }}</td>
+      </tr>
+      <tr>
+        <th>Action</th>
+        <td>{{ item.action }}</td>
+      </tr>
+      <tr>
+        <th>Amount</th>
+        <td>{{ item.amounts }}</td>
+      </tr>
+      <tr>
+        <th>Description</th>
+        <td>{{ item.description }}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div
+  *ngIf="membership.type === 'Regular' && currentSubscription"
+  class="wrap-banner"
+>
+  <div class="member-banner" (click)="payLifeTime()">
+    <p class="banner-title">Go Pay Lifetime</p>
+    <p class="banner-info">
+      KSEA wishes to reach all its members and provide effective and valuable
+      service.<br />
+      In order to serve you better, we need your support.
+    </p>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+.con-img {
+  margin-bottom: 5em;
+}
+@media screen and (max-width: 500px) {
+  .con-img img {
+    width: 80%;
+  }
+  button {
+    height: 3em;
+    width: 9rem;
+    padding: 0 !important;
+    text-align: center;
+  }
+}

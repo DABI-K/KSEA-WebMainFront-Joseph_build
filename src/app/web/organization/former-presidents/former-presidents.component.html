@@ -1,0 +1,56 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-organization-header></app-organization-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>Organization</li>
+    <li>Former President</li>
+  </ul>
+  <div class="scon-center">
+    <h2 class="font-ksea">Former President</h2>
+    <h3>Korean-American Scientists and Engineers Association (KSEA)</h3>
+    <div class="scon-center organization">
+      <div class="con-list-members">
+        <div class="list-title">Former Presidents</div>
+        <ul *ngIf="kseaInfo" class="list-member">
+          <li *ngFor="let item of kseaInfo.formerPresidents">
+            <img src="{{ imgURL + item.image }}" alt="member image"/>
+            <dl>
+              <div *ngIf="item.url; else noUrl">
+                <dt>
+                  <a href="{{ item.url }}" target="_blank">{{ item.name }}</a>
+                </dt>
+              </div>
+              <ng-template #noUrl>
+                {{ item.name }}
+              </ng-template>
+              <dd>{{ ordinal_suffix_of(item.term) }} ({{ item.period }})</dd>
+            </dl>
+
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="kseaInfo" class="member-table">
+        <h4>Former Presidents Councilors</h4>
+        <table class="table-former-councilor">
+          <tr>
+            <th>Name</th>
+            <th>Affiliation</th>
+            <th>Contacts</th>
+          </tr>
+          <tr *ngFor="let item of kseaInfo.formerPresidentCouncilors">
+            <td>{{ item.name }}</td>
+            <td>{{ item.affiliation }}</td>
+            <td>
+              <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <a href="/former-contact" target="_blank">
+        <button class="btn_blue">Former President Contact List</button>
+      </a>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

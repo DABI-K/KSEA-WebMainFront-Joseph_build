@@ -1,0 +1,53 @@
+<div *ngIf="!stats" class="wrap">
+  <div class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <p>2024 KSEA Election Results</p>
+      <div class="con-info">
+        <h2 style="color: black">Please provide two keys from Key holders</h2>
+        <input type="string" id="first" [(ngModel)]="firstKey" /> ~
+        <input type="string" id="second" [(ngModel)]="secondKey" />
+        <button type="button" (click)="submit()" class="btn_blue">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="stats" class="wrap-table">
+  <div class="con-table">
+    <h2 class="title-txt">2024 KSEA Election Results</h2>
+    <button class="btn_blue" (click)="downloadCSV()" type="submit">
+      Download CSV
+    </button>
+    <table class="table-keyholder">
+      <thead>
+        <th>Question</th>
+        <th>How many winners?</th>
+        <th>Stats</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of stats">
+          <td>{{ item.question }}</td>
+          <td>{{ item.numberOfChoices }}</td>
+          <td>
+            <ul class="con-stats">
+              <li *ngFor="let a of item.listAlternatives">
+                <div>{{ a.desc }}</div>
+                <div>
+                  <div *ngIf="!a.count">0 / {{ totalNum }}</div>
+                  <div *ngIf="a.count">{{ a.count }} / {{ totalNum }}</div>
+                </div>
+                <div>
+                  <div *ngIf="!a.count">0%</div>
+                  <div *ngIf="a.count">{{ (a.count / totalNum) * 100 }}%</div>
+                </div>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

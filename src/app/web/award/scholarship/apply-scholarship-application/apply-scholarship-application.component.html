@@ -1,0 +1,530 @@
+<div
+  class="wrap"
+  *ngIf="
+    scholarshipDef &&
+    membership &&
+    membership.type &&
+    membership.type !== 'Unpaid'
+  "
+>
+  <div style="width: 100% !important" class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <span>{{ scholarshipDef.title }}</span>
+    </div>
+    <div class="wrap-form">
+      <div class="info-applicant">
+        <div *ngIf="result.status">
+          <p>Submission status : {{ result.status }}</p>
+          <br /><br />
+          <span class="p-float-label">
+            <textarea
+              id="float-input"
+              disabled
+              rows="10"
+              cols="30"
+              [(ngModel)]="result.statusNotes"
+              pInputTextarea
+            ></textarea>
+            <label for="float-input">Status Notes</label>
+          </span>
+        </div>
+      </div>
+      <br />
+      <ul class="list-form">
+        <li>
+          <span style="display: inline" class="p-float-label">
+            <input
+              id="float-input"
+              type="text"
+              disabled
+              pInputText
+              [style]="{ width: '100%' }"
+              [(ngModel)]="result.username"
+            />
+            <label for="float-input">Username</label>
+          </span>
+        </li>
+        <li>
+          <span style="display: inline" class="p-float-label">
+            <input
+              id="float-input"
+              type="text"
+              disabled
+              pInputText
+              [style]="{ width: '100%' }"
+              [(ngModel)]="result.email"
+            />
+            <label for="float-input">email</label>
+          </span>
+        </li>
+        <li>
+          <span style="display: inline" class="p-float-label">
+            <input
+              id="float-input"
+              type="text"
+              pInputText
+              [style]="{ width: '50%' }"
+              [disabled]="!flagNew"
+              [(ngModel)]="result.firstName"
+            />
+            <label for="float-input">First Name</label>
+          </span>
+          <span style="display: inline" class="p-float-label">
+            <input
+              id="float-input"
+              type="text"
+              pInputText
+              [style]="{ width: '50%' }"
+              [disabled]="!flagNew"
+              [(ngModel)]="result.lastName"
+            />
+            <label for="float-input">Last Name</label>
+          </span>
+        </li>
+        <li>
+          <span style="display: inline" class="p-float-label">
+            <p-inputMask
+              mask="(999) 999-9999"
+              [style]="{ width: '100%' }"
+              [disabled]="!flagNew"
+              [(ngModel)]="result.phoneNumber"
+              placeholder="(999) 999-9999"
+            ></p-inputMask>
+            <label for="float-input">Phone Number</label>
+          </span>
+        </li>
+
+        <li>
+          <span style="display: inline" class="p-float-label">
+            <input
+              id="float-input"
+              type="text"
+              pInputText
+              [disabled]="!flagNew"
+              [style]="{ width: '100%' }"
+              [(ngModel)]="result.address"
+            />
+            <label for="float-input">Mailing Address</label>
+          </span>
+        </li>
+
+        <li *ngFor="let item of scholarshipDef.application_items; index as i">
+          <div *ngIf="item.type === 'choices'">
+            <p>{{ item.question }}</p>
+            <div class="msg-error" *ngIf="false">Please choose one answer.</div>
+
+            <select
+              *ngIf="item.numberOfChoices === 1"
+              name="item_{{ i + 1 }}"
+              id="item_{{ i + 1 }}"
+              [disabled]="!flagNew"
+              [(ngModel)]="result.answers[i]"
+            >
+              <option
+                *ngFor="let alternative of item.listAlternatives"
+                value="{{ alternative }}"
+              >
+                {{ alternative }}
+              </option>
+            </select>
+          </div>
+
+          <div *ngIf="item.type === 'longAnswer'">
+            <p>
+              {{ item.question }}
+            </p>
+            <div class="msg-error" *ngIf="false">Please write an essay.</div>
+            <textarea
+              id="item_{{ i + 1 }}"
+              name="item_{{ i + 1 }}"
+              [disabled]="!flagNew"
+              [(ngModel)]="result.answers[i]"
+            >
+            </textarea>
+            <p>Word Count: {{ wordCount(result.answers[i]) }}</p>
+          </div>
+        </li>
+      </ul>
+      <p *ngIf="flagNew">Please upload your CV (PDF only).</p>
+      <div *ngIf="flagNew" class="msg-error">Please upload file.</div>
+
+      <div *ngIf="flagNew" class="filebox">
+        <!-- <input type="text" class="file-name" placeholder="file name" disabled> -->
+        <label for="file"
+          ><span
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+            *ngIf="cvFileloading"
+          ></span>
+          Upload CV</label
+        >
+        <input
+          #myCVFileInput
+          type="file"
+          accept="application/pdf"
+          (change)="addCVFile($event)"
+          id="file"
+        />
+      </div>
+      <div *ngIf="result.cvURL" class="file-link">
+        <a href="{{ result.cvURL }}" target="_blank">View your CV file</a>
+      </div>
+
+      <div *ngIf="result.answers[0] === 'Postdoctor scholarship'">
+        <p *ngIf="flagNew">
+          Please upload your Evidence of doctoral degree (doctoral diploma or
+          degree certificate, PDF only).
+        </p>
+
+        <div *ngIf="flagNew" class="filebox">
+          <!-- <input type="text" class="file-name" placeholder="file name" disabled> -->
+          <label for="filePost"
+            ><span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="eviFileloading"
+            ></span>
+            Upload Evidence of doctoral degree</label
+          >
+          <input
+            #myDOCFileInput
+            type="file"
+            accept="application/pdf"
+            (change)="addDoctoralFile($event)"
+            id="filePost"
+          />
+        </div>
+        <div *ngIf="result.doctorURL" class="file-link">
+          <a href="{{ result.doctorURL }}" target="_blank"
+            >View your Evidence of doctoral degree</a
+          >
+        </div>
+      </div>
+      <div
+        *ngIf="
+          result.answers[0] === 'Undergraduate scholarship' ||
+          result.answers[0] === 'Graduate scholarship'
+        "
+      >
+        <p *ngIf="flagNew">Please provide your average GPA for each school - Please press the "ADD" button 
+          to submit more school lists.</p>
+        <p *ngIf="!flagNew">Your average GPA for each school.</p>
+
+        <table class="scholar-table">
+          <tr>
+            <th>School Name</th>
+            <th>Major</th>
+            <th>(Expected) Graduation Date (MM/YYYY)</th>
+            <th>(Expected) Degree (Editable)</th>
+            <th>School Address (City,State)</th>
+            <th>Average GPA <br />(Ex. 4.5/5)</th>
+            <th>Transcript (PDF)</th>
+            <th>Action</th>
+          </tr>
+          <tr *ngFor="let item of result.grades">
+            <td>{{ item.schoolName }}</td>
+            <td>{{ item.major }}</td>
+            <td>
+              {{ item.graudationYear }}
+            </td>
+            <td>
+              {{ item.degree.name }}
+            </td>
+            <td>
+              {{ item.schoolAddress }}
+            </td>
+            <td>{{ item.averageGPA }}</td>
+            <td>
+              <a
+                href="{{ item.transcript }}"
+                style="color: blue"
+                target="_blank"
+                >View your Transcript</a
+              >
+            </td>
+            <td>
+              <button
+                *ngIf="flagNew"
+                type="button"
+                class="btn-form_red"
+                (click)="delGrade(item)"
+              >
+                DEL
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="flagNew">
+            <td>
+              <input
+                pInputText
+                style="width: 90%"
+                type="text"
+                id="newGrade_schoolName"
+                name="newGrade_schoolName"
+                [(ngModel)]="newGrade.schoolName"
+              />
+            </td>
+            <td>
+              <input
+                pInputText
+                style="width: 90%"
+                type="text"
+                id="newGrade_major"
+                name="newGrade_major"
+                [(ngModel)]="newGrade.major"
+              />
+            </td>
+            <td>
+              <input
+                pInputText
+                style="width: 90%"
+                type="text"
+                id="newGrade_graudationYear"
+                name="newGrade_graudationYear"
+                [(ngModel)]="newGrade.graudationYear"
+              />
+            </td>
+            <td>
+              <p-dropdown
+                [options]="degrees"
+                [(ngModel)]="newGrade.degree"
+                [editable]="true"
+                optionLabel="name"
+              ></p-dropdown>
+            </td>
+            <td>
+              <input
+                pInputText
+                style="width: 90%"
+                type="text"
+                id="newGrade_school_addres"
+                name="newGrade_school_address"
+                [(ngModel)]="newGrade.schoolAddress"
+              />
+            </td>
+            <td>
+              <input
+                pInputText
+                style="width: 90%"
+                type="text"
+                id="newGrade_averageGPA"
+                name="newGrade_averageGPA"
+                [(ngModel)]="newGrade.averageGPA"
+              />
+            </td>
+            <td>
+              <div class="filebox-table">
+                <!-- <input type="text" class="file-name" placeholder="file name" disabled> -->
+                <label for="fileTable"
+                  ><span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                    *ngIf="transcriptFileloading"
+                  ></span>
+                  <div *ngIf="newGrade.transcript">Transcript Uploaded</div>
+                  <div *ngIf="!newGrade.transcript">
+                    Upload Transcript
+                  </div></label
+                >
+                <input
+                  #myTranscriptFileInput
+                  type="file"
+                  accept="application/pdf"
+                  (change)="addTranscriptFile($event)"
+                  id="fileTable"
+                />
+              </div>
+            </td>
+            <td>
+              <button
+                type="button"
+                (click)="addGrade()"
+                class="btn-form_gray"
+                [disabled]="
+                  !newGrade.schoolName ||
+                  !newGrade.graudationYear ||
+                  !newGrade.averageGPA ||
+                  !newGrade.transcript
+                "
+              >
+                ADD
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <p *ngIf="flagNew">
+        Please provide information for a minimum of two recommenders, including their email addresses.<br>
+        Press the "ADD" button to include additional recommenders.<br>
+        The upload link for the email to each recommender will be sent out when you press the "Submit" button.<br>
+        Please note that there is no save function, so ensure you keep a record for yourself.
+      </p>
+      
+      <!-- <p *ngIf="flagNew">
+        Please provide recommenders' information - A minimum of 2 recommenders' email addresses are required. 
+        Please press the "ADD" button to add more recommender's information.*
+      </p> -->
+      <p *ngIf="!flagNew">
+        Recommenders' information - A minimum of 2 recommenders' email addresses are required.
+      </p>
+      
+      <table class="scholar-table">
+        <tr>
+          <th>Title</th>
+          <th>Name</th>
+          <th>Affiliation</th>
+          <th>Email</th>
+          <th>Action</th>
+        </tr>
+        <tr *ngFor="let item of result.recommenders">
+          <td>{{ item.title }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>{{ item.email }}</td>
+          <td>
+            <button
+              *ngIf="flagNew"
+              type="button"
+              class="btn-form_red"
+              (click)="delRecommender(item)"
+            >
+              DEL
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="flagNew">
+          <td>
+            <input
+              pInputText
+              style="width: 90%"
+              type="text"
+              id="newRecommender_title"
+              name="newRecommender_title"
+              [(ngModel)]="newRecommender.title"
+            />
+          </td>
+          <td>
+            <input
+              pInputText
+              style="width: 90%"
+              type="text"
+              id="newRecommender_name"
+              name="newRecommender_name"
+              [(ngModel)]="newRecommender.name"
+            />
+          </td>
+          <td>
+            <input
+              pInputText
+              style="width: 90%"
+              type="text"
+              id="newRecommender_affiliation"
+              name="newRecommender_affiliation"
+              [(ngModel)]="newRecommender.affiliation"
+            />
+          </td>
+
+          <td>
+            <input
+              pInputText
+              style="width: 90%"
+              type="text"
+              id="newRecommender_email"
+              name="newRecommender_email"
+              [(ngModel)]="newRecommender.email"
+            />
+          </td>
+
+          <td>
+            <button
+              type="button"
+              (click)="addRecommender()"
+              class="btn-form_gray"
+              [disabled]="
+                !newRecommender.title ||
+                !newRecommender.name ||
+                !newRecommender.affiliation ||
+                !newRecommender.email
+              "
+            >
+              ADD
+            </button>
+          </td>
+        </tr>
+        
+      </table>
+      <p>* When applying for the KSEA scholarship, KSEA does not engage in any communication with 
+        recommenders other than providing the letter upload link.<br> Therefore, applicants are solely 
+        responsible for all aspects of the scholarship application process.</p>
+     <p>** Once you submit your application, you can't modify the recommender's information or 
+        add more recommenders.</p>
+     
+      <!-- <p>* When applying for the KSEA scholarship, KSEA does not engage in any communication with 
+        recommenders other than providing the letter upload link. Therefore, applicants are solely 
+        responsible for all aspects of the scholarship application process.</p>
+      <p>** Once you submit your application, you can't modify the recommender's information or 
+        add more recommenders.</p> -->
+      <!-- ORIGINAL:
+        <p *ngIf="flagNew">*  When applying for the KSEA scholarship, KSEA does not engage in any communication with recommenders other than providing the letter upload link. Therefore, applicants are solely responsible for all aspects of the scholarship application process.</p>
+        <p *ngIf="flagNew">** Once you submit your application, you can't modify the recommender information.</p> 
+      -->
+
+      <div class="footer-submit">
+        <!-- ORIGINAL: <div *ngIf="flagNew" class="footer-submit"> -->
+        If you have any issue, please contact KSEA Scholarship admin: scholarship@ksea.org
+      </div>
+      <div *ngIf="flagNew" class="footer-submit">
+        <!-- Convert to below if you wish to allow users to submit the form:   -->
+        <!-- 
+          <button
+            [disabled]="loading"
+            class="btn_blue"
+            (click)="submit()"
+            type="submit"
+          > 
+        -->
+        <button
+          class="btn_blue"
+          (click)="submit()"
+          type="submit"
+          disabled
+        >
+          <span
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+            *ngIf="loading"
+          ></span>
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="scholarshipDef && !membership">
+  <p style="color: black">
+    You don't have any membership. This {{ scholarshipDef.title }} is only for
+    paid members.<br>
+    Please purchase a membership: <u><a href="https://www.ksea.org/profile" target="_blank">Join KSEA</a></u>
+  </p>  
+</div>
+
+<div
+  *ngIf="
+    scholarshipDef &&
+    membership &&
+    membership.type &&
+    membership.type === 'Unpaid'
+  "
+>
+  <p style="color: black">
+    Your membership already expired. This {{ scholarshipDef.title }} is only for
+    paid members.<br>
+    Please purchase a membership: <u><a href="https://www.ksea.org/profile" target="_blank">Join KSEA</a></u>
+  </p>  
+</div>

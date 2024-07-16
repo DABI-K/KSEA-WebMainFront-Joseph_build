@@ -1,0 +1,188 @@
+<div style="height: 100% !important" class="wrap" *ngIf="votingDef">
+  <div style="width: 80%" class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <p>2024 KSEA Election Statistics</p>
+      <button class="btn_blue" (click)="downloadCSV()" type="submit">
+        Download CSV
+      </button>
+
+      <div style="color: black; width: 100%" class="con-info">
+        <h2>Current voting Stats</h2>
+
+        <p>
+          <strong>Total voting Rates: </strong>{{ votingResult.length }} /
+          {{ stats.total }} ({{ (votingResult.length / stats.total) * 100 }}%)
+        </p>
+        <canvas
+          baseChart
+          class="chart"
+          [data]="overviewtData"
+          [options]="barChartOptions"
+          [plugins]="barChartPlugins"
+          [type]="barChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"
+        >
+        </canvas>
+      </div>
+
+      <div style="color: black; width: 100%" class="con-info">
+        <h2>APS voting Stats</h2>
+        <canvas
+          baseChart
+          class="chart"
+          [data]="apsData"
+          [options]="barChartOptions1"
+          [plugins]="barChartPlugins"
+          [type]="barChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"
+        >
+        </canvas>
+        <div class="wrap-table-3sheaf">
+          <table>
+            <tr>
+              <th>APS Name</th>
+              <th>Counts</th>
+              <th>Rate %</th>
+            </tr>
+            <tr *ngFor="let a of stats.aps.slice(0, 11)">
+              <td>{{ a.code }}</td>
+              <td>{{ a.count }} / {{ a.total }}</td>
+              <td>{{ (a.count / a.total) * 100 }}%</td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <th>APS Name</th>
+              <th>Counts</th>
+              <th>Rate %</th>
+            </tr>
+            <tr *ngFor="let a of stats.aps.slice(11, 21)">
+              <td>{{ a.code }}</td>
+              <td>{{ a.count }} / {{ a.total }}</td>
+              <td>{{ (a.count / a.total) * 100 }}%</td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <th>APS Name</th>
+              <th>Counts</th>
+              <th>Rate %</th>
+            </tr>
+            <tr *ngFor="let a of stats.aps.slice(21)">
+              <td>{{ a.code }}</td>
+              <td>{{ a.count }} / {{ a.total }}</td>
+              <td>{{ (a.count / a.total) * 100 }}%</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div style="color: black; width: 100%" class="con-info">
+        <h2>Chapters voting Stats</h2>
+        <canvas
+          baseChart
+          class="chart"
+          [data]="chapterData"
+          [options]="barChartOptions1"
+          [plugins]="barChartPlugins"
+          [type]="barChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"
+        ></canvas>
+        <div class="wrap-table-3sheaf">
+          <table>
+            <tr>
+              <th>Chapter Name</th>
+              <th>Counts</th>
+              <th>Rate %</th>
+            </tr>
+            <tr *ngFor="let a of stats.chapters.slice(0, 28)">
+              <td>{{ a.name }}</td>
+              <td>{{ a.count }} / {{ a.total }}</td>
+              <td>{{ (a.count / a.total) * 100 }}%</td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <th>Chapter Name</th>
+              <th>Counts</th>
+              <th>Rate %</th>
+            </tr>
+            <tr *ngFor="let a of stats.chapters.slice(28, 55)">
+              <td>{{ a.name }}</td>
+              <td>{{ a.count }} / {{ a.total }}</td>
+              <td>{{ (a.count / a.total) * 100 }}%</td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <th>Chapter Name</th>
+              <th>Counts</th>
+              <th>Rate %</th>
+            </tr>
+            <tr *ngFor="let a of stats.chapters.slice(55)">
+              <td>{{ a.name }}</td>
+              <td>{{ a.count }} / {{ a.total }}</td>
+              <td>{{ (a.count / a.total) * 100 }}%</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div style="color: black; width: 100%" class="con-info">
+        <h2>Techinical Groups voting Stats</h2>
+        <canvas
+          baseChart
+          class="chart"
+          [data]="groupData"
+          [options]="barChartOptions1"
+          [plugins]="barChartPlugins"
+          [type]="barChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"
+        ></canvas>
+        <div class="wrap-table-3sheaf">
+          <table>
+            <tr>
+              <th>Group Name {{ stats.groups.length }}</th>
+              <th>Counts</th>
+              <th>Rate %</th>
+            </tr>
+            <tr *ngFor="let a of stats.groups.slice(0, 6)">
+              <td>{{ a.code }}</td>
+              <td>{{ a.count }} / {{ a.total }}</td>
+              <td>{{ (a.count / a.total) * 100 }}%</td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <th>Group Name</th>
+              <th>Counts</th>
+              <th>Rate %</th>
+            </tr>
+            <tr *ngFor="let a of stats.groups.slice(6, 11)">
+              <td>{{ a.code }}</td>
+              <td>{{ a.count }} / {{ a.total }}</td>
+              <td>{{ (a.count / a.total) * 100 }}%</td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <th>Group Name</th>
+              <th>Counts</th>
+              <th>Rate %</th>
+            </tr>
+            <tr *ngFor="let a of stats.groups.slice(11)">
+              <td>{{ a.code }}</td>
+              <td>{{ a.count }} / {{ a.total }}</td>
+              <td>{{ (a.count / a.total) * 100 }}%</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

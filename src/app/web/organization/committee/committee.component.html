@@ -1,0 +1,277 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-organization-header></app-organization-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>Organization</li>
+    <li>Committee</li>
+  </ul>
+  <div class="scon-center">
+    <h2 class="font-ksea">Committee</h2>
+    <h3>Korean-American Scientists and Engineers Association (KSEA)</h3>
+  </div>
+  <div class="scon-left pd10">
+    <div class="member-table">
+      <h4>CONTEST COMMITTEE</h4>
+      <table class="table-committee" *ngIf="kseaInfo && kseaInfo.committees">
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Period</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('CONTEST')">
+          <td>{{ item.position }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.period }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>ELECTION COMMITTEE</h4>
+      <table class="table-committee" *ngIf="kseaInfo && kseaInfo.committees">
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Period</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('ELECTION')">
+          <td>{{ item.position }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.period }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>FUND MANAGEMENT COMMITTEE</h4>
+      <table class="table-committee" *ngIf="kseaInfo && kseaInfo.committees">
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Period</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('FUND_MANAGEMENT')">
+          <td>{{ item.position }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.period }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>HISTORY COMMITTEE</h4>
+      <table class="table-committee" *ngIf="kseaInfo && kseaInfo.committees">
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Period</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('HISTORY')">
+          <td>{{ item.position }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.period }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>HONORS AND AWARDS COMMITTEE</h4>
+      <table class="table-committee" *ngIf="kseaInfo && kseaInfo.committees">
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Period</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('HONORS_AND_AWARDS')">
+          <td>{{ item.position }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.period }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>LONG RANGE PLANNING COMMITTEE</h4>
+      <table class="table-committee" *ngIf="kseaInfo && kseaInfo.committees">
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Period</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('LONG_RANGE_PLANNING')">
+          <td>{{ item.position }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.period }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>NOMINATION COMMITTEE</h4>
+      <table class="table-committee" *ngIf="kseaInfo && kseaInfo.committees">
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Period</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('NOMINATION')">
+          <td>{{ item.position }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.period }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>RULES COMMITTEE</h4>
+      <table class="table-committee" *ngIf="kseaInfo && kseaInfo.committees">
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Period</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('RULES')">
+          <td>{{ item.position }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.period }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>SCHOLARSHIP AND FELLOWSHIP COMMITTEE</h4>
+      <table class="table-committee" *ngIf="kseaInfo && kseaInfo.committees">
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Period</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('SCHOLARSHIP_AND_FELLOWSHIP')">
+          <td>{{ item.position }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.period }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>YOUNG GENERATION COMMITTEE</h4>
+      <table class="table-committee" *ngIf="kseaInfo && kseaInfo.committees">
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Period</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('YOUNG_GENERATION')">
+          <td>{{ item.position }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.period }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>APS COMMITTEE</h4>
+      <table class="table-committee" *ngIf="kseaInfo && kseaInfo.committees">
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Period</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('APS')">
+          <td>{{ item.position }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.period }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>SME COMMITTEE</h4>
+      <table class="table-committee" *ngIf="kseaInfo && kseaInfo.committees">
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Period</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('SME')">
+          <td>{{ item.position }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.period }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>UKC STEERING COMMITTEE</h4>
+      <table class="table-committee" *ngIf="kseaInfo && kseaInfo.committees">
+        <tr>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Period</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('UKC_STEERING')">
+          <td>{{ item.position }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.period }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

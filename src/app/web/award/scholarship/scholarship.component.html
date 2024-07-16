@@ -1,0 +1,143 @@
+<div class="wrap" *ngIf="scholarshipDef">
+  <app-nav></app-nav>
+  <app-award-header></app-award-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>Award</li>
+    <li>Scholarship</li>
+  </ul>
+  
+  <!--
+  <div class="scon-activity">
+    <div class="con-event">
+      <img
+        src="assets/images/award/scholarship/poster_scholarship2023.jpg"
+        alt="scholarship poster"
+      />
+
+
+       <img src="{{ scholarshipDef.poster_url }}" alt="scholarship poster" />
+    </div>
+    <button class="btn_blue">
+      <a href="https://award.ksea.org" target="_blank"> Award Home</a>
+    </button>
+  -->
+
+
+    <div class="scon-activity">
+      <div class="con-event">
+        <img src="{{ scholarshipDef.poster_url }}" alt="scholarship poster" />
+        <div class="content-event">
+          <p class="event-title">Scholarship</p>
+          <!-- <p>Science and Technology Entrepreneurship Partners’ Upscale Program</p> -->
+        </div>
+        <button class="btn_blue">
+          <a href="https://award.ksea.org/scholarships" target="_blank">Scholarship Home</a>
+        </button>
+      </div>
+
+    <div class="con-event-info">
+      <div class="content-info">
+        <ul>
+          <li class="info-title">
+            <img src="assets/images/icon_star.png" alt="event" />
+            Event
+          </li>
+          <li>{{ scholarshipDef.title }}</li>
+          <li>
+            *Submitted applications cannot be modified.<br>
+          </li>
+          <li>
+            <a
+              href="{{ scholarshipDef.url }}"
+              target="_blank"
+              style="padding: 2px"
+            >
+              <button style ="width: 10em" class="btn-event">Scholarship Home</button>
+            </a>
+            
+            <a
+              *ngIf="
+                user &&
+                user.username &&
+                membership &&
+                membership.type &&
+                membership.type !== 'Unpaid'
+              "
+              routerLink="/scholarshipApply"
+              routerLinkActive="active"
+              target="_blank"
+            >
+              <button disabled class="btn-event">Apply</button>
+            </a>
+           
+            <button
+              *ngIf="
+                !user ||
+                !user.username ||
+                !membership ||
+                !membership.type ||
+                membership.type === 'Unpaid'
+              "
+              disabled
+              title="Signin and active membership required"
+              class="btn-event"
+            >
+              Apply
+            </button>
+            </li>
+
+            <li *ngIf="!user">
+              <a class="nav-link" routerLink="/signIn"
+                ><span style="color: red" class="info-text"
+                  >Click here to Sign-In first</span
+                ></a
+              >
+            </li> 
+
+          <li>
+            <span style="color: red" class="info-text"
+              >* You must have an active membership in order to apply</span
+            >
+          </li>
+
+        </ul>
+      </div>
+      <div class="content-info">
+        <ul>
+          <li class="info-title">
+            <img src="assets/images/icon_check.png" alt="member" />
+            Condition of eligibility qualification
+          </li>
+          <li>{{ scholarshipDef.eligibility }}</li>
+        </ul>
+      </div>
+      <div class="content-info">
+        <ul>
+          <li class="info-title">
+            <img src="assets/images/icon_calendar.png" alt="calendar" />
+            Period
+          </li>
+          <li>
+            {{ scholarshipDef.startDate | date : "MM/dd/yyyy" }} ~
+            <!-- Early Feb. ~ -->
+            {{ scholarshipDef.endDate | date : "MM/dd/yyyy" }} 5PM ET
+          </li>
+          <!-- <li>
+            <span class="txt_red">Expired</span>
+          </li> -->
+        </ul>
+      </div>
+      <div class="content-info">
+        <ul>
+          <li class="info-title">
+            <img src="assets/images/icon_location.png" alt="calendar" />
+            Location
+          </li>
+          <li>{{ scholarshipDef.location }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

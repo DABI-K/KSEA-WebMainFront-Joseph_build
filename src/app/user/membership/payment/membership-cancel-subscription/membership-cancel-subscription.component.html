@@ -1,0 +1,41 @@
+<div class="wrap">
+  <div class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <span>Membership</span>
+    </div>
+    <div class="con-info">
+      <h2>Cancel Subscription</h2>
+      <p class="info-text">
+        If you cancel, <br />you membership will be expired on
+        <b> {{ membership.expirationDate | date : "MM/dd/yyyy" }} </b>
+      </p>
+      <div *ngIf="errorMessage" class="alert alert-warning">
+        {{ errorMessage | json }}
+      </div>
+      <div class="g-button">
+        <button type="button" (click)="cancel()" class="btn_gray">
+          Go back
+        </button>
+
+        <button
+          *ngIf="
+            membership && membership.customerId && membership.subscriptionId
+          "
+          type="button"
+          [disabled]="loading"
+          (click)="cancelSubscription()"
+          class="btn_blue"
+        >
+          <span
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+            *ngIf="loading"
+          ></span>
+          Cancel Subscription
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

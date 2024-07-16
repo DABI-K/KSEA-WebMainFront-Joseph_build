@@ -1,0 +1,286 @@
+<div class="wrap" *ngIf="!loading">
+  <div class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <span>US Korea Conference 2024</span>
+      <button
+        pButton
+        type="button"
+        label="Download CSV"
+        icon="pi pi-save"
+        class="p-button-info p-button-sm"
+        (click)="downloadCSV()"
+      ></button>
+    </div>
+  </div>
+  <div class="wrap-form">
+    <p-table
+      #DT
+      *ngIf="listPapers && listPapers.length > 0"
+      [value]="listPapers"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      dataKey="paper.id"
+      [showCurrentPageReport]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [paginator]="true"
+      [loading]="loading"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="paper.id">
+            Submission ID <p-sortIcon field="paper.id"></p-sortIcon>
+          </th>
+          <th pSortableColumn="userData.family_name">
+            Name <p-sortIcon field="userData.family_name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="paper.affiliation">
+            Affiliation <p-sortIcon field="paper.affiliation"></p-sortIcon>
+          </th>
+          <th pSortableColumn="userData.email">
+            Email <p-sortIcon field="userData.email"></p-sortIcon>
+          </th>
+          <th pSortableColumn="paper.group.acronym">
+            Group <p-sortIcon field="paper.group.acronym"></p-sortIcon>
+          </th>
+          <th pSortableColumn="paper.title">
+            Title <p-sortIcon field="paper.title"></p-sortIcon>
+          </th>
+          <th>Summary</th>
+          <th>Paper URL</th>
+          <th pSortableColumn="paper.date">
+            Date <p-sortIcon field="paper.date"></p-sortIcon>
+          </th>
+          <th pSortableColumn="paper.preference">
+            Type <p-sortIcon field="paper.preference"></p-sortIcon>
+          </th>
+          <th pSortableColumn="paper.status">
+            Status <p-sortIcon field="paper.status"></p-sortIcon>
+          </th>
+          <th>Actions</th>
+        </tr>
+        <tr>
+          <th>
+            <p-columnFilter type="text" field="paper.id"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="userData.family_name"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="paper.affiliation"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter type="text" field="userData.email"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="paper.group.acronym"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter type="text" field="paper.title"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter type="text" field="paper.summary"></p-columnFilter>
+          </th>
+          <th></th>
+          <th>
+            <p-columnFilter
+              style="width: 10cm !important"
+              type="text"
+              field="paper.date"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="paper.preference"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter type="text" field="paper.status"></p-columnFilter>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-application>
+        <tr>
+          <td>{{ application.paper.id }}</td>
+          <td>
+            {{ application.userData.family_name }},
+            {{ application.userData.given_name }}
+          </td>
+          <td>{{ application.paper.affiliation }}</td>
+          <td>
+            {{ application.userData.email }}
+          </td>
+          <td>{{ application.paper.group.acronym }}</td>
+          <td>{{ application.paper.title }}</td>
+          <td>
+            <span
+              style="color: blue"
+              (click)="viewSummary(application.paper.summary)"
+              >View</span
+            >
+          </td>
+          <td>
+            <a
+              style="color: blue"
+              href="{{ application.paper.paperURL }}"
+              target="_blank"
+              >{{ application.paper.paperURL }}</a
+            >
+          </td>
+          <td>{{ application.paper.date | date : "MM/dd/yyyy" }}</td>
+          <td>{{ application.paper.preference }}</td>
+          <td>{{ application.paper.status }}</td>
+          <td>
+            <button
+              *ngIf="!application.paper.isConfirmed"
+              pButton
+              pRipple
+              type="button"
+              label="Decision"
+              icon="pi pi-pencil"
+              class="p-button-info p-button-sm"
+              (click)="reviewPaper(application.paper, application)"
+              style="
+                font-size: 0.8rem;
+                padding: 0.2rem 0.3rem;
+                margin-left: 0.1cm;
+              "
+            ></button>
+            <!-- 
+            <button
+              pButton
+              pRipple
+              type="button"
+              label="Withdraw"
+              icon="pi pi-times"
+              class="p-button-danger p-button-sm"
+              (click)="removePaper(paper)"
+              style="
+                font-size: 0.8rem;
+                padding: 0.2rem 0.3rem;
+                margin-left: 0.1cm;
+              "
+            ></button> -->
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<p-dialog
+  *ngIf="!loading"
+  header="Summary"
+  [(visible)]="summaryViewerDisplay"
+  [modal]="true"
+  [style]="{ width: '70%' }"
+>
+  <span class="p-float-label">
+    <textarea
+      id="float-input"
+      disabled
+      rows="5"
+      cols="30"
+      [(ngModel)]="selectedSummary"
+      pInputTextarea
+    ></textarea>
+    <label for="float-input">Summary</label>
+  </span>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-times"
+      (click)="summaryViewerDisplay = false"
+      label="Close"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  *ngIf="!loading"
+  header="Decision"
+  [(visible)]="reviewerDisplay"
+  [modal]="true"
+  [style]="{ width: '70%' }"
+>
+  <h5>Type:</h5>
+  <br />
+  <p-selectButton
+    [options]="preferenceOptions"
+    [disabled]="readOnly"
+    [(ngModel)]="selectedPaper.preference"
+    optionLabel="label"
+    optionValue="value"
+  ></p-selectButton>
+  <br /><br />
+  <h5>Status:</h5>
+  <br />
+  <p-selectButton
+    [options]="statusOptions"
+    [disabled]="readOnly"
+    [(ngModel)]="selectedPaper.status"
+    optionLabel="label"
+    optionValue="value"
+  ></p-selectButton>
+  <div *ngIf="selectedPaper.status === 'Transfered'">
+    <br />
+    <br />
+    <span class="p-float-label">
+      <p-dropdown
+        inputId="dropdown"
+        [autoDisplayFirst]="false"
+        [disabled]="readOnly"
+        [options]="this.specificFilter(kseaInfo.groups)"
+        [style]="{ width: '100%' }"
+        [(ngModel)]="selectedPaper.transferTo"
+        optionLabel="name"
+      ></p-dropdown>
+      <label for="float-input">Transfer to:</label>
+    </span>
+  </div>
+  <br />
+  <br />
+  <span class="p-float-label">
+    <textarea
+      id="float-input"
+      [disabled]="readOnly"
+      rows="5"
+      cols="30"
+      [(ngModel)]="selectedPaper.notes"
+      pInputTextarea
+    ></textarea>
+    <label for="float-input">Notes</label>
+  </span>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-times"
+      (click)="realodPage()"
+      label="Cancel"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      icon="pi pi-save"
+      (click)="confirmPaper()"
+      label="Confirm and Save"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-toast></p-toast>
+<p-confirmDialog
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  rejectButtonStyleClass="p-button-text"
+></p-confirmDialog>

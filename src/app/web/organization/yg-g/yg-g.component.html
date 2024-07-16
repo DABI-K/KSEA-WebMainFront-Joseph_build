@@ -1,0 +1,67 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-organization-header></app-organization-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>Organization</li>
+    <li>KSEA YG Groups</li>
+  </ul>
+  <div class="scon-center">
+    <h2 class="font-ksea">KSEA YG Groups</h2>
+    <h3>Korean-American Scientists and Engineers Association (KSEA)</h3>
+  </div>
+  <div class="scon-left pd10">
+    <div class="member-table">
+      <h4>KSEA YG Groups '23-'24</h4>
+      <table *ngIf="kseaInfo" class="table-yg">
+        <tr>
+          <th>YG Group Name</th>
+          <th>Host Chapter</th>
+          <th>Name(s)</th>
+          <th>Position</th>
+        </tr>
+        <tr *ngFor="let item of kseaInfo.ygGroups">
+          <td>{{ item.groupName }}</td>
+          <td>{{ item.hostChapter }}</td>
+          <td>{{ item.names }}</td>
+          <td>{{ item.position }}</td>
+        </tr>
+      </table>
+
+      <h4>KSEA YG NATIONAL BOARD '23-'24</h4>
+      <table *ngIf="kseaInfo" class="table-yg2">
+        <tr>
+          <th>Name</th>
+          <th>Position</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of kseaInfo.ygNationalBoard">
+          <td>{{ item.name }}</td>
+          <td>{{ item.position }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>KSEA National Board Director Assignments '23-'24</h4>
+      <table *ngIf="kseaInfo" class="table-yg3">
+        <tr>
+          <th>Name</th>
+          <th>Affiliation</th>
+        </tr>
+        <tr *ngFor="let item of kseaInfo.nationalBoardDirectorAssignments">
+          <td>{{ item.name }}</td>
+          <td>
+            <div *ngFor="let affiliation of item.affiliations">
+              {{ affiliation }}<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

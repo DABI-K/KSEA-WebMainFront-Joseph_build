@@ -1,0 +1,47 @@
+.president {
+  padding: 0 10vw;
+  padding-bottom: 10em;
+}
+.con-president-message {
+  margin-top: 4em;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 5rem;
+}
+.con-president-message img {
+  align-self: flex-start;
+}
+.con-president-message p:nth-child(1) {
+  padding-bottom: 3em;
+}
+.president-title {
+  font-size: 1.5rem;
+  padding-bottom: 2em;
+}
+@media screen and (max-width: 500px) {
+  .president {
+    width: 100vw;
+    padding: 0;
+    padding-top: 3rem;
+    h2 {
+      padding-left: 1rem;
+    }
+  }
+  .president-title {
+    font-size: 1rem;
+    padding-left: 1rem;
+  }
+  .con-president-message {
+    width: 100vw;
+    flex-direction: column;
+    div {
+      padding: 2em 1rem;
+    }
+  }
+  .con-president-message img {
+    width: 100vw;
+  }
+  .pr-sign img {
+    width: 12rem;
+  }
+}

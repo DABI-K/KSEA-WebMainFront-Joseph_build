@@ -1,0 +1,16 @@
+.alert-text > p {
+    font-size: 0.875rem;
+    font-weight: bold;
+    margin-top: -1.5em;
+    margin-bottom: 3em;
+    border-radius: 5px;
+    padding: 0.4em;
+}
+.alert-text .can-voting {
+    color: green;
+    background-color: beige;
+}
+.alert-text .not-voting {
+    color: #DA0000;
+    background-color: #FFE5E5;
+}

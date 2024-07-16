@@ -1,0 +1,323 @@
+<div class="wrap">
+  <div class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <p>2024 KSEA Election</p>
+    </div>
+    <div class="con-info" *ngIf="!votingDef">
+      loading....
+      <span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+      ></span>
+    </div>
+    <div class="con-info" *ngIf="votingDef">
+      <div class="con-contents" *ngIf="eligiblity">
+        <div *ngIf="alreadyVoted">
+          <h2>
+            Your vote has been submitted. You may close the window. If not,
+            please contact KSEA HQ.
+          </h2>
+          <button type="button" (click)="okay()" class="btn_blue">
+            Go Home
+          </button>
+        </div>
+
+        <div *ngIf="!alreadyVoted">
+          <div class="con-progress">
+            <!-- <h3>Progress</h3> -->
+            <div class="con-state">
+              <span class="current-p">{{ currentPosition + 1 }}</span
+              >/{{ votingDef.questionnaire.length + 1 }}
+            </div>
+          </div>
+
+          <div
+            *ngIf="
+              currentPosition > -1 &&
+              currentPosition < votingDef.questionnaire.length
+            "
+          >
+            <div *ngIf="findQuestion(currentPosition)">
+              <!--Joseph's addition start-->
+              <div *ngIf="currentPosition === 7">
+                <h2>
+                  {{ currentQuestion?.question }}:<br />
+                  Please make {{ currentQuestion?.numberOfChoices }} choice(s).
+                </h2>
+                <div class="con-item">
+                  <a
+                    href="https://ksea-files.s3.us-west-2.amazonaws.com/voting/2024/ProposedBylawsAmendmentExplanation_ver01162024.pdf"
+                    target="_blank"
+                  >
+                    <img
+                      src="https://ksea-files.s3.us-west-2.amazonaws.com/voting/2024/ProposedBylawsAmendmentExplanation_ver01162024.jpg"
+                      width="150"
+                      height="150"
+                      alt="Amendment file"
+                  /></a>
+                  <br />
+
+                  <p>
+                    <br />
+                    <br />
+                    <a
+                      href="https://ksea-files.s3.us-west-2.amazonaws.com/voting/2024/ProposedBylawsAmendmentExplanation_ver01162024.pdf"
+                      target="_blank"
+                    >
+                      View Details
+                    </a>
+                  </p>
+                  <br />
+                </div>
+                <table class="table-voting">
+                  <thead>
+                    <th *ngFor="let item of currentQuestion?.listAlternatives">
+                      <img
+                        *ngIf="isSelected(item) && item.code !== 'appl'"
+                        (click)="unselect(item)"
+                        src="assets/images/voting/checked.png"
+                        width="30"
+                        height="30"
+                      />
+                      <img
+                        *ngIf="!isSelected(item) && item.code !== 'appl'"
+                        (click)="select(item)"
+                        src="assets/images/voting/unchecked.png"
+                        width="30"
+                        height="30"
+                      />
+                    </th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td
+                        *ngFor="let item of currentQuestion?.listAlternatives"
+                      >
+                        <p class="item-desc">
+                          {{ item.desc }}
+                        </p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--Joseph's addition done-->
+
+              <div *ngIf="currentPosition != 7">
+                <h2>
+                  {{ currentQuestion?.question }}:<br />
+                  Please make {{ currentQuestion?.numberOfChoices }} choice(s).
+                </h2>
+                <ul class="mobile-voting">
+                  <li *ngFor="let item of currentQuestion?.listAlternatives">
+                    <div>
+                      <img
+                        *ngIf="isSelected(item) && item.code !== 'appl'"
+                        (click)="unselect(item)"
+                        src="assets/images/voting/checked.png"
+                        width="30"
+                        height="30"
+                      />
+                      <img
+                        *ngIf="!isSelected(item) && item.code !== 'appl'"
+                        (click)="select(item)"
+                        src="assets/images/voting/unchecked.png"
+                        width="30"
+                        height="30"
+                      />
+                    </div>
+                    <div>
+                      <div class="con-item">
+                        <a
+                          href="{{ alternativeImgUrl + item.code + '.pdf' }}"
+                          target="_blank"
+                        >
+                          <img
+                            src="{{ alternativeImgUrl + item.code + '.jpg' }}"
+                            width="150"
+                            height="150"
+                            alt="{{ item.desc }} image"
+                        /></a>
+                      </div>
+                      <p class="item-desc">
+                        {{ item.desc }}
+                      </p>
+                      <div *ngIf="item.videoUrl; else noUrl">
+                        <p>
+                          <br />
+                          <a
+                            *ngIf="item.code !== 'appl'"
+                            href="{{ alternativeImgUrl + item.code + '.pdf' }}"
+                            target="_blank"
+                          >
+                            Profile
+                          </a>
+                          <br />
+                          <a href="{{ item.videoUrl }}" target="_blank">
+                            <img
+                              src="assets/images/sns_youtube2.jpg"
+                              width="35"
+                              height="35"
+                              alt="Video Link"
+                            />
+                          </a>
+                        </p>
+                      </div>
+                      <ng-template #noUrl>
+                        <br />
+                        <a
+                          *ngIf="item.code !== 'appl'"
+                          href="{{ alternativeImgUrl + item.code + '.pdf' }}"
+                          target="_blank"
+                        >
+                          Profile
+                        </a>
+                      </ng-template>
+                    </div>
+                  </li>
+                </ul>
+                <table class="table-voting">
+                  <thead>
+                    <th *ngFor="let item of currentQuestion?.listAlternatives">
+                      <img
+                        *ngIf="isSelected(item) && item.code !== 'appl'"
+                        (click)="unselect(item)"
+                        src="assets/images/voting/checked.png"
+                        width="30"
+                        height="30"
+                      />
+                      <img
+                        *ngIf="!isSelected(item) && item.code !== 'appl'"
+                        (click)="select(item)"
+                        src="assets/images/voting/unchecked.png"
+                        width="30"
+                        height="30"
+                      />
+                    </th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td
+                        *ngFor="let item of currentQuestion?.listAlternatives"
+                      >
+                        <div class="con-item">
+                          <a
+                            href="{{ alternativeImgUrl + item.code + '.pdf' }}"
+                            target="_blank"
+                          >
+                            <img
+                              src="{{ alternativeImgUrl + item.code + '.jpg' }}"
+                              width="150"
+                              height="150"
+                              alt="{{ item.desc }} image"
+                          /></a>
+                        </div>
+                        <p class="item-desc">
+                          {{ item.desc }}
+                        </p>
+                        <div *ngIf="item.videoUrl; else noUrl">
+                          <p>
+                            <br />
+                            <a
+                              *ngIf="item.code !== 'appl'"
+                              href="{{
+                                alternativeImgUrl + item.code + '.pdf'
+                              }}"
+                              target="_blank"
+                            >
+                              Profile
+                            </a>
+                            <br />
+                            <a href="{{ item.videoUrl }}" target="_blank">
+                              <img
+                                src="assets/images/sns_youtube2.jpg"
+                                width="35"
+                                height="35"
+                                alt="Video Link"
+                              />
+                            </a>
+                          </p>
+                        </div>
+                        <ng-template #noUrl>
+                          <br />
+                          <a
+                            *ngIf="item.code !== 'appl'"
+                            href="{{ alternativeImgUrl + item.code + '.pdf' }}"
+                            target="_blank"
+                          >
+                            Profile
+                          </a>
+                        </ng-template>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="currentPosition === votingDef.questionnaire.length">
+            <table class="table-result">
+              <thead>
+                <th>Question</th>
+                <th>Your Selection(s)</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of votingDef.questionnaire">
+                  <td>{{ item.question }}</td>
+                  <td>
+                    <li *ngFor="let answer of result[item.index]">
+                      {{ answer.desc }}
+                    </li>
+                    <li
+                      *ngIf="
+                        !result[item.index] || result[item.index].length === 0
+                      "
+                    >
+                      <p style="color: red; font-weight: bold">
+                        Not selected. Please check!
+                      </p>
+                    </li>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="g-button">
+            <button
+              type="button"
+              (click)="currentPosition = currentPosition - 1"
+              class="btn_gray"
+              [disabled]="currentPosition < 1"
+            >
+              Back
+            </button>
+
+            <button
+              type="button"
+              (click)="currentPosition = currentPosition + 1"
+              class="btn_blue"
+              *ngIf="currentPosition !== votingDef.questionnaire.length"
+            >
+              Next
+            </button>
+
+            <button
+              type="button"
+              (click)="submit()"
+              class="btn_blue"
+              *ngIf="currentPosition === votingDef.questionnaire.length"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!eligiblity">
+        <h2>You are not eligible for 2024 KSEA voting.</h2>
+        <button type="button" (click)="okay()" class="btn_blue">Go Home</button>
+      </div>
+    </div>
+  </div>
+</div>

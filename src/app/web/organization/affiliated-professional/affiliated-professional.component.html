@@ -1,0 +1,58 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-organization-header></app-organization-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>Organization</li>
+    <li>Affiliated Professional Societies</li>
+  </ul>
+  <div class="scon-center">
+    <h2 class="font-ksea">Affiliated Professional Societies</h2>
+    <h3>Korean-American Scientists and Engineers Association (KSEA)</h3>
+  </div>
+  <div class="scon-left pd10">
+    <div class="info-text">
+      <h4>
+        To be affiliated with the KSEA and to seek KSEA support for a project, a
+        society must have the following:
+      </h4>
+      <ul>
+        <li>Bylaws</li>
+        <li>Elected/appointed officers and at least 30 members</li>
+      </ul>
+      <h4>Project Support from KSEA:</h4>
+      <ul>
+        <li>Proposal Guidelines for Chapter/Professional Societies Support</li>
+      </ul>
+    </div>
+    <div *ngIf="kseaInfo" class="member-table">
+      <table class="table-affiliated">
+        <tr>
+          <th>#</th>
+          <th>APS Name</th>
+          <th>President</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of kseaInfo.aps">
+          <td>{{ item.index }}</td>
+          <td>
+            {{ item.name }} ({{ item.code }})
+            <div *ngIf="item.url && item.url !== ''">
+              <br />
+              <a href="{{ item.url }}" target="_blank">{{ item.url }}</a>
+            </div>
+          </td>
+          <td>{{ item.president }}</td>
+          <td>
+            {{ item.affiliation }}<br />
+            <div *ngIf="item.phone && item.phone !== ''">
+              (P){{ item.phone }}<br />
+            </div>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

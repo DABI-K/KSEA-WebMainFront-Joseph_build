@@ -1,0 +1,42 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-about-header></app-about-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>About</li>
+    <li>Handbook/Brochure/Flyer/History Book</li>
+  </ul>
+  <div class="scon-center">
+    <h2 class="font-ksea">Handbook/Brochure/Flyer<br>History Book</h2>
+    <h3>Korean-American Scientists and Engineers Association (KSEA)</h3>
+    <div class="con-img">
+      <img src="assets/images/img_handbook.png" alt="handbook" />
+    </div>
+
+    <button class="btn_blue">
+      <!-- <a href="{{ filesURL }}KSEA Handbook_011724.pdf" target="_blank" download="handbook"> -->
+      <a href="https://ksea-files.s3.us-west-2.amazonaws.com/files/handbookpage/KSEA+Handbook_051124.pdf"
+       target="_blank" download="handbook">
+        Handbook</a>
+    </button>
+    &nbsp; 
+    <button class="btn_blue">
+      <a href="https://ksea-files.s3.us-west-2.amazonaws.com/files/handbookpage/KSEA+Brochure_52nd-final.pdf" 
+      target="_blank" download="brochure">
+        Brochure</a>
+    </button>
+    &nbsp; 
+    <button class="btn_blue">
+      <a href="https://ksea-files.s3.us-west-2.amazonaws.com/files/handbookpage/LRPC+flyer_ver.5_0506.pdf" 
+      target="_blank" download="History Book">
+        Flyer</a>
+    </button>
+    &nbsp; 
+    <button class="btn_blue">
+      <a href="https://ksea-files.s3.us-west-2.amazonaws.com/files/HistoryBook.pdf" 
+      target="_blank" download="History Book">
+        History Book</a>
+    </button>
+  </div>
+  <app-footer></app-footer>
+</div>

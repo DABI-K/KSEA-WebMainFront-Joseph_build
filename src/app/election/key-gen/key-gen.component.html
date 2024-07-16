@@ -1,0 +1,27 @@
+<div class="wrap">
+  <div class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <p>2024 KSEA Election</p>
+
+      <div style="color: black" class="con-info">
+        <h2 style="color: black">Please provide 4 emails for Key holders</h2>
+        1st:
+        <input type="string" id="first" [(ngModel)]="firstKeyHolderEmail" />
+        <br />
+        2nd:
+        <input type="string" id="second" [(ngModel)]="secondKeyHolderEmail" />
+        <br />
+        3rd:
+        <input type="string" id="third" [(ngModel)]="thirdKeyHolderEmail" />
+        <br />
+        4th:
+        <input type="string" id="forth" [(ngModel)]="forthKeyHolderEmail" />
+        <br />
+        <button type="button" (click)="submit()" class="btn_blue">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

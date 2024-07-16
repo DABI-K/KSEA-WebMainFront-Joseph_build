@@ -1,0 +1,92 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-organization-header></app-organization-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>Organization</li>
+    <li>Leadership</li>
+  </ul>
+  <div class="scon-center organization">
+    <h2 class="font-ksea">Leadership</h2>
+    <h3>Korean-American Scientists and Engineers Association (KSEA)</h3>
+    <div class="con-list-members">
+      <div class="list-title">Executive Committee / Director Committee</div>
+      <ul *ngIf="kseaInfo" class="list-member">
+        <li
+          *ngFor="
+            let item of kseaInfo.executiveCommitteesAndDirectorsCommittees
+          "
+        >
+          <img src="https://ksea-files.s3.us-west-2.amazonaws.com/leaders/ecdc{{ item.index }}.png" alt="member image" width="144" height="144"/>
+          <!--ORIGINAL CODE: <img src=" {{ imgURL }}ecdc{{ item. index }}. png" alt="member image" />-->
+          <dl>
+            <dt>{{ item.name }}</dt>
+            <dd *ngIf="item.acronym">
+              {{ item.position }} ({{ item.acronym }})
+            </dd>
+            <dd *ngIf="!item.acronym">
+              {{ item.position }}
+            </dd>
+            <dd>
+              {{ item.affiliation }}
+            </dd>
+            <dd>
+              <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+            </dd>
+          </dl>
+        </li>
+      </ul>
+      <div class="list-title">Auditors</div>
+      <ul *ngIf="kseaInfo" class="list-member">
+        <li *ngFor="let item of kseaInfo.auditors">
+          <img
+            src="{{ imgURL }}auditor{{ item.index }}.png"
+            alt="member image" width="144" height="144"
+          />
+          <dl>
+            <dt>{{ item.name }}</dt>
+            <dd>({{ item.term }})</dd>
+            <dd>
+              {{ item.affiliation }}
+            </dd>
+            <dd>
+              <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+            </dd>
+          </dl>
+        </li>
+      </ul>
+      <div class="list-title">President’s Advisor</div>
+      <ul *ngIf="kseaInfo" class="list-member">
+        <li *ngFor="let item of kseaInfo.PresidentAdvisors">
+          <img
+            src="{{ imgURL }}presidentAdvisor{{ item.index }}.png"
+            alt="member image" width="144" height="144"
+          />
+          <dl>
+            <dt>{{ item.name }}</dt>
+            <dd>{{ item.position }}</dd>
+          </dl>
+        </li>
+      </ul>
+      <div class="list-title">KSEA Legal Advisor</div>
+      <ul *ngIf="kseaInfo" class="list-member">
+        <li *ngFor="let item of kseaInfo.legalAdvisors">
+          <img
+            src="{{ imgURL }}legalAdvisor{{ item.index }}.png"
+            alt="member image" width="144" height="144"
+          />
+          <dl>
+            <dt>{{ item.name }}</dt>
+            <dd>{{ item.position }}</dd>
+            <dd>{{ item.affiliation }}</dd>
+            <dd>
+              <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+            </dd>
+          </dl>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

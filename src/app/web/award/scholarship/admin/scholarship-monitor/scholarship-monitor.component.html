@@ -1,0 +1,1045 @@
+<div class="wrap" *ngIf="!loading">
+  <div class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <span>KSEA Scholarship 2024</span>
+      <button
+        pButton
+        type="button"
+        label="Download CSV"
+        icon="pi pi-save"
+        class="p-button-info p-button-sm"
+        (click)="downloadCSV()"
+      ></button>
+    </div>
+  </div>
+  <div class="wrap-form">
+    <p-accordion>
+      <p-accordionTab header="Postdoctor scholarship" [selected]="true">
+        <p-table
+          #DT
+          *ngIf="postDocs && postDocs.length > 0"
+          [value]="postDocs"
+          [tableStyle]="{ 'min-width': '50rem' }"
+          dataKey="id"
+          [showCurrentPageReport]="true"
+          [rows]="10"
+          [rowsPerPageOptions]="[10, 25, 50, 100]"
+          [paginator]="true"
+          [loading]="loading"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="id">
+                Username <p-sortIcon field="id"></p-sortIcon>
+              </th>
+              <th pSortableColumn="firstName">
+                First Name <p-sortIcon field="firstName"></p-sortIcon>
+              </th>
+              <th pSortableColumn="lastName">
+                Last Name <p-sortIcon field="lastName"></p-sortIcon>
+              </th>
+              <th pSortableColumn="phoneNumber">
+                Phone Number <p-sortIcon field="phoneNumber"></p-sortIcon>
+              </th>
+              <th pSortableColumn="address">
+                Address <p-sortIcon field="address"></p-sortIcon>
+              </th>
+              <th pSortableColumn="email">
+                Email <p-sortIcon field="email"></p-sortIcon>
+              </th>
+              <th>Year in school</th>
+              <th>Summary</th>
+              <th>CV</th>
+              <th>Evidence of doctoral degree</th>
+              <th>Recommenders</th>
+              <th *ngIf="!readonly">Status</th>
+              <th *ngIf="readonly">Evaluation</th>
+            </tr>
+            <tr>
+              <th>
+                <p-columnFilter type="text" field="id"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="firstName"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="lastName"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter
+                  type="text"
+                  field="phoneNumber"
+                ></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="address"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="email"></p-columnFilter>
+              </th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-application>
+            <tr>
+              <td>{{ application.id }}</td>
+              <td>
+                {{ application.firstName }}
+              </td>
+              <td>
+                {{ application.lastName }}
+              </td>
+              <td>
+                <div *ngIf="application.phoneNumber">
+                  {{ application.phoneNumber }}
+                  <span
+                    *ngIf="!readonly"
+                    class="pi pi-pencil"
+                    (click)="showEditPhoneNumber(application)"
+                  ></span>
+                </div>
+                <div *ngIf="!application.phoneNumber">
+                  <span
+                    *ngIf="!readonly"
+                    class="pi pi-pencil"
+                    (click)="showEditPhoneNumber(application)"
+                  ></span>
+                </div>
+              </td>
+              <td>
+                <div *ngIf="application.address">
+                  {{ application.address }}
+                  <span
+                    *ngIf="!readonly"
+                    class="pi pi-pencil"
+                    (click)="showEditAddressNumber(application)"
+                  ></span>
+                </div>
+                <div *ngIf="!application.address">
+                  <span
+                    *ngIf="!readonly"
+                    class="pi pi-pencil"
+                    (click)="showEditAddressNumber(application)"
+                  ></span>
+                </div>
+              </td>
+              <td>
+                {{ application.email }}
+              </td>
+              <td>
+                {{ application.answers[1] }}
+              </td>
+              <td>
+                <span style="color: blue" (click)="viewSummary(application)"
+                  >View summary</span
+                >
+              </td>
+              <td>
+                <a
+                  style="color: blue"
+                  href="{{ application.cvURL }}"
+                  target="_blank"
+                  >CV link</a
+                >
+              </td>
+              <td>
+                <a
+                  style="color: blue"
+                  href="{{ application.doctorURL }}"
+                  target="_blank"
+                  >Evidence link</a
+                >
+              </td>
+              <td>
+                <span
+                  style="color: blue"
+                  (click)="viewRecommenders(application)"
+                  >View recommenders</span
+                >
+              </td>
+              <td>
+                <div *ngIf="!readonly">
+                  <span
+                    *ngIf="application.status"
+                    style="color: blue"
+                    (click)="viewAction(application)"
+                    >{{ application.status }}</span
+                  >
+                  <span
+                    *ngIf="!application.status"
+                    style="color: blue"
+                    (click)="viewAction(application)"
+                    >Submitted</span
+                  >
+                </div>
+                <div *ngIf="readonly">
+                  <div *ngIf="application.evaluations">
+                    {{ application.evaluations[reviewerNum] }}
+                  </div>
+                  <span
+                    class="pi pi-pencil"
+                    (click)="showEvaluation(application)"
+                  ></span>
+                  <span
+                    *ngIf="
+                      application.evaluations &&
+                      application.evaluations[reviewerNum]
+                    "
+                    class="pi pi-times"
+                    (click)="removeScope(application)"
+                  ></span>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-accordionTab>
+      <p-accordionTab header="Graduate scholarship">
+        <p-table
+          #DT
+          *ngIf="gradDocs && gradDocs.length > 0"
+          [value]="gradDocs"
+          [tableStyle]="{ 'min-width': '50rem' }"
+          dataKey="id"
+          [showCurrentPageReport]="true"
+          [rows]="10"
+          [rowsPerPageOptions]="[10, 25, 50, 100]"
+          [paginator]="true"
+          [loading]="loading"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="id">
+                Username <p-sortIcon field="id"></p-sortIcon>
+              </th>
+              <th pSortableColumn="firstName">
+                First Name <p-sortIcon field="firstName"></p-sortIcon>
+              </th>
+              <th pSortableColumn="lastName">
+                Last Name <p-sortIcon field="lastName"></p-sortIcon>
+              </th>
+              <th pSortableColumn="phoneNumber">
+                Phone Number <p-sortIcon field="phoneNumber"></p-sortIcon>
+              </th>
+              <th pSortableColumn="address">
+                Address <p-sortIcon field="address"></p-sortIcon>
+              </th>
+              <th pSortableColumn="email">
+                Email <p-sortIcon field="email"></p-sortIcon>
+              </th>
+              <th>Year in school</th>
+              <th>Summary</th>
+              <th>CV</th>
+              <th>GPA Info</th>
+              <th>Recommenders</th>
+              <th *ngIf="!readonly">Status</th>
+              <th>Evaluation</th>
+            </tr>
+            <tr>
+              <th>
+                <p-columnFilter type="text" field="id"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="firstName"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="lastName"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter
+                  type="text"
+                  field="phoneNumber"
+                ></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="address"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="email"></p-columnFilter>
+              </th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-application>
+            <tr>
+              <td>{{ application.id }}</td>
+              <td>
+                {{ application.firstName }}
+              </td>
+              <td>
+                {{ application.lastName }}
+              </td>
+              <td>
+                <div *ngIf="application.phoneNumber">
+                  {{ application.phoneNumber }}
+                  <span
+                    *ngIf="!readonly"
+                    class="pi pi-pencil"
+                    (click)="showEditPhoneNumber(application)"
+                  ></span>
+                </div>
+                <div *ngIf="!application.phoneNumber">
+                  <span
+                    *ngIf="!readonly"
+                    class="pi pi-pencil"
+                    (click)="showEditPhoneNumber(application)"
+                  ></span>
+                </div>
+              </td>
+              <td>
+                <div *ngIf="application.address">
+                  {{ application.address }}
+                  <span
+                    *ngIf="!readonly"
+                    class="pi pi-pencil"
+                    (click)="showEditAddressNumber(application)"
+                  ></span>
+                </div>
+                <div *ngIf="!application.address">
+                  <span
+                    *ngIf="!readonly"
+                    class="pi pi-pencil"
+                    (click)="showEditAddressNumber(application)"
+                  ></span>
+                </div>
+              </td>
+              <td>
+                {{ application.email }}
+              </td>
+              <td>
+                {{ application.answers[1] }}
+              </td>
+              <td>
+                <span style="color: blue" (click)="viewSummary(application)"
+                  >View summary</span
+                >
+              </td>
+              <td>
+                <a
+                  style="color: blue"
+                  href="{{ application.cvURL }}"
+                  target="_blank"
+                  >CV link</a
+                >
+              </td>
+              <td>
+                <span style="color: blue" (click)="viewGPAInfo(application)"
+                  >View GPA Info</span
+                >
+              </td>
+              <td>
+                <span
+                  style="color: blue"
+                  (click)="viewRecommenders(application)"
+                  >View recommenders</span
+                >
+              </td>
+              <td>
+                <div *ngIf="!readonly">
+                  <span
+                    *ngIf="application.status"
+                    style="color: blue"
+                    (click)="viewAction(application)"
+                    >{{ application.status }}</span
+                  >
+                  <span
+                    *ngIf="!application.status"
+                    style="color: blue"
+                    (click)="viewAction(application)"
+                    >Submitted</span
+                  >
+                </div>
+                <div *ngIf="readonly">
+                  <div *ngIf="application.evaluations">
+                    {{ application.evaluations[reviewerNum] }}
+                  </div>
+                  <span
+                    class="pi pi-pencil"
+                    (click)="showEvaluation(application)"
+                  ></span>
+                  <span
+                    *ngIf="
+                      application.evaluations &&
+                      application.evaluations[reviewerNum]
+                    "
+                    class="pi pi-times"
+                    (click)="removeScope(application)"
+                  ></span>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-accordionTab>
+      <p-accordionTab header="Undergraduate scholarship">
+        <p-table
+          #DT
+          *ngIf="underDocs && underDocs.length > 0"
+          [value]="underDocs"
+          [tableStyle]="{ 'min-width': '50rem' }"
+          dataKey="id"
+          [showCurrentPageReport]="true"
+          [rows]="10"
+          [rowsPerPageOptions]="[10, 25, 50, 100]"
+          [paginator]="true"
+          [loading]="loading"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="id">
+                Username <p-sortIcon field="id"></p-sortIcon>
+              </th>
+              <th pSortableColumn="firstName">
+                First Name <p-sortIcon field="firstName"></p-sortIcon>
+              </th>
+              <th pSortableColumn="lastName">
+                Last Name <p-sortIcon field="lastName"></p-sortIcon>
+              </th>
+              <th pSortableColumn="phoneNumber">
+                Phone Number <p-sortIcon field="phoneNumber"></p-sortIcon>
+              </th>
+              <th pSortableColumn="address">
+                Address <p-sortIcon field="address"></p-sortIcon>
+              </th>
+              <th pSortableColumn="email">
+                Email <p-sortIcon field="email"></p-sortIcon>
+              </th>
+              <th>Year in school</th>
+              <th>Summary</th>
+              <th>CV</th>
+              <th>GPA Info</th>
+              <th>Recommenders</th>
+              <th *ngIf="!readonly">Status</th>
+              <th *ngIf="readonly">Evaluation</th>
+            </tr>
+            <tr>
+              <th>
+                <p-columnFilter type="text" field="id"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="firstName"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="lastName"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter
+                  type="text"
+                  field="phoneNumber"
+                ></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="address"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="email"></p-columnFilter>
+              </th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-application>
+            <tr>
+              <td>{{ application.id }}</td>
+              <td>
+                {{ application.firstName }}
+              </td>
+              <td>
+                {{ application.lastName }}
+              </td>
+              <td>
+                <div *ngIf="application.phoneNumber">
+                  {{ application.phoneNumber }}
+                  <span
+                    *ngIf="!readonly"
+                    class="pi pi-pencil"
+                    (click)="showEditPhoneNumber(application)"
+                  ></span>
+                </div>
+                <div *ngIf="!application.phoneNumber">
+                  <span
+                    *ngIf="!readonly"
+                    class="pi pi-pencil"
+                    (click)="showEditPhoneNumber(application)"
+                  ></span>
+                </div>
+              </td>
+              <td>
+                <div *ngIf="application.address">
+                  {{ application.address }}
+                  <span
+                    *ngIf="!readonly"
+                    class="pi pi-pencil"
+                    (click)="showEditAddressNumber(application)"
+                  ></span>
+                </div>
+                <div *ngIf="!application.address">
+                  <span
+                    *ngIf="!readonly"
+                    class="pi pi-pencil"
+                    (click)="showEditAddressNumber(application)"
+                  ></span>
+                </div>
+              </td>
+              <td>
+                {{ application.email }}
+              </td>
+              <td>
+                {{ application.answers[1] }}
+              </td>
+              <td>
+                <span style="color: blue" (click)="viewSummary(application)"
+                  >View summary</span
+                >
+              </td>
+              <td>
+                <a
+                  style="color: blue"
+                  href="{{ application.cvURL }}"
+                  target="_blank"
+                  >CV link</a
+                >
+              </td>
+              <td>
+                <span style="color: blue" (click)="viewGPAInfo(application)"
+                  >View GPA Info</span
+                >
+              </td>
+              <td>
+                <span
+                  style="color: blue"
+                  (click)="viewRecommenders(application)"
+                  >View recommenders</span
+                >
+              </td>
+              <td>
+                <div *ngIf="!readonly">
+                  <span
+                    *ngIf="application.status"
+                    style="color: blue"
+                    (click)="viewAction(application)"
+                    >{{ application.status }}</span
+                  >
+                  <span
+                    *ngIf="!application.status"
+                    style="color: blue"
+                    (click)="viewAction(application)"
+                    >Submitted</span
+                  >
+                </div>
+                <div *ngIf="readonly">
+                  <div *ngIf="application.evaluations">
+                    {{ application.evaluations[reviewerNum] }}
+                  </div>
+                  <span
+                    class="pi pi-pencil"
+                    (click)="showEvaluation(application)"
+                  ></span>
+                  <span
+                    *ngIf="
+                      application.evaluations &&
+                      application.evaluations[reviewerNum]
+                    "
+                    class="pi pi-times"
+                    (click)="removeScope(application)"
+                  ></span>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+</div>
+
+<p-dialog
+  *ngIf="!loading"
+  header="Phone Number"
+  [(visible)]="phoneEditDisaplay"
+  [modal]="true"
+  [style]="{ width: '70%' }"
+>
+  <span class="p-float-label">
+    <p-inputMask
+      [disabled]="readonly"
+      mask="(999) 999-9999"
+      [style]="{ width: '100%' }"
+      [(ngModel)]="selectedApplication.phoneNumber"
+      placeholder="(999) 999-9999"
+    ></p-inputMask>
+    <label for="float-input">Phone Number</label>
+  </span>
+  <ng-template pTemplate="footer">
+    <p-button
+      *ngIf="readonly"
+      icon="pi pi-times"
+      (click)="closeEditPhoneNumber()"
+      label="Close"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readonly"
+      icon="pi pi-save"
+      (click)="closeEditPhoneNumber()"
+      label="Save & Close"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  *ngIf="!loading"
+  header="Address"
+  [(visible)]="addressEditDisaplay"
+  [modal]="true"
+  [style]="{ width: '70%' }"
+>
+  <span class="p-float-label">
+    <input
+      [disabled]="readonly"
+      id="float-input"
+      type="text"
+      pInputText
+      [style]="{ width: '100%' }"
+      [(ngModel)]="selectedApplication.address"
+    />
+    <label for="float-input">Address</label>
+  </span>
+  <ng-template pTemplate="footer">
+    <p-button
+      *ngIf="readonly"
+      icon="pi pi-times"
+      (click)="closeEditAddressNumber()"
+      label="Close"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readonly"
+      icon="pi pi-save"
+      (click)="closeEditAddressNumber()"
+      label="Save & Close"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  *ngIf="!loading && selectedApplication.answers"
+  header="Summary"
+  [(visible)]="summaryViewerDisplay"
+  [modal]="true"
+  [style]="{ width: '70%' }"
+>
+  <span class="p-float-label">
+    <textarea
+      [disabled]="readonly"
+      id="float-input"
+      rows="10"
+      cols="30"
+      [(ngModel)]="selectedApplication.answers[2]"
+      pInputTextarea
+    ></textarea>
+    <label for="float-input">Summary</label>
+  </span>
+  <p>Word Count: {{ wordCount(selectedApplication.answers[2]) }}</p>
+  <ng-template pTemplate="footer">
+    <p-button
+      *ngIf="readonly"
+      icon="pi pi-times"
+      (click)="closeSummary()"
+      label="Close"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readonly"
+      icon="pi pi-save"
+      (click)="closeSummary()"
+      label="Save & Close"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  *ngIf="!loading"
+  header="Recommenders"
+  [(visible)]="recommendersViewerDisplay"
+  [modal]="true"
+  [style]="{ width: '70%' }"
+>
+  <p-table
+    #REC
+    *ngIf="
+      selectedApplication &&
+      selectedApplication.recommenders &&
+      selectedApplication.recommenders.length > 0
+    "
+    [value]="selectedApplication.recommenders"
+    [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Title</th>
+        <th>Name</th>
+        <th>Affiliation</th>
+        <th>email</th>
+        <th>File</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowIndex="rowIndex" let-rec>
+      <tr>
+        <td>{{ rec.title }}</td>
+        <td>
+          {{ rec.name }}
+        </td>
+        <td>
+          {{ rec.affiliation }}
+        </td>
+        <td>
+          {{ rec.email }}
+        </td>
+        <td>
+          <div *ngIf="!readonly" class="filebox">
+            <label for="file_{{ rowIndex }}"
+              ><span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+                *ngIf="rec.recFileloading"
+              ></span>
+              Upload Recommender letter</label
+            >
+            <input
+              type="file"
+              accept="application/pdf"
+              (change)="addRecFile($event, rec)"
+              id="file_{{ rowIndex }}"
+            />
+          </div>
+          <div *ngIf="rec.fileURL" class="file-link">
+            <a href="{{ rec.fileURL }}" target="_blank"
+              >View Recommender letter</a
+            >
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      *ngIf="readonly"
+      icon="pi pi-times"
+      (click)="recommendersViewerDisplay = false"
+      label="Close"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readonly"
+      icon="pi pi-save"
+      (click)="recommendersViewerDisplay = false"
+      label="Save & Close"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  *ngIf="!loading"
+  header="Action"
+  [(visible)]="actionDisplay"
+  [modal]="true"
+  [style]="{ width: '70%' }"
+>
+  <p-selectButton
+    [disabled]="readonly"
+    [options]="statusOptions"
+    [(ngModel)]="selectedApplication.status"
+    optionLabel="label"
+    optionValue="value"
+  ></p-selectButton>
+  <br /><br />
+  <span class="p-float-label">
+    <textarea
+      [disabled]="readonly"
+      id="float-input"
+      rows="10"
+      cols="30"
+      [(ngModel)]="selectedApplication.statusNotes"
+      pInputTextarea
+    ></textarea>
+    <label for="float-input">Status Notes</label>
+  </span>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-times"
+      (click)="cancelAction()"
+      label="Cancel"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readonly"
+      icon="pi pi-save"
+      (click)="saveAndSendEmail()"
+      label="Save & Close"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  *ngIf="!loading"
+  header="GPA Info"
+  [(visible)]="gpaInfoViewerDisplay"
+  [modal]="true"
+  [style]="{ width: '70%' }"
+>
+  <p-table
+    #REC
+    *ngIf="
+      selectedApplication &&
+      selectedApplication.grades &&
+      selectedApplication.grades.length > 0
+    "
+    [value]="selectedApplication.grades"
+    [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>School Name</th>
+        <th>Major</th>
+        <th>Graduation Date</th>
+        <th>Degree</th>
+        <th>School Address</th>
+        <th>Average GPA</th>
+        <th>Transcript from Applicant</th>
+        <th>Transcript (Offical)</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowIndex="rowIndex" let-gra>
+      <tr>
+        <td>{{ gra.schoolName }}</td>
+        <td>
+          <input
+            [disabled]="readonly"
+            style="width: 90%"
+            type="text"
+            [(ngModel)]="gra.major"
+            pInputText
+          />
+        </td>
+        <td>
+          <input
+            [disabled]="readonly"
+            style="width: 90%"
+            type="text"
+            [(ngModel)]="gra.graudationYear"
+            pInputText
+          />
+        </td>
+        <td>
+          <p-dropdown
+            [disabled]="readonly"
+            [options]="degrees"
+            [(ngModel)]="gra.degree"
+            [editable]="true"
+            optionLabel="name"
+            optionValue="value"
+          ></p-dropdown>
+        </td>
+        <td>
+          <input
+            [disabled]="readonly"
+            style="width: 90%"
+            type="text"
+            [(ngModel)]="gra.schoolAddress"
+            pInputText
+          />
+        </td>
+        <td>
+          {{ gra.averageGPA }}
+        </td>
+        <td>
+          <a style="color: blue" href="{{ gra.transcript }}" target="_blank"
+            >Link</a
+          >
+        </td>
+        <td>
+          <div *ngIf="!readonly" class="filebox">
+            <label for="file_{{ rowIndex }}"
+              ><span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+                *ngIf="gra.transcriptFileloading"
+              ></span>
+              Upload Offical Transcript</label
+            >
+            <input
+              type="file"
+              accept="application/pdf"
+              (change)="addTranscriptFile($event, gra)"
+              id="file_{{ rowIndex }}"
+            />
+          </div>
+          <div *ngIf="gra.officialTranscript" class="file-link">
+            <a href="{{ gra.officialTranscript }}" target="_blank">Link</a>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      *ngIf="readonly"
+      icon="pi pi-times"
+      (click)="gpaEditClose()"
+      label="Close"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readonly"
+      icon="pi pi-save"
+      (click)="gpaEditClose()"
+      label="Save & Close"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-toast></p-toast>
+<p-confirmDialog
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  rejectButtonStyleClass="p-button-text"
+></p-confirmDialog>
+<!-- 기존코드 이발류에이션 평점만 -->
+<!-- <p-dialog
+  *ngIf="!loading && selectedApplication.evaluations"
+  header="Evaluation"
+  [(visible)]="evaluationDisaplay"
+  [modal]="true"
+  [style]="{ width: '70%' }"
+>
+  <span class="p-float-label">
+    <input
+      id="evaluation"
+      type="number"
+      pInputText
+      [style]="{ width: '100%' }"
+      [(ngModel)]="selectedApplication.evaluations[reviewerNum]"
+    />
+    <label for="float-input">Score (range: 1-100 points)</label>
+  </span>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-save"
+      (click)="closeEvaluation()"
+      label="Save & Close"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog> -->
+<p-dialog
+  *ngIf="!loading && selectedApplication.evaluations"
+  header="Evaluation"
+  [(visible)]="evaluationDisaplay"
+  [modal]="true"
+  [style]="{ width: '70%' }"
+>
+  <div class="p-grid">
+    <div class="p-col-12 p-md-6">
+      <span class="p-float-label">
+        <input
+          id="academicPerformance"
+          type="number"
+          pInputText
+          [style]="{ width: '100%' }"
+          [(ngModel)]="selectedApplication.evaluations[reviewerNum].academicPerformance"
+        />
+        <label for="academicPerformance">Academic Performance (1-100 points)</label>
+      </span>
+    </div>
+    <div class="p-col-12 p-md-6">
+      <span class="p-float-label">
+        <input
+          id="curriculumVitae"
+          type="number"
+          pInputText
+          [style]="{ width: '100%' }"
+          [(ngModel)]="selectedApplication.evaluations[reviewerNum].curriculumVitae"
+        />
+        <label for="curriculumVitae">Curriculum Vitae or Resume (1-100 points)</label>
+      </span>
+    </div>
+    <div class="p-col-12 p-md-6">
+      <span class="p-float-label">
+        <input
+          id="recommendationLetters"
+          type="number"
+          pInputText
+          [style]="{ width: '100%' }"
+          [(ngModel)]="selectedApplication.evaluations[reviewerNum].recommendationLetters"
+        />
+        <label for="recommendationLetters">Recommendation Letters (1-100 points)</label>
+      </span>
+    </div>
+    <div class="p-col-12 p-md-6">
+      <span class="p-float-label">
+        <input
+          id="kseaActivities"
+          type="number"
+          pInputText
+          [style]="{ width: '100%' }"
+          [(ngModel)]="selectedApplication.evaluations[reviewerNum].kseaActivities"
+        />
+        <label for="kseaActivities">KSEA Activities and Community Service (1-100 points)</label>
+      </span>
+    </div>
+    <div class="p-col-12 p-md-6">
+      <span class="p-float-label">
+        <input
+          id="essay"
+          type="number"
+          pInputText
+          [style]="{ width: '100%' }"
+          [(ngModel)]="selectedApplication.evaluations[reviewerNum].essay"
+        />
+        <label for="essay">Essay (1-100 points)</label>
+      </span>
+    </div>
+  </div>
+  <div class="p-mt-3">
+    <strong>Average Score: {{ getAverageScore(selectedApplication.evaluations[reviewerNum]) }}</strong>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-save"
+      (click)="closeEvaluation()"
+      label="Save & Close"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+

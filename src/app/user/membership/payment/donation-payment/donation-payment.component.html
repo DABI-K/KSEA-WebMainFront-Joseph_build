@@ -1,0 +1,55 @@
+<div class="wrap">
+  <div class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <span>Membership</span>
+    </div>
+    <div class="con-info">
+      <h2>Donate Today</h2>
+      <p class="info-text">Thank you for your great generosity!</p>
+      <label for="amount" class="form-label">Donation amount: $</label>
+      <input
+        type="number"
+        id="amount"
+        name="amount"
+        #donation_amount="ngModel"
+        [(ngModel)]="amount"
+      />
+      <br />
+      <br />
+
+      <div *ngIf="membership && membership.customerId" class="center">
+        <ngx-stripe-card
+          class="stripe"
+          [options]="cardOptions"
+          [elementsOptions]="elementsOptions"
+        ></ngx-stripe-card>
+
+        <div *ngIf="errorMessage" class="alert alert-warning">
+          {{ errorMessage | json }}
+        </div>
+
+        <div class="g-button">
+          <button type="button" (click)="cancel()" class="btn_gray">
+            Cancel
+          </button>
+
+          <button
+            type="button"
+            [disabled]="loading"
+            (click)="makePayment()"
+            class="btn_blue"
+          >
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="loading"
+            ></span>
+            Pay
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

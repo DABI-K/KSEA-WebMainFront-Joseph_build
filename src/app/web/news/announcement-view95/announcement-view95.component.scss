@@ -1,0 +1,19 @@
+
+  
+  // This part is for centering the element within its container
+  .container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  // Include this if you want the underline to appear only when you hover over the text
+  .txt-deco-line:hover:after {
+    background-color: #333; 
+  }
+  .txt-deco-line {
+    text-align: center;
+   
+  }
+  .p-justify {
+    text-align: justify;
+  }

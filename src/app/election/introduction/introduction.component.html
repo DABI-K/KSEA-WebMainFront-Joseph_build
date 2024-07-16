@@ -1,0 +1,115 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-membership-header></app-membership-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>Membership</li>
+    <li>Voting</li>
+  </ul>
+  <div class="scon-activity" style="padding: 10em" *ngIf="!votingDef">
+    loading....
+    <span
+      class="spinner-border spinner-border-sm"
+      role="status"
+      aria-hidden="true"
+    ></span>
+  </div>
+  <div class="scon-activity" *ngIf="votingDef">
+    <div class="con-event">
+      <!-- <img
+        src="assets/images/voting/poster_voting2023.jpg"
+        alt="scholarship poster"
+      /> -->
+      <img src="{{ votingDef.url }}" alt="KSEA 2024 Election Poster" />
+    </div>
+    <div class="con-event-info">
+      <div class="content-info">
+        <ul>
+          <li>
+            <h3 class="event-title">{{ votingDef.title }}</h3>
+            <p>{{ votingDef.description }}</p>
+          </li>
+          <li class="info-title">
+            <img src="assets/images/icon_calendar.png" alt="calendar" />
+            Date
+          </li>
+          <li>
+            {{ votingDef.votingStartDate | date : "MM/dd/yyyy" }} ~
+            {{ votingDef.votingEndDate | date : "MM/dd/yyyy" }}
+          </li>
+          <li>
+            <p class="can-voting" *ngIf="checkVotingEligiable()">
+              <mark>You are eligible!</mark><br />
+              <a
+                href="https://ksea-files.s3.us-west-2.amazonaws.com/voting/2024/2024CandidatesProfile.pdf"
+                target="_blank"
+                style="padding: 2px"
+              >
+                <button class="btn-event" style="width: 5cm">
+                  Candidates Info.
+                </button>
+              </a>
+              <a routerLink="/voting" routerLinkActive="active" target="_blank">
+                <button class="btn-event">Vote</button>
+              </a>
+            </p>
+            <p class="not-voting" *ngIf="!checkVotingEligiable()">
+              <mark>You are not eligible</mark>
+            </p>
+          </li>
+        </ul>
+      </div>
+      <div class="content-info">
+        <ul>
+          <li class="info-title">
+            <img src="assets/images/icon_location.png" alt="calendar" />
+            Location
+          </li>
+          <li>Online</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>
+
+<!-- 기존 개발된 코드 주석처리 삭제 예정 (22.12.9) -->
+<!-- <div *ngIf="!votingDef">
+  loading....
+  <span
+    class="spinner-border spinner-border-sm"
+    role="status"
+    aria-hidden="true"
+  ></span>
+</div>
+
+<div *ngIf="votingDef">
+  <h1>{{ votingDef.title }}</h1>
+  <h1>{{ votingDef.description }}</h1>
+
+  <h1>
+    Voting Period: {{ votingDef.votingStartDate | date : "MM/dd/yyyy" }} ~
+    {{ votingDef.votingEndDate | date : "MM/dd/yyyy" }}
+  </h1>
+
+  <p *ngIf="checkVotingEligiable()">You are eligible for 2023 KSEA voting.</p>
+  <p *ngIf="!checkVotingEligiable()">
+    You are not eligible for 2023 KSEA voting.
+  </p>
+
+  <img
+    src="{{ votingDef.url }}"
+    width="500"
+    height="600"
+    alt="KSEA 2023 Election poster"
+  />
+  <button
+    type="button"
+    (click)="goToVoting()"
+    class="btn btn-sm btn-success"
+    [disabled]="!checkVotingEligiable()"
+  >
+    Go to vote
+  </button>
+</div> -->

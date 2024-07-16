@@ -1,0 +1,119 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-organization-header></app-organization-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>Organization</li>
+    <li>Local Chapters</li>
+  </ul>
+  <div class="scon-center">
+    <h2 class="font-ksea">Local Chapters</h2>
+    <h3>Local Chapter President Committee (LCPC)</h3>
+  </div>
+  <div class="scon-left pd10">
+    <div class="member-table">
+      <h4>KSEA Local Chapters & their Presidents (Regular Members)</h4>
+      <table class="table-lcpc-c3">
+        <tr>
+          <th>Super Chapter</th>
+          <th>Chapter President</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('Super Chapter')">
+          <td>            
+            <div *ngIf="item.url; else noUrl">
+              <a href="{{ item.url }}" target="_blank">{{ item.name }}</a>
+            </div>
+            <ng-template #noUrl>
+              {{ item.name }}
+            </ng-template>
+          </td>
+          <td>{{ item.president }}</td>
+          <td>
+            <div *ngIf="item.phone && item.phone !== ''">
+              (P){{ item.phone }}<br />
+            </div>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <table class="table-lcpc">
+        <tr>
+          <th>Region</th>
+          <th>Council Chapter</th>
+          <th>Chapter President</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('Council')">
+          <td>{{ item.region }}</td>
+          <td>
+            <div *ngIf="item.url; else noUrl">
+              <a href="{{ item.url }}" target="_blank">{{ item.name }}</a>
+            </div>
+            <ng-template #noUrl>
+              {{ item.name }}
+            </ng-template>
+          </td>
+          <td>{{ item.president }}</td>
+          <td>
+            <div *ngIf="item.phone && item.phone !== ''">
+              (P){{ item.phone }}<br />
+            </div>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <table class="table-lcpc">
+        <tr>
+          <th>Region</th>
+          <th>Non-Council Chapter</th>
+          <th>Chapter President</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('Non-Council')">
+          <td>{{ item.region }}</td>
+          <td>
+            <div *ngIf="item.url; else noUrl">
+              <a href="{{ item.url }}" target="_blank">{{ item.name }}</a>
+            </div>
+            <ng-template #noUrl>
+              {{ item.name }}
+            </ng-template>
+          </td>
+          <td>{{ item.president }}</td>
+          <td>
+            <div *ngIf="item.phone && item.phone !== ''">
+              (P){{ item.phone }}<br />
+            </div>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+      <!--
+      <h4>KSEA Branches & their Presidents</h4>
+      <table class="table-lcpc">
+        <tr>
+          <th>Region</th>
+          <th>Branch Name</th>
+          <th>Branch President Name</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filter('Branch')">
+          <td>{{ item.region }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.president }}</td>
+          <td>
+            <div *ngIf="item.phone && item.phone !== ''">
+              (P){{ item.phone }}<br />
+            </div>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+      -->
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

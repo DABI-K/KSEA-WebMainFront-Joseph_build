@@ -1,0 +1,547 @@
+<div class="wrap" *ngIf="!loading">
+  <div class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <span>US Korea Conference 2024</span>
+      <button
+        pButton
+        type="button"
+        label="Download CSV"
+        icon="pi pi-save"
+        class="p-button-info p-button-sm"
+        (click)="downloadCSV()"
+      ></button>
+    </div>
+  </div>
+  <div class="wrap-form">
+    <p-table
+      #DT
+      *ngIf="listRegistration && listRegistration.length > 0"
+      [value]="listRegistration"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      dataKey="registration.id"
+      [showCurrentPageReport]="true"
+      [rows]="50"
+      [rowsPerPageOptions]="[10, 25, 50, 100]"
+      [paginator]="true"
+      [loading]="loading"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="registration.id">
+            Registration ID <p-sortIcon field="registration.id"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.date">
+            Registration Date
+            <p-sortIcon field="registration.date"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.status">
+            Status
+            <p-sortIcon field="registration.status"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.title">
+            Title <p-sortIcon field="registration.title"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.lastName">
+            Name <p-sortIcon field="registration.lastName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.affiliation">
+            Affiliation
+            <p-sortIcon field="registration.affiliation"></p-sortIcon>
+          </th>
+          <th pSortableColumn="userData.email">
+            Email
+            <p-sortIcon field="userData.email"></p-sortIcon>
+          </th>
+          <th pSortableColumn="username">
+            Username
+            <p-sortIcon field="username"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.phone">
+            Phone
+            <p-sortIcon field="registration.phone"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.address">
+            Address
+            <p-sortIcon field="registration.address"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.zip">
+            ZIP
+            <p-sortIcon field="registration.zip"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.country">
+            Country
+            <p-sortIcon field="registration.country"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.group">
+            Technical Symposium
+            <p-sortIcon field="registration.group"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.isSeed">
+            SEED?
+            <p-sortIcon field="registration.isSeed"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.isFire">
+            FIRE?
+            <p-sortIcon field="registration.isFire"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.level">
+            Position
+            <p-sortIcon field="registration.level"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.isUKCPresenter">
+            UKC Presenter
+            <p-sortIcon field="registration.isUKCPresenter"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.isFIREPresenter">
+            FIRE Presenter
+            <p-sortIcon field="registration.isFIREPresenter"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.hasMembership">
+            KSEA Membership?
+            <p-sortIcon field="registration.hasMembership"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.specialDiscountCode">
+            Waiver Code
+            <p-sortIcon field="registration.specialDiscountCode"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.isEarlyBird">
+            Early Bird?
+            <p-sortIcon field="registration.isEarlyBird"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.isOnline">
+            On Site?
+            <p-sortIcon field="registration.isOnline"></p-sortIcon>
+          </th>
+          <th>Registration Fee</th>
+          <th>Registration Discounted Fee</th>
+          <th>Meal Plan Fee</th>
+          <th>Meal Plan Discounted Fee</th>
+          <th>Activities Fee</th>
+          <th>Total Payments</th>
+          <th pSortableColumn="registration.workshop_regular">
+            Data Science Workshop (Regular Fee: $70)
+            <p-sortIcon field="registration.workshop_regular"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.workshop_student">
+            Data Science Workshop (Student Fee: $35)
+            <p-sortIcon field="registration.workshop_student"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.programBook">
+            Program book ($10)
+            <p-sortIcon field="registration.programBook"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.bus">
+            Bus ($5)
+            <p-sortIcon field="registration.bus"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.thursday_breakfast">
+            Thursday Breakfast
+            <p-sortIcon field="registration.thursday_breakfast"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.thursday_lunch_Chicken">
+            Thursday Lunch Chicken
+            <p-sortIcon
+              field="registration.thursday_lunch_Chicken"
+            ></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.thursday_lunch_veggie">
+            Thursday Lunch Veggie
+            <p-sortIcon field="registration.thursday_lunch_veggie"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.thursday_lunch_beef">
+            Thursday Lunch Beef
+            <p-sortIcon field="registration.thursday_lunch_beef"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.thursday_dinner_gala_beef">
+            Thursday Gala Beef
+            <p-sortIcon
+              field="registration.thursday_dinner_gala_beef"
+            ></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.thursday_dinner_gala_pork">
+            Thursday Gala Pork
+            <p-sortIcon
+              field="registration.thursday_dinner_gala_pork"
+            ></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.thursday_dinner_gala_veggie">
+            Thursday Gala Veggie
+            <p-sortIcon
+              field="registration.thursday_dinner_gala_veggie"
+            ></p-sortIcon>
+          </th>
+
+          <th pSortableColumn="registration.friday_breakfast">
+            Friday Breakfast
+            <p-sortIcon field="registration.friday_breakfast"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.friday_lunch_Chicken">
+            Friday Lunch Chicken
+            <p-sortIcon field="registration.friday_lunch_Chicken"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.friday_lunch_fish">
+            Friday Lunch Fish
+            <p-sortIcon field="registration.friday_lunch_fish"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.friday_lunch_veggie">
+            Friday Lunch Veggie
+            <p-sortIcon field="registration.friday_lunch_veggie"></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.friday_dinner_network_bulgogi">
+            Friday Network Dinner Bulgogi
+            <p-sortIcon
+              field="registration.friday_dinner_network_bulgogi"
+            ></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.friday_dinner_network_spicypork">
+            Friday Network Dinner Spicy Pork
+            <p-sortIcon
+              field="registration.friday_dinner_network_spicypork"
+            ></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.friday_dinner_network_spicysquid">
+            Friday Network Dinner Spicy Squid
+            <p-sortIcon
+              field="registration.friday_dinner_network_spicysquid"
+            ></p-sortIcon>
+          </th>
+          <th pSortableColumn="registration.saturday_breakfast">
+            Saturday Breakfast
+            <p-sortIcon field="registration.saturday_breakfast"></p-sortIcon>
+          </th>
+        </tr>
+        <tr>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.id"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.date"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.status"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.title"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.lastName"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.affiliation"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter type="text" field="userData.email"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter type="text" field="username"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.phone"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.address"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.zip"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.country"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.group"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.isSeed"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.isFire"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.level"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.isUKCPresenter"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.isFIREPresenter"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.hasMembership"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.specialDiscountCode"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.isEarlyBird"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.isOnline"
+            ></p-columnFilter>
+          </th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.workshop_regular"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.workshop_student"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.programBook"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.bus"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.thursday_breakfast"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.thursday_lunch_Chicken"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.thursday_lunch_veggie"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.thursday_lunch_beef"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.thursday_dinner_gala_beef"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.thursday_dinner_gala_pork"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.thursday_dinner_gala_veggie"
+            ></p-columnFilter>
+          </th>
+
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.friday_breakfast"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.friday_lunch_Chicken"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.friday_lunch_fish"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.friday_lunch_veggie"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.friday_dinner_network_bulgogi"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.friday_dinner_network_spicypork"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.friday_dinner_network_spicysquid"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="registration.saturday_breakfast"
+            ></p-columnFilter>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-application>
+        <tr>
+          <td>{{ application.registration.id }}</td>
+          <td>{{ application.registration.date }}</td>
+          <td>
+            <div *ngIf="application.registration.status === 'CancelRequested'">
+              <button
+                pButton
+                type="button"
+                label="Confirm Cancel"
+                icon="pi pi-save"
+                class="p-button-danger p-button-sm"
+                (click)="processCancel(application)"
+              ></button>
+            </div>
+            <div *ngIf="application.registration.status !== 'CancelRequested'">
+              {{ application.registration.status }}
+            </div>
+          </td>
+          <td>{{ application.registration.title }}</td>
+          <td>
+            {{ application.registration.lastName }},
+            {{ application.registration.firstName }}
+          </td>
+          <td>{{ application.registration.affiliation }}</td>
+          <td>{{ application.userData.email }}</td>
+          <td>{{ application.username }}</td>
+          <td>{{ application.registration.phone }}</td>
+          <td>{{ application.registration.address }}</td>
+          <td>{{ application.registration.zip }}</td>
+          <td>{{ application.registration.country }}</td>
+          <td>{{ application.registration.group }}</td>
+          <td>{{ application.registration.isSeed ? "YES" : "NO" }}</td>
+          <td>{{ application.registration.isFire ? "YES" : "NO" }}</td>
+          <td>{{ application.registration.level }}</td>
+          <td>{{ application.registration.isUKCPresenter ? "YES" : "NO" }}</td>
+          <td>{{ application.registration.isFIREPresenter ? "YES" : "NO" }}</td>
+          <td>{{ application.registration.hasMembership ? "YES" : "NO" }}</td>
+          <td>{{ application.registration.specialDiscountCode }}</td>
+          <td>{{ application.registration.isEarlyBird ? "YES" : "NO" }}</td>
+          <td>{{ application.registration.isOnline ? "Online" : "Onsite" }}</td>
+          <td>${{ calRegistrationFee(application.registration) }}</td>
+          <td>${{ calRegistrationDiscountedFee(application.registration) }}</td>
+          <td>${{ calMealPlanFee(application.registration) }}</td>
+          <td>${{ calMealPlanDiscountedFee(application.registration) }}</td>
+          <td>${{ calActivitiesFee(application.registration) }}</td>
+          <td>${{ calTotalPayments(application.registration) }}</td>
+          <td>{{ application.registration.workshop_regular }}</td>
+          <td>{{ application.registration.workshop_student }}</td>
+          <td>{{ application.registration.programBook }}</td>
+          <td>{{ application.registration.bus }}</td>
+          <td>{{ application.registration.thursday_breakfast }}</td>
+          <td>{{ application.registration.thursday_lunch_Chicken }}</td>
+          <td>{{ application.registration.thursday_lunch_veggie }}</td>
+          <td>{{ application.registration.thursday_lunch_beef }}</td>
+          <td>{{ application.registration.thursday_dinner_gala_beef }}</td>
+          <td>{{ application.registration.thursday_dinner_gala_pork }}</td>
+          <td>{{ application.registration.thursday_dinner_gala_veggie }}</td>
+          <td>{{ application.registration.friday_breakfast }}</td>
+          <td>{{ application.registration.friday_lunch_Chicken }}</td>
+          <td>{{ application.registration.friday_lunch_fish }}</td>
+          <td>{{ application.registration.friday_lunch_veggie }}</td>
+          <td>{{ application.registration.friday_dinner_network_bulgogi }}</td>
+          <td>
+            {{ application.registration.friday_dinner_network_spicypork }}
+          </td>
+          <td>
+            {{ application.registration.friday_dinner_network_spicysquid }}
+          </td>
+          <td>
+            {{ application.registration.saturday_breakfast }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<p-confirmDialog
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  rejectButtonStyleClass="p-button-text"
+></p-confirmDialog>

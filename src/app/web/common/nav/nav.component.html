@@ -1,0 +1,342 @@
+<div class="wrap">
+  <!-- <div class="user-info-wrap" *ngIf="true" routerLink="/profile">
+    <span class="type-member">Regular</span> member Until
+    <span>12/25/2024 </span>
+    <span class="user-id">Membership ID</span>
+  </div> -->
+  <nav [ngClass]="scrolled ? 'nav-scroll' : ''">
+    <div>
+      <img
+        src="assets/images/logo.png"
+        alt="ksea logo"
+        class="logo"
+        routerLink="/"
+        routerLinkActive="active"
+      />
+    </div>
+    <div [ngClass]="mobileToggle ? 'wrap-menu selected-menu' : 'wrap-menu'">
+      <ul class="menu">
+        <li>
+          About
+          <ul class="smenu">
+            <!-- <li routerLink="/mission" routerLinkActive="active">
+              Mission & Vision
+            </li> -->
+            <li routerLink="/president" routerLinkActive="active">
+              President’s Message
+            </li>
+            <li routerLink="/conduct" routerLinkActive="active">
+              Code of Conduct
+            </li>
+            <li routerLink="/policies" routerLinkActive="active">Policies</li>
+            <li routerLink="/bylaws" routerLinkActive="active">Bylaws</li>
+            <li routerLink="/sponsors" routerLinkActive="active">Sponsors</li>
+            <li routerLink="/handbook" routerLinkActive="active">
+              Handbook/Brochure/<br>Flyer/History Book
+            </li>
+            <li routerLink="/contact" routerLinkActive="active">Contact</li>
+          </ul>
+        </li>
+        <li>
+          News
+          <ul class="smenu">
+            <li routerLink="/announcement" routerLinkActive="active">
+              Announcement
+            </li>
+            <li routerLink="/ksea-letter" routerLinkActive="active">
+              KSEA Letters
+            </li>
+            <li>
+            <!-- <li a href="https://ksealetters.com/" routerLinkActive="active"> -->
+              <a href="https://ksealetters.com/" target="_blank">KSEA e-Letters</a>
+            </li>
+            <li routerLink="/job" routerLinkActive="active">
+              Job Opportunities
+            </li>
+            <li routerLink="/media" routerLinkActive="active">Media</li>
+          </ul>
+        </li>
+        <li>
+          Organization
+          <ul class="smenu">
+            <li routerLink="/leadership" routerLinkActive="active">
+              Leadership
+            </li>
+            <li routerLink="/committee" routerLinkActive="active">Committee</li>
+            <li routerLink="/technical-g" routerLinkActive="active">
+              Technical Group
+            </li>
+            <li routerLink="/former" routerLinkActive="active">
+              Former Presidents
+            </li>
+            <li routerLink="/lcpc" routerLinkActive="active">Local Chapters</li>
+            <li routerLink="/councilors" routerLinkActive="active">
+              KSEA Councilors
+            </li>
+            <li routerLink="/yg-g" routerLinkActive="active">YG Group</li>
+            <li routerLink="/affiliated" routerLinkActive="active">
+              Affiliated Professional Societies
+            </li>
+          </ul>
+        </li>
+        <li>
+          Activity
+          <ul class="smenu">
+            <li routerLink="/seed" routerLinkActive="active">SEED</li>
+            <li routerLink="/ukc" routerLinkActive="active">UKC</li>
+            <li routerLink="/nmsc" routerLinkActive="active">NMSC</li>
+            <li routerLink="/katalyst" routerLinkActive="active">Katalyst</li>
+            <li routerLink="/impacts" routerLinkActive="active">IMPACTs</li>
+            <li routerLink="/step-up" routerLinkActive="active">STEP-UP</li>
+          </ul>
+        </li>
+        <li>
+          Award
+          <ul class="smenu">
+            <li routerLink="/scholarship" routerLinkActive="active">
+              Scholarship
+            </li>
+            <li routerLink="/hac" routerLinkActive="active">
+              Honors and Awards
+            </li>
+            <li routerLink="/yig" routerLinkActive="active">
+              Young Investigator Grants
+            </li>
+          </ul>
+        </li>
+        <li>
+          Membership
+          <ul class="smenu">
+            <li>
+              <!--<li routerLink="/about-membership#about" routerLinkActive="active">-->
+              <a href="/about-membership#about"> About Membership</a>
+            </li>
+
+            <li>
+              <!--<a routerLink="/about-membership" fragment="lifetime" routerLinkActive="active">  -->
+              <a href="/about-membership#lifetime"> Lifetime Members </a>
+            </li>
+
+            <li routerLink="/signUp" routerLinkActive="active">Join Ksea</li>
+            <!-- <li routerLink="/ems" routerLinkActive="active">EMS</li> -->
+          </ul>
+        </li>
+
+        <li li routerLink="/donation" routerLinkActive="active">Donation</li>
+        <!-- <li class="join" routerLink="/signIn"
+        alt="login"
+        *ngIf="!user.username">Join KSEA</li> -->
+        <!-- <li li routerLink="/voting-2024" routerLinkActive="active">Election</li> -->
+      </ul>
+      <div
+        [ngClass]="
+          mobileToggle
+            ? 'wrap-mobile-memu-list selected-mobile-memu-list'
+            : 'wrap-mobile-memu-list'
+        "
+      >
+        <ul class="mobile-memu-list">
+          <li>
+            <span>About</span>
+            <ul class="mobile-memu-slist">
+              <li routerLink="/president" routerLinkActive="active">
+                President’s Message
+              </li>
+              <li routerLink="/conduct" routerLinkActive="active">
+                Code of Conduct
+              </li>
+              <li routerLink="/policies" routerLinkActive="active">Policies</li>
+              <li routerLink="/bylaws" routerLinkActive="active">Bylaws</li>
+              <li routerLink="/sponsors" routerLinkActive="active">Sponsors</li>
+              <li routerLink="/handbook" routerLinkActive="active">
+                Handbook/Brochure/Flyer/History Book
+              </li>
+              <li routerLink="/contact" routerLinkActive="active">Contact</li>
+            </ul>
+          </li>
+          <li>
+            <span>News</span>
+            <ul class="mobile-memu-slist">
+              <li routerLink="/announcement" routerLinkActive="active">
+                Announcement
+              </li>
+              <li routerLink="/ksea-letter" routerLinkActive="active">
+                KSEA Letters
+              </li>
+              <li>
+                <!-- <li a href="https://ksealetters.com/" routerLinkActive="active"> -->
+                  <a href="https://ksealetters.com/" target="_blank">KSEA e-Letters</a>
+              </li>
+              <li routerLink="/job" routerLinkActive="active">
+                Job Opportunities
+              </li>
+              <li routerLink="/media" routerLinkActive="active">Media</li>
+            </ul>
+          </li>
+          <li>
+            <span> Organization</span>
+            <ul class="mobile-memu-slist">
+              <li routerLink="/leadership" routerLinkActive="active">
+                Leadership
+              </li>
+              <li routerLink="/committee" routerLinkActive="active">
+                Committee
+              </li>
+              <li routerLink="/technical-g" routerLinkActive="active">
+                Technical Group
+              </li>
+              <li routerLink="/former" routerLinkActive="active">
+                Former Presidents
+              </li>
+              <li routerLink="/lcpc" routerLinkActive="active">
+                Local Chapters
+              </li>
+              <li routerLink="/councilors" routerLinkActive="active">
+                KSEA Councilors
+              </li>
+              <li routerLink="/yg-g" routerLinkActive="active">YG Group</li>
+              <li routerLink="/affiliated" routerLinkActive="active">
+                Affiliated Professional Societies
+              </li>
+            </ul>
+          </li>
+          <li>
+            <span> Activity</span>
+            <ul class="mobile-memu-slist">
+              <li routerLink="/seed" routerLinkActive="active">SEED</li>
+              <li routerLink="/ukc" routerLinkActive="active">UKC</li>
+              <li routerLink="/nmsc" routerLinkActive="active">NMSC</li>
+              <li routerLink="/katalyst" routerLinkActive="active">Katalyst</li>
+              <li routerLink="/impacts" routerLinkActive="active">IMPACTs</li>
+              <li routerLink="/step-up" routerLinkActive="active">STEP-UP</li>
+            </ul>
+          </li>
+          <li>
+            <span> Award</span>
+            <ul class="mobile-memu-slist">
+              <li routerLink="/scholarship" routerLinkActive="active">
+                Scholarship
+              </li>
+              <li routerLink="/hac" routerLinkActive="active">
+                Honors and Awards
+              </li>
+              <li routerLink="/yig" routerLinkActive="active">
+                Young Investigator Grants
+              </li>
+            </ul>
+          </li>
+          <li>
+            <span> Membership</span>
+            <ul class="mobile-memu-slist">
+              <li>
+                <!--<li routerLink="/about-membership#about" routerLinkActive="active">-->
+                <a href="/about-membership#about"> About Membership</a>
+              </li>
+
+              <li>
+                <!--<a routerLink="/about-membership" fragment="lifetime" routerLinkActive="active">  -->
+                <a href="/about-membership#lifetime"> Lifetime Members </a>
+              </li>
+
+              <li routerLink="/signUp" routerLinkActive="active">Join Ksea</li>
+              <!-- <li routerLink="/ems" routerLinkActive="active">EMS</li> -->
+              <!-- <li routerLink="/voting-2024" routerLinkActive="active">Election</li> -->
+            </ul>
+          </li>
+          <li li routerLink="/donation" routerLinkActive="active">Donation</li>
+          <li>
+            <ul class="mobile-memu-slist" *ngIf="user && user.username">
+              <li routerLink="/profile">My Profile</li>
+              <li (click)="signOut()">Logout</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="wrap-mobile">
+        <ul class="menu-user">
+          <li
+            *ngIf="!user || !user.username"
+            class="join"
+            routerLinkActive="active"
+            routerLink="/signUp"
+          >
+            Join
+          </li>
+          <li routerLinkActive="active">
+            <div
+              class="login"
+              routerLink="/signIn"
+              alt="login"
+              *ngIf="!user || !user.username"
+            >
+              Sign In
+            </div>
+            <!-- <img
+              src="assets/images/icon_login.svg"
+              routerLink="/signIn"
+              alt="login"
+              *ngIf="!user.username"
+            /> -->
+            <div
+              class="login-p"
+              *ngIf="user && user.username"
+              routerLink="/profile"
+            >
+              <span>
+                <!-- {{ user.username }} : ITM removed it-->
+                <!-- {{ membership.type }} member -->
+                {{ membership.type }} Member
+                <div *ngIf="membership.type === 'Unpaid'">
+                  <br />
+                  Please go to Profile to Join Membership
+                </div>
+                <div *ngIf="membership.type === 'Lifetime'">
+                  <br />
+                  Since {{ membership.lifetimeDate | date : "MM/dd/yy" }}
+                </div>
+                <div
+                  *ngIf="
+                    membership.type !== 'Unpaid' &&
+                    membership.type !== 'Lifetime' &&
+                    !isExpired(membership.expirationDate)
+                  "
+                >
+                  <br />
+                  by {{ membership.expirationDate | date : "MM/dd/yy" }}
+                </div>
+                <div
+                  *ngIf="
+                    membership.type !== 'Unpaid' &&
+                    membership.type !== 'Lifetime' &&
+                    isExpired(membership.expirationDate)
+                  "
+                >
+                  <br />
+                  Membership Expired
+                </div>
+              </span>
+            </div>
+            <ul class="smenu" *ngIf="user && user.username">
+              <li routerLink="/profile">My Profile</li>
+              <li (click)="signOut()">Logout</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="mobile-menu">
+          <img
+            src="assets/images/mobile_menu.svg"
+            alt="mobile menu"
+            *ngIf="!mobileToggle"
+            (click)="mobileToggle = !mobileToggle"
+          />
+          <img
+            src="assets/images/moblie_menu_close.svg"
+            alt="mobile menu"
+            *ngIf="mobileToggle"
+            (click)="mobileToggle = !mobileToggle"
+          />
+        </div>
+      </div>
+    </div>
+  </nav>
+</div>

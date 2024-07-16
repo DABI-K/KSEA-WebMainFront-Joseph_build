@@ -1,0 +1,42 @@
+.wrap-letter {
+  margin-bottom: 8em;
+}
+.con-letter {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  row-gap: 4em;
+  column-gap: 2rem;
+  margin-bottom: 4em;
+}
+.con-letter li {
+  border: 1px solid #aaaab6;
+  position: relative;
+  cursor: pointer;
+}
+.con-letter > a {
+  cursor: pointer;
+}
+.info-letter {
+  background-color: rgba($color: #0702fc, $alpha: 0.7);
+  color: #ffffff;
+  text-align: left;
+  padding: 1.5em 1.2rem;
+  line-height: 1.5;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+.info-letter dt {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.info-letter dd {
+  font-size: 0.85rem;
+}
+@media screen and (max-width: 500px) {
+  .con-letter {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+}

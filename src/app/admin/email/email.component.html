@@ -1,0 +1,215 @@
+<div class="wrap">
+  <div class="scon-center">
+    <h2 class="font-ksea">Admin Service</h2>
+    <h3>Search Users and email</h3>
+    <div *ngIf="!membershipDataloading && !userInfoDataloading">
+      <button class="btn_blue" (click)="subsidy()" type="submit">
+        Subsidy data
+      </button>
+
+      <button class="btn_blue" (click)="checkPaymentNumberData()" type="submit">
+        Collect wrong paymentNumber and then fix
+      </button>
+      <button class="btn_blue" (click)="checkMembershipType()" type="submit">
+        Collect wrong School Type and then fix
+      </button>
+
+      <button class="btn_blue" (click)="checkExpiredUsers()" type="submit">
+        Collect expired Users and the fix
+      </button>
+
+      <button class="btn_blue" (click)="updateUserData()" type="submit">
+        Update UserData from Cognito
+      </button>
+
+      <button class="btn_blue" (click)="updateMembershipData()" type="submit">
+        Update MembershipData
+      </button>
+    </div>
+    <br />
+    <div *ngIf="!membershipDataloading && !userInfoDataloading">
+      <label for="name"></label>
+      <input type="date" id="fromDate" [(ngModel)]="fromDate" /> ~
+      <input type="date" id="toDate" [(ngModel)]="toDate" />
+      <button class="btn_blue" (click)="filterByPayPeriod()" type="submit">
+        Find users by Pay period (Including LifeTime)
+      </button>
+    </div>
+    <button class="btn_blue" (click)="unpaidFilter()" type="submit">
+      Filter by Unpaid
+    </button>
+    <button class="btn_blue" (click)="lifetimeFilter()" type="submit">
+      Filter by Lifetime
+    </button>
+    <button class="btn_blue" (click)="regularFilter()" type="submit">
+      Filter by Regular
+    </button>
+    <button class="btn_blue" (click)="graduateFilter()" type="submit">
+      Filter by graduate
+    </button>
+    <button class="btn_blue" (click)="undergraduateFilter()" type="submit">
+      Filter by undergraduate
+    </button>
+    <br />
+    <li *ngIf="kseaInfo">
+      <label for="chapter" class="form-label">Local Chapter:</label>
+      <select id="chapter" [(ngModel)]="localChapter" name="chapter">
+        <option *ngFor="let c of kseaInfo.chapters" [value]="c.name">
+          ({{ c.type }}) {{ c.name }}
+        </option>
+      </select>
+    </li>
+    <button class="btn_blue" (click)="chapterFilter()" type="submit">
+      Filter by Chapter
+    </button>
+
+    <br />
+    <li *ngIf="kseaInfo">
+      <label for="aps" class="form-label">APS:</label>
+      <select id="aps" [(ngModel)]="aps" name="aps">
+        <option *ngFor="let a of kseaInfo.aps" [value]="a.code">
+          {{ a.name }} ({{ a.code }})
+        </option>
+      </select>
+    </li>
+    <button class="btn_blue" (click)="apsFilter()" type="submit">
+      Filter by APS
+    </button>
+
+    <br />
+    <li *ngIf="kseaInfo">
+      <label for="tg" class="form-label">TG:</label>
+      <select id="tg" [(ngModel)]="tg" name="tg">
+        <option *ngFor="let g of kseaInfo.groups" [value]="g.code">
+          {{ g.code }} - {{ g.name }}
+        </option>
+      </select>
+    </li>
+    <button class="btn_blue" (click)="tgFilter()" type="submit">
+      Filter by TG
+    </button>
+
+    <p>Number of users: {{ filteredData.length }}</p>
+    <button class="btn_blue" (click)="resetFilter()" type="submit">
+      Reset
+    </button>
+    <button class="btn_blue" (click)="setEmail()" type="submit">
+      Set email list
+    </button>
+    <button class="btn_blue" (click)="downloadCSV()" type="submit">
+      Download CSV
+    </button>
+
+    <div *ngIf="membershipDataloading">
+      membershipDataloading......
+      <span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+      ></span>
+    </div>
+    <div *ngIf="userInfoDataloading">
+      userInfoDataloading......
+      <span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+      ></span>
+    </div>
+    <div *ngIf="userCognitoDataloading">
+      userCognitoDataloading......
+      <span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+      ></span>
+    </div>
+
+    <div class="con-contact">
+      <ul>
+        <li>
+          <label for="name"></label>
+          <input
+            type="text"
+            id="name"
+            [(ngModel)]="name"
+            placeholder="Full name"
+          />
+        </li>
+        <li>
+          <label for="email"></label>
+          <input
+            type="text"
+            id="email"
+            [(ngModel)]="email"
+            placeholder="To email address list (csv)"
+          />
+        </li>
+        <li>
+          <label for="subject"></label>
+          <input
+            type="text"
+            id="subject"
+            [(ngModel)]="subject"
+            placeholder="Subject"
+          />
+        </li>
+        <li>
+          <editor
+            [init]="{
+              base_url: '/tinymce',
+              suffix: '.min',
+              relative_urls: false,
+              convert_urls: false
+            }"
+            [(ngModel)]="content"
+          ></editor>
+        </li>
+        <li>
+          <textarea [(ngModel)]="content"></textarea>
+        </li>
+        <li>
+          <input #myFileInput type="file" (change)="addFile($event)" />
+          <table *ngIf="fileList">
+            <thead>
+              <th>File Name</th>
+              <th>Action</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of fileList">
+                <td>
+                  {{ item.filename }}
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn_basic-gray"
+                    (click)="deleteFile(item)"
+                  >
+                    -
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+    </div>
+    <button
+      class="btn_blue"
+      [disabled]="loading"
+      (click)="sendEmail()"
+      type="submit"
+    >
+      <span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+        *ngIf="loading"
+      ></span
+      >Send message
+    </button>
+  </div>
+
+  <app-footer></app-footer>
+</div>

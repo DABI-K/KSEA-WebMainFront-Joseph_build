@@ -1,0 +1,56 @@
+[{
+  "id": "leomac",
+  "email": "leomac@YAHOO.COM",
+
+  "application_type": [
+    "Undergraduate",
+    "Graduate",
+    "Postdoc"
+  ],
+
+  "status": [
+    "US citizen",
+    "Permanent resident",
+    "Student visa"
+  ],
+
+  "address": "",
+  "currentJob": {
+    "city": "College Park",
+    "employer": "UMD",
+    "jobTitle": "Researcher",
+    "state": "MD"
+  },
+
+  "educationInfo": [{
+    "degree": "doctorate or professional degree",
+    "major": "Electrical and Computer Engineering",
+    "school": "University of Maryland, College Park",
+    "thesisTitle": "Characterization of Linear Electro-Optic Effect of Poled Organic Thin Films",
+    "yearEarned": "2008",
+    "GPA": ""
+  }],
+
+  "GPAInfo": [{
+    "year": "doctorate or professional degree",
+    "semester": "Electrical and Computer Engineering",
+    "GPA": ""
+  }],
+
+  "jobHistory": [{
+    "employer": "",
+    "state": "",
+    "endDate": "",
+    "startDate": "",
+    "jobTitle": "",
+    "jobDesc": ""
+  }],
+
+  "Recommenders": {
+    "name": "",
+    "position": "",
+    "affiliation": "",
+    "email": "",
+    "phone": ""
+  }
+}]

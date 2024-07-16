@@ -1,0 +1,109 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-organization-header></app-organization-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>Organization</li>
+    <li>Technical Group</li>
+  </ul>
+  <div class="scon-center">
+    <h2 class="font-ksea">Technical Group</h2>
+    <h3>Korean-American Scientists and Engineers Association (KSEA)</h3>
+  </div>
+  <div class="scon-left pd10">
+    <div class="member-table">
+      <h4>Physical Sciences Technical Group</h4>
+      <table class="table-tech">
+        <tr>
+          <th>Technical Group</th>
+          <th>Councilors</th>
+          <th>Term</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of physicalSciencesTechnicalGroups">
+          <td>{{ item.code }}. {{ item.name }}</td>
+          <td>{{ item.councilors }}</td>
+          <td>{{ item.term }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <div *ngIf="item.phone && item.phone !== ''">
+              (P){{ item.phone }}<br />
+            </div>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>Life Sciences Technical Group</h4>
+      <table class="table-tech">
+        <tr>
+          <th>Technical Group</th>
+          <th>Councilors</th>
+          <th>Term</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of lifeSciencesTechnicalGroups">
+          <td>{{ item.code }}. {{ item.name }}</td>
+          <td>{{ item.councilors }}</td>
+          <td>{{ item.term }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <div *ngIf="item.phone && item.phone !== ''">
+              (P){{ item.phone }}<br />
+            </div>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>Engineering Technical Group</h4>
+      <table class="table-tech">
+        <tr>
+          <th>Technical Group</th>
+          <th>Councilors</th>
+          <th>Term</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of engineeringTechnicalGroups">
+          <td>{{ item.code }}. {{ item.name }}</td>
+          <td>{{ item.councilors }}</td>
+          <td>{{ item.term }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <div *ngIf="item.phone && item.phone !== ''">
+              (P){{ item.phone }}<br />
+            </div>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>Other Fields</h4>
+      <table class="table-tech">
+        <tr>
+          <th>Technical Group</th>
+          <th>Councilors</th>
+          <th>Term</th>
+          <th>Affiliation</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of otherFieldsGroups">
+          <td>{{ item.code }}. {{ item.name }}</td>
+          <td>{{ item.councilors }}</td>
+          <td>{{ item.term }}</td>
+          <td>{{ item.affiliation }}</td>
+          <td>
+            <div *ngIf="item.phone && item.phone !== ''">
+              (P){{ item.phone }}<br />
+            </div>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

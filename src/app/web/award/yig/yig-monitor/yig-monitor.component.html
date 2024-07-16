@@ -1,0 +1,290 @@
+<div class="wrap" *ngIf="!loading">
+  <div class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <span>2024 YIG</span>
+      <button
+        pButton
+        type="button"
+        *ngIf="!noPermission"
+        label="Download CSV"
+        icon="pi pi-save"
+        class="p-button-info p-button-sm"
+        (click)="downloadCSV()"
+      ></button>
+    </div>
+  </div>
+  <div class="wrap-form" *ngIf="noPermission">No Permission</div>
+  <div class="wrap-form" *ngIf="!noPermission">
+    <p-accordion>
+      <p-table
+        #DT
+        *ngIf="results && results.length > 0"
+        [value]="results"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        dataKey="id"
+        [showCurrentPageReport]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [paginator]="true"
+        [loading]="loading"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="id">
+              Username <p-sortIcon field="id"></p-sortIcon>
+            </th>
+            <th pSortableColumn="firstName">
+              First Name <p-sortIcon field="firstName"></p-sortIcon>
+            </th>
+            <th pSortableColumn="lastName">
+              Last Name <p-sortIcon field="lastName"></p-sortIcon>
+            </th>
+            <th pSortableColumn="phoneNumber">
+              Phone Number <p-sortIcon field="phoneNumber"></p-sortIcon>
+            </th>
+            <th pSortableColumn="address">
+              Address <p-sortIcon field="address"></p-sortIcon>
+            </th>
+            <th pSortableColumn="email">
+              Email <p-sortIcon field="email"></p-sortIcon>
+            </th>
+
+            <th>TG</th>
+            <th>YIG Application Field</th>
+
+            <th pSortableColumn="affiliatedOrganization">
+              Name of the Affiliated Organization
+              <p-sortIcon field="affiliatedOrganization"></p-sortIcon>
+            </th>
+            <th pSortableColumn="jobTitle">
+              Job Title <p-sortIcon field="jobTitle"></p-sortIcon>
+            </th>
+            <th pSortableColumn="majorOrSpeciality">
+              Major or Speciality
+              <p-sortIcon field="majorOrSpeciality"></p-sortIcon>
+            </th>
+            <th pSortableColumn="monthYear">
+              Ph.D Earned MM/YY <p-sortIcon field="monthYear"></p-sortIcon>
+            </th>
+            <th pSortableColumn="institutionName">
+              Institution of Ph.D Earned
+              <p-sortIcon field="institutionName"></p-sortIcon>
+            </th>
+
+            <th>Application</th>
+
+            <th>1st Recommender</th>
+            <th>2nd Recommender</th>
+            <th>3rd Recommender</th>
+            <th>Comments to Applicants</th>
+          </tr>
+          <tr>
+            <th>
+              <p-columnFilter type="text" field="id"></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter type="text" field="firstName"></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter type="text" field="lastName"></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter type="text" field="phoneNumber"></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter type="text" field="address"></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter type="text" field="email"></p-columnFilter>
+            </th>
+
+            <th></th>
+            <th></th>
+
+            <th>
+              <p-columnFilter
+                type="text"
+                field="affiliatedOrganization"
+              ></p-columnFilter>
+            </th>
+
+            <th>
+              <p-columnFilter type="text" field="jobTitle"></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                type="text"
+                field="majorOrSpeciality"
+              ></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter type="text" field="monthYear"></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                type="text"
+                field="institutionName"
+              ></p-columnFilter>
+            </th>
+            <th></th>
+
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-application>
+          <tr>
+            <td>{{ application.id }}</td>
+            <td>
+              {{ application.firstName }}
+            </td>
+            <td>
+              {{ application.lastName }}
+            </td>
+            <td>
+              {{ application.phoneNumber }}
+            </td>
+            <td>
+              {{ application.address }}
+            </td>
+            <td>
+              {{ application.email }}
+            </td>
+            <td>
+              {{ application.answers[0] }}
+            </td>
+            <td>
+              {{ application.answers[1] }}
+            </td>
+            <td>
+              {{ application.affiliatedOrganization }}
+            </td>
+            <td>
+              {{ application.jobTitle }}
+            </td>
+            <td>
+              {{ application.majorOrSpeciality }}
+            </td>
+            <td>
+              {{ application.monthYear }}
+            </td>
+            <td>
+              {{ application.institutionName }}
+            </td>
+            <td>
+              <a
+                style="color: blue"
+                href="{{ application.fileURL }}"
+                target="_blank"
+                >Application file link</a
+              >
+            </td>
+
+            <td>
+              {{ application.firstRecommenderTitle }}
+              {{ application.firstRecommenderName }} <br />
+              {{ application.firstRecommenderAffiliation }} <br />
+              {{ application.firstRecommenderEmail }} <br />
+
+              <input
+                #myEmail1FileInput
+                type="file"
+                accept="application/pdf"
+                (change)="addEmailFile($event, application, 1)"
+                id="file1"
+              />
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+                *ngIf="application.email1URLLoading"
+              ></span>
+              <div *ngIf="application.email1URL" class="file-link">
+                <a href="{{ application.email1URL }}" target="_blank"
+                  >View 1st email</a
+                >
+              </div>
+            </td>
+
+            <td>
+              {{ application.secondRecommenderTitle }}
+              {{ application.secondRecommenderName }} <br />
+              {{ application.secondRecommenderAffiliation }} <br />
+              {{ application.secondRecommenderEmail }}
+              <input
+                #myEmail2FileInput
+                type="file"
+                accept="application/pdf"
+                (change)="addEmailFile($event, application, 2)"
+                id="file2"
+              />
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+                *ngIf="application.email2URLLoading"
+              ></span>
+              <div *ngIf="application.email2URL" class="file-link">
+                <a href="{{ application.email2URL }}" target="_blank"
+                  >View 2nd email</a
+                >
+              </div>
+            </td>
+            <td>
+              {{ application.thirdRecommenderTitle }}
+              {{ application.thirdRecommenderName }} <br />
+              {{ application.thirdRecommenderAffiliation }} <br />
+              {{ application.thirdRecommenderEmail }}
+              <input
+                #myEmail3FileInput
+                type="file"
+                accept="application/pdf"
+                (change)="addEmailFile($event, application, 3)"
+                id="file3"
+              />
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+                *ngIf="application.email3URLLoading"
+              ></span>
+              <div *ngIf="application.email3URL" class="file-link">
+                <a href="{{ application.email3URL }}" target="_blank"
+                  >View 3rd email</a
+                >
+              </div>
+            </td>
+            <td>
+              <span
+                class="pi pi-pencil"
+                (click)="editComments(application)"
+              ></span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-accordion>
+  </div>
+</div>
+
+<p-dialog
+  *ngIf="!loading"
+  header="Comments"
+  [(visible)]="commentsDisplay"
+  [modal]="true"
+  [style]="{ width: '70%' }"
+>
+  <textarea [(ngModel)]="selectedApplication.comments"></textarea>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-save"
+      (click)="closeComments()"
+      label="Save & Close"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>

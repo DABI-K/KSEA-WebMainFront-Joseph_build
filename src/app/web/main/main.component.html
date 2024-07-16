@@ -1,0 +1,208 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <div class="wrap-slide">
+    <div class="wrap-indicate">
+      <ul class="con-indicate">
+        <!-- <li
+          (click)="showIndex = 0; isPaused = true"
+          [ngClass]="showIndex === 0 ? 'select-slide' : ''"
+        ></li> -->
+        <li
+          (click)="showIndex = 1; isPaused = true"
+          [ngClass]="showIndex === 1 ? 'select-slide' : ''"
+        ></li>
+        <li
+          (click)="showIndex = 2; isPaused = true"
+          [ngClass]="showIndex === 2 ? 'select-slide' : ''"
+        ></li>
+        <li
+          (click)="showIndex = 3; isPaused = true"
+          [ngClass]="showIndex === 3 ? 'select-slide' : ''"
+        ></li>
+        <li
+          (click)="showIndex = 4; isPaused = true"
+          [ngClass]="showIndex === 4 ? 'select-slide' : ''"
+        ></li>
+        <li
+          (click)="showIndex = 5; isPaused = true"
+          [ngClass]="showIndex === 5 ? 'select-slide' : ''"
+        ></li>
+        <li>
+          <button *ngIf="!isPaused" (click)="isPaused = true">
+            <img src="assets/images/icon_pause.svg" alt="slide stop" />
+          </button>
+          <button *ngIf="isPaused" (click)="isPaused = false">
+            <img src="assets/images/icon_play.svg" alt="slide play" />
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap-content">
+      <!-- <div class="slide6" *ngIf="showIndex === 0">
+        <div class="con-text">
+          <div class="con-num"><span>01</span>/06</div>
+          <h1 class="font-ksea">KSEA</h1>
+          <h2>Website will be down <br />due to maintenance</h2>
+          <p>7/15/2023 5 AM–12 PM EST</p>
+        </div>
+      </div> -->
+      <div class="slide1" *ngIf="showIndex === 1">
+        <div class="con-text">
+          <div class="con-num"><span>01</span>/05</div>
+          <h1 class="font-ksea">KSEA</h1>
+          <h2>
+            We work together through<br />
+            science and technology
+          </h2>
+          <p>Korean-American Scientists and Engineers Association(KSEA)</p>
+        </div>
+      </div>
+      <div class="slide2" *ngIf="showIndex === 2">
+        <div class="con-text">
+          <div class="con-num"><span>02</span>/05</div>
+          <h1 class="font-ksea">KSEA</h1>
+          <h2>
+            We foster international cooperation<br />
+            especially between the U.S. and Korea
+          </h2>
+          <p>Korean-American Scientists and Engineers Association(KSEA)</p>
+        </div>
+      </div>
+      <div class="slide3" *ngIf="showIndex === 3">
+        <div class="con-text">
+          <div class="con-num"><span>03</span>/05</div>
+          <h1 class="font-ksea">KSEA</h1>
+          <h2>
+            We excel as a leading Korean-American scientific, <br />engineering,
+            and industrial organization
+          </h2>
+          <p>Korean-American Scientists and Engineers Association(KSEA)</p>
+          <p class="infoby">
+            File photograph: Reporter Lee Chung-woo(Daily Economy & mk.co.kr)
+          </p>
+        </div>
+      </div>
+      <div class="slide4" *ngIf="showIndex === 4">
+        <div class="con-text">
+          <div class="con-num"><span>04</span>/05</div>
+          <h1 class="font-ksea">KSEA</h1>
+          <h2>
+            We help Korean-American scientists and <br />engineers develop their
+            full career potential
+          </h2>
+          <p>Korean-American Scientists and Engineers Association(KSEA)</p>
+        </div>
+      </div>
+      <div class="slide5" *ngIf="showIndex === 5">
+        <div class="con-text">
+          <div class="con-num"><span>05</span>/05</div>
+          <h1 class="font-ksea">KSEA</h1>
+          <h2>
+            We recognize and honor major contributors <br />to science,
+            technology and KSEA
+          </h2>
+          <p>Korean-American Scientists and Engineers Association(KSEA)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap-about">
+    <div class="stitle">ABOUT US</div>
+    <a href="https://youtu.be/VSEnWjHRUrQ" target="_blank">
+      <button class="btn_blue">KSEA Intro Video</button></a
+    >
+    <h3>
+      Since its establishment in 1971, the number and <br />
+      variety of experts in KSEA have grown significantly.
+    </h3>
+    <div class="con-about-sum">
+      <dl>
+        <dd>
+          <p>51</p>
+          <img src="assets/images/icon_plus.svg" alt="more" />
+        </dd>
+        <dt>Years</dt>
+      </dl>
+      <dl>
+        <dd>
+          <p>7,000</p>
+          <img src="assets/images/icon_plus.svg" alt="more" />
+        </dd>
+        <dt>Members</dt>
+      </dl>
+      <dl>
+        <dd>
+          <p>70</p>
+          <img src="assets/images/icon_plus.svg" alt="more" />
+        </dd>
+        <dt>Chapter</dt>
+      </dl>
+    </div>
+  </div>
+  <div class="wrap-mission">
+    <img
+      src="assets/images/img_mission.jpg"
+      alt="mission image"
+      class="img-mission"
+    />
+    <div class="con-mission">
+      <div class="stitle">VISION</div>
+      <p class="title-sub">
+        To excel as a leading Korean-American scientific, <br />engineering, and
+        industrial organization, we will
+      </p>
+      <ul class="list-main">
+        <li>
+          Promote the application of science and technology for the general
+          welfare of society
+        </li>
+        <li>
+          Foster international cooperation especially between the U.S. and Korea
+        </li>
+        <li>
+          Help Korean-American Scientists and Engineers develop their full
+          career potential
+        </li>
+        <li>Serve the Korean-American Communities</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap-vision">
+    <div class="con-vision">
+      <div class="stitle">MISSION</div>
+      <p class="title-sub">
+        To provide, in the areas of science, technology and entrepreneurship,<br />
+        opportunities for:
+      </p>
+      <ul class="list-main">
+        <li>International Cooperation</li>
+        <li>Career Development</li>
+        <li>Community Service</li>
+      </ul>
+    </div>
+    <ul class="con-vision-img">
+      <!-- <li routerLink="/mission" routerLinkActive="active"> -->
+      <li>
+        <p>International Cooperation,</p>
+        <img src="assets/images/img_vision01.jpg" alt="국제협력" />
+      </li>
+      <li>
+        <p>Career development</p>
+        <img src="assets/images/img_vision02.jpg" alt="경력개발" />
+      </li>
+      <li>
+        <p>Community service</p>
+        <img src="assets/images/img_vision03.jpg" alt="사회봉사" />
+      </li>
+    </ul>
+  </div>
+  <div class="wrap-join">
+    <div class="con-join">
+      <h4>Join KSEA?</h4>
+      <p>Sign up now</p>
+    </div>
+    <button class="btn_full" routerLink="/signUp">Join</button>
+  </div>
+  <app-footer></app-footer>
+</div>

@@ -1,0 +1,67 @@
+<div class="wrap">
+  <div style="width: 100% !important" class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <span>{{ scholarshipDefId }}</span>
+    </div>
+    <div class="wrap-form" *ngIf="recommenderItem && !recommenderItem.fileURL">
+      Dear {{ recommenderItem.title }} {{ recommenderItem.name }}
+      <br /><br /><br />
+
+      This page is for uploading the recommendation letter for KSEA Scholarship/KSEA Postdoctoral Fellowship.
+      <br /><br />
+
+      Once you upload a file, you cannot replace it. 
+      <br/>
+      If you wish to replace a recommendation letter, please contact us at scholarship@ksea.org.
+
+<br/><br/><br/>
+
+      The name of the grantee: {{ scholarshipItem.firstName }}
+      {{ scholarshipItem.lastName }} <br /><br />
+
+      <label for="file"
+        ><span
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+          *ngIf="recommenderItem.recFileloading"
+        ></span>
+        Please uplod the recomnedation letter here:
+      </label>
+      <br />
+      <input
+        type="file"
+        accept="application/pdf"
+        (change)="addRecFile($event, recommenderItem)"
+        id="file"
+      />
+    </div>
+
+    <div class="wrap-form" *ngIf="recommenderItem && recommenderItem.fileURL">
+      Dear {{ recommenderItem.title }} {{ recommenderItem.name }},
+      <br /><br /><br />
+
+      This page is for uploading the recommendation letter for KSEA Scholarship/KSEA Postdoctoral Fellowship.
+      <br /><br />
+
+      The name of the grantee: {{ scholarshipItem.firstName }}
+      {{ scholarshipItem.lastName }} <br /><br />
+      Thank you for your submission.<br />
+      You already submitted the letter: 
+      <a
+        href="{{ recommenderItem.fileURL }}"
+        target="_blank"
+        style="color: blue"
+        >Click to view</a
+      >
+
+      <br /><br /><br /><br />
+
+      If you have any issue, please contact KSEA Scholarship admin: scholarship@ksea.org
+      <br /><br />
+
+      Thank you.
+    </div>
+  </div>
+</div>

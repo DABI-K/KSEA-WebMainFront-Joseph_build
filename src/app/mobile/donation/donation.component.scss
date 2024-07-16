@@ -1,0 +1,101 @@
+.wrap-con {
+  margin: 0 auto;
+  width: 64rem; //original: 32rem
+  padding: 2em 2rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1em;
+}
+h3 {
+  font-weight: bold;
+}
+.wrap-card,
+.wrap-card-blue {
+  padding: 1.5em 1rem;
+  border: 1px solid;
+  border-radius: 4px;
+  line-height: 1.5;
+  font-size: 0.875rem;
+}
+.wrap-card {
+  background-color: #fff;
+  border-color: #eee;
+}
+.wrap-card-blue {
+  background-color: rgb(231, 236, 249);
+  border-color: rgb(215, 218, 225);
+}
+.table-donation {
+  border: 1px solid rgb(226, 226, 226);
+}
+.table-donation th {
+  background-color: rgb(226, 226, 226);
+  text-align: center;
+  padding: 0.8em 0;
+  font-weight: bold;
+}
+.table-donation td {
+  padding: 1em 1rem;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 4rem;
+  border-bottom: 1px solid rgb(226, 226, 226);
+}
+.table-donation td h3 {
+  padding-bottom: 0.6em;
+}
+.table-donation td div > input {
+  width: 4rem;
+}
+.table-donation td div > label {
+  visibility: hidden;
+}
+.table-donation td:hover {
+  background-color: rgba(231, 236, 249, 0.7);
+}
+.table-donation td ul {
+  width: 100%;
+}
+.list-donation li {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  line-height: 3;
+}
+.list-donation li label {
+  width: 13rem;
+  font-weight: bold;
+}
+.list-donation li > input[type="text"] {
+  height: 2em;
+  width: 58%;
+  margin: 0;
+  padding: 0;
+}
+.list-donation li > textarea {
+  width: 58%;
+  height: 5em;
+}
+.wrap-donation-footer {
+  display: flex;
+  justify-content: center;
+}
+.btn-donation {
+  background-color: #2431d8;
+  border-radius: 25px;
+  color: #fff;
+  padding: 1em 2rem;
+}
+.btn-donation:hover {
+  background-color: rgba($color: #2431d8, $alpha: 0.7);
+}
+
+@media screen and (max-width: 520px) {
+  .wrap-con {
+    width: 100vw;
+    padding: 2em 1rem;
+  }
+  .wrap-card {
+    width: 100%;
+  }
+}

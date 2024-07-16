@@ -1,0 +1,806 @@
+<div class="wrap">
+  <div class="nav nav-scroll">
+    <app-nav></app-nav>
+  </div>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>My profile</li>
+  </ul>
+  <div class="wrap-profile">
+    <div class="title">
+      <h1>My profile</h1>
+    </div>
+    <div class="member-card-wrap">
+      <div class="card-header font-ksea">
+        Korean-American Scientists and Engineers Association
+      </div>
+      <div class="card-body">
+        <div class="card-member-info">
+          <table>
+            <tr>
+              <td>Name :</td>
+              <td>
+                <span *ngIf="userInfo && userInfo.userInfo">
+                  {{ userInfo.userInfo.given_name }}
+                  {{ userInfo.userInfo.family_name }}
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>Login ID :</td>
+              <td>{{ userInfo.id }}</td>
+            </tr>
+            <tr>
+              <td>Member type :</td>
+              <td>{{ membership.type }}</td>
+            </tr>
+            <tr>
+              <td>Local chapter :</td>
+              <td>
+                <div
+                  *ngIf="
+                    userInfo &&
+                    userInfo.kseaInfo &&
+                    userInfo.kseaInfo.localChapter
+                  "
+                >
+                  {{ userInfo.kseaInfo.localChapter }}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Technical group :</td>
+              <td>
+                <div *ngIf="userInfo && userInfo.kseaInfo">
+                  {{ userInfo.kseaInfo.group1 }} {{ userInfo.kseaInfo.group2 }}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Expiration date :</td>
+              <td>{{ membership.expirationDate | date : "MM/dd/yyyy" }}</td>
+            </tr>
+          </table>
+          <div class="member-sign">Please sign and carry this card.</div>
+        </div>
+        <div class="card-ksea-info">
+          <div style="text-align: center">
+            <!--assets/images/logo_footer.png-->
+            <img
+              src="https://ksea-files.s3.us-west-2.amazonaws.com/files/KSEA-Logo_PNG.png"
+              width="97"
+              height="97"
+              alt="키시로고"
+            />
+          </div>
+          <ul>
+            <li>1952 Gallows Rd. #300 Vienna, VA 22182</li>
+            <li>Tel : 703.748.1221</li>
+            <li>Fax : 703.748.1331</li>
+            <li>Email : sejong@ksea.org</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div>www.ksea.org</div>
+        <div>재미한인과학기술자협회</div>
+      </div>
+    </div>
+    <div class="wrap-tab">
+      <ul class="nav-tab">
+        <li
+          (click)="currentTab = 'Personal Information'"
+          [ngClass]="currentTab === 'Personal Information' ? 'selected' : ''"
+        >
+          Personal Information
+        </li>
+        <li
+          (click)="currentTab = 'KSEA Information'"
+          [ngClass]="currentTab === 'KSEA Information' ? 'selected' : ''"
+        >
+          KSEA Information
+        </li>
+        <li
+          (click)="currentTab = 'Work Information'"
+          [ngClass]="currentTab === 'Work Information' ? 'selected' : ''"
+        >
+          Work Information
+        </li>
+        <li
+          (click)="currentTab = 'Education Information'"
+          [ngClass]="currentTab === 'Education Information' ? 'selected' : ''"
+        >
+          Education Information
+        </li>
+        <li
+          (click)="currentTab = 'Membership Information'"
+          [ngClass]="currentTab === 'Membership Information' ? 'selected' : ''"
+        >
+          Membership Information
+        </li>
+      </ul>
+      <select class="mobile-nav-tab" [(ngModel)]="currentTab">
+        <option value="Personal Information">Personal Info</option>
+        <option value="KSEA Information">Ksea Info</option>
+        <option value="Work Information">Work Info</option>
+        <option value="Education Information">Education Info</option>
+        <option value="Membership Information">Membership Info</option>
+      </select>
+    </div>
+    <div class="wrap-con">
+      <div class="con-profile" *ngIf="currentTab === 'Personal Information'">
+        <ul class="g-input-profile">
+          <li>
+            <label for="username">ID:</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              #username="ngModel"
+              [(ngModel)]="userInfo.id"
+              disabled
+            />
+          </li>
+          <li>
+            <label for="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              #email="ngModel"
+              [ngModel]="userInfo.email"
+              disabled
+            />
+          </li>
+          <li>
+            <label for="pw">Password:</label>
+            <input
+              type="text"
+              name="password"
+              id="pw"
+              placeholder="********"
+              disabled
+              style="margin-right: 0.2rem"
+            />
+            <button class="btn-basic">
+              <a href="./changePassword">Change Password</a>
+            </button>
+          </li>
+
+          <li>
+            <label for="title">Title: </label>
+            <select
+              id="title"
+              [(ngModel)]="userInfo.userInfo.title"
+              name="title"
+            >
+              <option value="" disabled selected>Category</option>
+              <option *ngFor="let t of titles" [value]="t">{{ t }}</option>
+            </select>
+          </li>
+          <li>
+            <label for="firstName" class="form-label">First Name:</label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              #firstName="ngModel"
+              [(ngModel)]="userInfo.userInfo.given_name"
+            />
+          </li>
+          <li>
+            <label for="middleName" class="form-label">Middle Name:</label>
+            <input
+              type="text"
+              id="middleName"
+              name="middleName"
+              #middleName="ngModel"
+              [(ngModel)]="userInfo.userInfo.middle_name"
+            />
+          </li>
+          <li>
+            <label for="lastName" class="form-label">Last Name:</label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              #lastName="ngModel"
+              [(ngModel)]="userInfo.userInfo.family_name"
+            />
+          </li>
+          <li>
+            <label for="birthDate" class="form-label">Date of Birth:</label>
+            <input
+              type="date"
+              id="birthDate"
+              name="birthDate"
+              #birthDate="ngModel"
+              [(ngModel)]="userInfo.userInfo.birthdate"
+            />
+          </li>
+          <li class="profile-gender">
+            <label for="gender" class="form-label">Gender:</label>
+            <div class="con-radio">
+              <div>
+                <input
+                  type="radio"
+                  value="Woman"
+                  name="gender"
+                  #gender="ngModel"
+                  [(ngModel)]="userInfo.userInfo.gender"
+                />
+                <span>Woman</span>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  value="Man"
+                  name="gender"
+                  #gender="ngModel"
+                  [(ngModel)]="userInfo.userInfo.gender"
+                />
+                <span>Man</span>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  value="Transgender"
+                  name="gender"
+                  #gender="ngModel"
+                  [(ngModel)]="userInfo.userInfo.gender"
+                />
+                <span>Transgender</span>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  value="Non-binary/non-conforming"
+                  name="gender"
+                  #gender="ngModel"
+                  [(ngModel)]="userInfo.userInfo.gender"
+                />
+                <span>Non-binary/non-conforming</span>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  value="Prefer not to respond"
+                  name="gender"
+                  #gender="ngModel"
+                  [(ngModel)]="userInfo.userInfo.gender"
+                />
+                <span> Prefer not to respond</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <label for="phone" class="form-label">Phone Number*:</label>
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              #phone="ngModel"
+              [(ngModel)]="userInfo.userInfo.phone_number"
+            />
+            <p class="profile-info-txt">
+              &nbsp; *Mobile number with a text messaging feature is required for election/voting verification
+            </p>
+          </li>
+          <li>
+            <label for="address" class="form-label">Address:</label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              #address="ngModel"
+              [(ngModel)]="userInfo.userInfo.address"
+            />
+          </li>
+          <li>
+            <label for="city" class="form-label">City:</label>
+            <input
+              type="text"
+              id="city"
+              name="city"
+              #city="ngModel"
+              [(ngModel)]="userInfo.userInfo.city"
+            />
+          </li>
+          <li>
+            <label for="state" class="form-label">State:</label>
+            <input
+              type="text"
+              id="state"
+              name="state"
+              #state="ngModel"
+              [(ngModel)]="userInfo.userInfo.state"
+            />
+          </li>
+          <li>
+            <label for="zipcode" class="form-label">ZIP Code:</label>
+            <input
+              type="text"
+              id="zipcode"
+              name="zipcode"
+              #state="ngModel"
+              [(ngModel)]="userInfo.userInfo.zipcode"
+            />
+          </li>
+          <li>
+            <label for="url" class="form-label">URL:</label>
+            <input
+              type="text"
+              id="url"
+              name="url"
+              #website="ngModel"
+              [(ngModel)]="userInfo.userInfo.website"
+            />
+            <p class="profile-info-txt">
+              &nbsp; e.g.: &nbsp; Homepage, LinkedIn, Facebook
+            </p>
+          </li>
+        </ul>
+        <div class="profile-footer">
+          <button
+            type="button"
+            (click)="update()"
+            class="btn_blue"
+            [disabled]="loading ||
+            !userInfo.userInfo.phone_number
+          "
+          >
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="loading"
+            ></span>
+            Update
+          </button>
+        </div>
+      </div>
+      <div class="con-profile" *ngIf="currentTab === 'KSEA Information'">
+        <ul class="g-input-profile g-input-ksea-info">
+          <li>
+            <label for="chapter" class="form-label">Local Chapter:</label>
+            <select
+              id="chapter"
+              [(ngModel)]="userInfo.kseaInfo.localChapter"
+              name="chapter"
+            >
+              <option *ngFor="let c of kseaInfo.chapters" [value]="c.name">
+                ({{ c.type }}) {{ c.name }}
+              </option>
+            </select>
+          </li>
+          <li>
+            <label for="aps1" class="form-label">APS:</label>
+            <div class="con-select">
+              <select
+                id="aps1"
+                [(ngModel)]="userInfo.kseaInfo.aps1"
+                name="aps1"
+              >
+                <option *ngFor="let a of kseaInfo.aps" [value]="a.code">
+                  {{ a.name }} ({{ a.code }})
+                </option>
+                <option value="None">None</option>
+              </select>
+            </div>
+            <p class="profile-info-txt">
+              &nbsp;This first APS may receive finacial support.
+            </p>
+          </li>
+          <li>
+            <label for="aps2" class="form-label"></label>
+            <div class="con-select">
+              <select
+                id="aps2"
+                [(ngModel)]="userInfo.kseaInfo.aps2"
+                name="aps2"
+              >
+                <option *ngFor="let a of kseaInfo.aps" [value]="a.code">
+                  {{ a.name }} ({{ a.code }})
+                </option>
+                <option value="None">None</option>
+              </select>
+            </div>
+          </li>
+          <li>
+            <label for="aps3" class="form-label"></label>
+            <div class="con-select">
+              <select
+                id="aps3"
+                [(ngModel)]="userInfo.kseaInfo.aps3"
+                name="aps3"
+              >
+                <option *ngFor="let a of kseaInfo.aps" [value]="a.code">
+                  {{ a.name }} ({{ a.code }})
+                </option>
+                <option value="None">None</option>
+              </select>
+            </div>
+          </li>
+          <li>
+            <label for="group1" class="form-label">Technical Group:</label>
+            <select
+              id="group1"
+              [(ngModel)]="userInfo.kseaInfo.group1"
+              name="group1"
+            >
+              <option *ngFor="let g of kseaInfo.groups" [value]="g.code">
+                {{ g.code }} - {{ g.name }}
+              </option>
+              <option value="U">Unknown</option>
+            </select>
+          </li>
+          <li>
+            <label for="group2" class="form-label"></label>
+            <select
+              id="group2"
+              [(ngModel)]="userInfo.kseaInfo.group2"
+              name="group2"
+            >
+              <option *ngFor="let g of kseaInfo.groups" [value]="g.code">
+                {{ g.code }} - {{ g.name }}
+              </option>
+              <option value="U">Unknown</option>
+            </select>
+          </li>
+          <li>
+            <label for="specialty1" class="form-label">Specialty:</label>
+            <div class="con-select">
+              <select
+                id="specialty1"
+                [(ngModel)]="userInfo.kseaInfo.specialty"
+                name="specialty1"
+              >
+                <option *ngFor="let s of kseaInfo.specialties" [value]="s">
+                  {{ s }}
+                </option>
+              </select>
+            </div>
+          </li>
+          <li>
+            <label for="keywords" class="form-label">Specialty keywords:</label>
+            <input
+              type="text"
+              id="keywords"
+              name="keywords"
+              #keywords="ngModel"
+              [(ngModel)]="userInfo.kseaInfo.keywords"
+            />
+            <p class="profile-info-txt">
+              &nbsp; e.g.: &nbsp; Quantum computing, Machine Learning,
+              Microelectronics
+            </p>
+          </li>
+        </ul>
+        <div class="profile-footer">
+          <button
+            type="button"
+            (click)="update()"
+            class="btn_blue"
+            [disabled]="loading"
+          >
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="loading"
+            ></span>
+            Update
+          </button>
+        </div>
+      </div>
+
+      <div class="con-profile" *ngIf="currentTab === 'Work Information'">
+        <p class="profile-title">Current Job information</p>
+        <ul class="g-input-profile">
+          <li>
+            <label for="currentSrartDate" class="form-label">Start Date:</label>
+            <input
+              type="date"
+              id="currentSrartDate"
+              name="currentSrartDate"
+              [(ngModel)]="userInfo.currentJob.startDate"
+            />
+          </li>
+          <li>
+            <label for="currentEmployer" class="form-label">Employer:</label>
+            <input
+              type="text"
+              id="currentEmployer"
+              name="currentEmployer"
+              [(ngModel)]="userInfo.currentJob.employer"
+            />
+          </li>
+          <li>
+            <label for="currentCity" class="form-label">City:</label>
+            <input
+              type="text"
+              id="currentCity"
+              name="currentCity"
+              [(ngModel)]="userInfo.currentJob.city"
+            />
+          </li>
+          <li>
+            <label for="currentState" class="form-label">State:</label>
+            <input
+              type="text"
+              id="currentState"
+              name="currentState"
+              [(ngModel)]="userInfo.currentJob.state"
+            />
+          </li>
+          <li>
+            <label for="currentJobTitle" class="form-label">Job Title:</label>
+            <input
+              type="text"
+              id="currentJobTitle"
+              name="currentJobTitle"
+              [(ngModel)]="userInfo.currentJob.jobTitle"
+            />
+          </li>
+          <li>
+            <label for="currentJobDesc" class="form-label"
+              >Job Description:</label
+            >
+            <input
+              type="text"
+              id="currentJobDesc"
+              name="currentJobDesc"
+              [(ngModel)]="userInfo.currentJob.jobDesc"
+            />
+          </li>
+        </ul>
+        <div class="mobile-hidden">
+          <p class="profile-title title2">Past Work History</p>
+          <p class="profile-info-txt">
+            Click '+' button in the last column to add, and click 'Update'
+            button in
+          </p>
+          <br />
+        </div>
+        <table class="work-information">
+          <tr>
+            <th>Start Date*</th>
+            <th>End Date</th>
+            <th>Employer*</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Job Title</th>
+            <th>Job Description</th>
+            <th>Action</th>
+          </tr>
+          <tr *ngFor="let item of userInfo.jobHistory">
+            <td>{{ item.startDate }}</td>
+            <td>{{ item.endDate }}</td>
+            <td>{{ item.employer }}</td>
+            <td>{{ item.city }}</td>
+            <td>{{ item.state }}</td>
+            <td>{{ item.jobTitle }}</td>
+            <td>{{ item.jobDesc }}</td>
+            <td>
+              <button
+                type="button"
+                class="btn_basic-gray"
+                (click)="delJobInfo(item)"
+              >
+                -
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input
+                type="date"
+                id="startDate"
+                name="startDate"
+                [(ngModel)]="newJobInfo.startDate"
+              />
+            </td>
+            <td>
+              <input
+                type="date"
+                id="endDate"
+                name="endDate"
+                [(ngModel)]="newJobInfo.endDate"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                id="employer"
+                name="employer"
+                [(ngModel)]="newJobInfo.employer"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                id="city"
+                name="city"
+                [(ngModel)]="newJobInfo.city"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                id="state"
+                name="state"
+                [(ngModel)]="newJobInfo.state"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                id="jobTitle"
+                name="jobTitle"
+                [(ngModel)]="newJobInfo.jobTitle"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                id="jobDesc"
+                name="jobDesc"
+                [(ngModel)]="newJobInfo.jobDesc"
+              />
+            </td>
+            <td>
+              <button
+                type="button"
+                (click)="addJobInfo()"
+                class="btn_basic-gray"
+                [disabled]="!newJobInfo.startDate || !newJobInfo.employer"
+              >
+                +
+              </button>
+            </td>
+          </tr>
+        </table>
+        <div class="profile-footer">
+          <button
+            type="button"
+            (click)="update()"
+            class="btn_blue"
+            [disabled]="loading"
+          >
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="loading"
+            ></span>
+            Update
+          </button>
+        </div>
+      </div>
+
+      <div class="con-profile" *ngIf="currentTab === 'Education Information'">
+        <div class="mobile-hidden">
+          For students, please select your current degree program and type the
+          expected year to earn. <br /><br />
+          Click '+' button in the last column to add, and click 'Update' button
+          in the bottom to save. <br /><br />
+        </div>
+        <div class="mobile-show">
+          <p></p>
+        </div>
+        <table class="work-information">
+          <tr>
+            <th>Degree*</th>
+            <th>Major*</th>
+            <th>School*</th>
+            <th>Year Earned*</th>
+            <th>Thesis Title</th>
+            <th>Action</th>
+          </tr>
+          <tr *ngFor="let item of userInfo.educationInfo">
+            <td>{{ item.degree }}</td>
+            <td>{{ item.major }}</td>
+            <td>{{ item.school }}</td>
+            <td>{{ item.yearEarned }}</td>
+            <td>{{ item.thesisTitle }}</td>
+            <td>
+              <button
+                type="button"
+                class="btn_basic-gray"
+                (click)="delEduInfo(item)"
+              >
+                -
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <select id="degree" [(ngModel)]="newEduInfo.degree" name="degree">
+                <option
+                  *ngFor="
+                    let d of [
+                      'associate degree',
+                      'bachelor degree',
+                      'graduate degree',
+                      'doctorate or professional degree'
+                    ]
+                  "
+                  [value]="d"
+                >
+                  {{ d }}
+                </option>
+              </select>
+            </td>
+            <td>
+              <input
+                type="text"
+                id="major"
+                name="major"
+                [(ngModel)]="newEduInfo.major"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                id="school"
+                name="school"
+                [(ngModel)]="newEduInfo.school"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                id="yearEarned"
+                name="yearEarned"
+                [(ngModel)]="newEduInfo.yearEarned"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                id="thesisTitle"
+                name="thesisTitle"
+                [(ngModel)]="newEduInfo.thesisTitle"
+              />
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn_basic-gray"
+                (click)="addEduInfo()"
+                [disabled]="
+                  !newEduInfo.degree ||
+                  !newEduInfo.major ||
+                  !newEduInfo.school ||
+                  !newEduInfo.yearEarned
+                "
+              >
+                +
+              </button>
+            </td>
+          </tr>
+        </table>
+        <div class="profile-footer">
+          <button
+            type="button"
+            (click)="update()"
+            class="btn_blue"
+            [disabled]="loading"
+          >
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="loading"
+            ></span>
+            Update
+          </button>
+        </div>
+      </div>
+
+      <div class="con-profile" *ngIf="currentTab === 'Membership Information'">
+        <app-membership></app-membership>
+      </div>
+    </div>
+  </div>
+</div>

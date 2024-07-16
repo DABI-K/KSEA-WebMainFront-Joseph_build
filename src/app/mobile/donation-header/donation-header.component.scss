@@ -1,0 +1,29 @@
+header {
+  background-image: url("/assets/images/bg_header_donation.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+}
+h1 {
+  padding-top: 1em;
+  display: block;
+}
+div {
+  display: block;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: normal;
+  padding-top: 1em;
+  text-align: center;
+}
+
+@media screen and (max-width: 520px) {
+  header {
+    padding: 0 4rem;
+  }
+  div {
+    text-align: center;
+  }
+}

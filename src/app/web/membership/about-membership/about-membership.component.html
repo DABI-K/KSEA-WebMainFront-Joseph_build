@@ -1,0 +1,219 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-membership-header></app-membership-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>Membership</li>
+    <li>About Membership</li>
+    <h4><p id="about"></p></h4>
+  </ul>
+  <div class="scon-center pd10" style="margin-bottom: 10em">
+    <h2 class="font-ksea">About Membership</h2>
+    <h3>Korean-American Scientists and Engineers Association (KSEA)</h3>
+    <div>
+      <div class="sub-title">
+        <h4>MEMBER ACTIVITIES</h4>
+        <p>
+          Members can participate in numerous KSEA activities or events some of
+          which are listed as follows:
+        </p>
+      </div>
+      <div class="con-member-act">
+        <img src="assets/images/img_membership.png" alt="membership" />
+        <ul class="con-list">
+          <li>Annual meeting & technical conference</li>
+          <li>
+            National Mathematics Competition (for students in the 4th-11th
+            grades)
+          </li>
+          <li>Young Generation programs</li>
+          <li>Publication of KSEA Letters</li>
+          <li>Web and email service</li>
+          <li>Scholarships</li>
+          <li>Job referrals</li>
+          <li>Technical evaluation and consulting</li>
+          <li>Topical symposia/workshops</li>
+          <li>Database development</li>
+          <li>
+            Sponsorship of conferences organized by Korean-American professional
+            societies
+          </li>
+          <li>KSEA Awards</li>
+          <li>Science & technology programs for general public</li>
+        </ul>
+      </div>
+    </div>
+    <div class="con-benefit">
+      <div class="sub-title">
+        <h4>BENEFITS</h4>
+      </div>
+      <ul class="con-list">
+        <li>
+          Leadership development through committee activities and conference
+          organization: KSEA has 13 Technical Groups and 14 Standing Committees
+          for your participation. You are welcome to organize technical sessions
+          at the annual U.S.-Korea Conference on Science, Technology, and
+          Entrepreneurship (UKC) or you may organize a conference of your own.
+        </li>
+        <li>
+          Networking with other Korean-American scientists and engineers: Join
+          the Technical Groups and Committees, or come to the annual conference,
+          UKC. The KSEA is unique in that its members come from all fields of
+          science and engineering. The UKC offers an excellent opportunity to
+          learn about other fields than your own.
+        </li>
+        <li>
+          Office use at KSEA Office while in DC: If you need a temporary office
+          while in DC, please come to the KSEA Headquarters office.
+        </li>
+        <li>
+          Participation in technical evaluation and consulting: We will contact
+          you when we need experts for these services.
+        </li>
+        <li>
+          Opportunities for community service: You may participate in community
+          service activities of your chapter. Or you may help with National Math
+          Competition.
+        </li>
+        <li>
+          Information on professional opportunities in both U.S. and Korea: Look
+          for job openings on the KSEA web.
+        </li>
+        <li>
+          Awards program: KSEA honors members of distinguished records by
+          presenting them with KSEA Awards.
+        </li>
+        <li>
+          Membership dues supporting your chapter: Most of your dues go back to
+          your own chapter.
+        </li>
+      </ul>
+    </div>
+
+    <div class="con-benefit">
+      <div class="sub-title">
+        <h4>Membership Price</h4>
+      </div>
+      <table class="basic-table">
+        <tr>
+          <th>Category</th>
+          <th>Price</th>
+        </tr>
+        <tr>
+          <td>Undergraduate:</td>
+          <td>$0/yr</td>
+        </tr>
+        <tr>
+          <td>Graduate:</td>
+          <td>$15/yr</td>
+        </tr>
+        <tr>
+          <td>Regular:</td>
+          <td>$35/yr</td>
+        </tr>
+        <tr>
+          <td>Lifetime:</td>
+          <td>$525 or less</td>
+        </tr>
+      </table>
+      <br />
+      <ul>
+        <li style="font-weight: bold">
+          *Membership can be purchased in the 'Membership Information' section
+          located within the
+          <u
+            ><a
+              href="https://www.ksea.org/profile"
+              target="_blank"
+              style="color: blue"
+              >[My Profile]</a
+            ></u
+          >
+          page.
+        </li>
+      </ul>
+    </div>
+
+    <button class="btn_blue" *ngIf="!user" routerLink="/signUp">
+      Join KSEA
+    </button>
+
+    <div class="con-benefit">
+      <div class="sub-title">
+        <h4>Lifetime Membership</h4>
+      </div>
+      <ul class="con-list">
+        <li>The lifetime membership shall include the following members:</li>
+        <ul class="con-list" style="padding-left: 30px">
+          <li>
+            Regular members who have paid the annual membership dues 20 times in
+            the combination of the previous payments since 1998 when the HQ
+            database started recording due-payments and the advance payment for
+            future dues.
+          </li>
+          <li>
+            Regular members who pay at least 15 times of the annual dues in one
+            payment regardless of the previous payments.
+          </li>
+        </ul>
+        <li>
+          A lifetime member is entitled to the same privileges as a regular
+          member. However, the voting privileges shall be confirmed at least
+          once in two consecutive terms by participating in the General Election
+          or by a written request to the HQ.
+        </li>
+        <li>
+          All lifetime members shall be provided a ballot in the General
+          Election. However, she or he will not be counted as an eligible voter
+          if she or he has not participated in the General Election for the most
+          recent three or more consecutive terms including the current term.
+        </li>
+        <li>
+          The lifetime member shall be acknowledged in the KSEA media and
+          updated every term.
+        </li>
+        <li style="font-weight: bold">
+          Lifetime membership can be purchased in the 'Membership Information'
+          section within the
+          <u
+            ><a
+              href="https://www.ksea.org/profile"
+              target="_blank"
+              style="color: blue"
+              >[My Profile]</a
+            ></u
+          >
+          page.
+        </li>
+      </ul>
+    </div>
+
+<!-- <<<<<<< HEAD -->
+
+
+    <div class="wrap-lifetime-member">
+        <h4><p id="lifetime">  </p></h4>
+        <div class="sub-title">
+            <br><br><br>
+            <h4>Lifetime Members</h4>
+        </div>
+
+        <table class="basic-table">
+            <tr>
+                <th>Count</th>
+                <th>Name</th>
+                <th>Local Chapter</th>
+                <th>Employer</th>
+            </tr>
+            <tr *ngFor="let item of filter('Lifetime Members'); let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.localchapter }}</td>
+                <td>{{ item.employer }}</td>
+            </tr>
+        </table>
+<!-- >>>>>>> design-main -->
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

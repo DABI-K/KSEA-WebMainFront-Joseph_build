@@ -1,0 +1,1761 @@
+<div class="wrap">
+  <div class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <span>Admin Page</span>
+      <button
+        *ngIf="permission && permission.type !== 'ECDC'"
+        pButton
+        type="button"
+        label="Send Emails"
+        icon="pi pi-send"
+        class="p-button-info p-button-sm"
+        (click)="showDialogForEmail()"
+      ></button>
+      <button
+        *ngIf="permission && !userInfoDataloading && !membershipDataloading"
+        pButton
+        type="button"
+        label="Download CSV"
+        icon="pi pi-save"
+        class="p-button-info p-button-sm"
+        (click)="downloadCSV()"
+      ></button>
+    </div>
+  </div>
+  <div
+    *ngIf="permission && (userInfoDataloading || membershipDataloading)"
+    class="wrap-form"
+  >
+    <div *ngIf="membershipDataloading">
+      Membership Data is loading...
+      <span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+      ></span>
+    </div>
+    <div *ngIf="!membershipDataloading">Membership Data loading is done!</div>
+    <p-progressBar [value]="membershipDataProgressValue"></p-progressBar>
+    <br />
+    <div *ngIf="userInfoDataloading">
+      User Information Data is loading...
+      <span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+      ></span>
+    </div>
+    <div *ngIf="!userInfoDataloading">
+      User Information Data loading is done!
+    </div>
+    <p-progressBar [value]="userInfoDataProgressValue"></p-progressBar>
+  </div>
+  <div
+    *ngIf="permission && !userInfoDataloading && !membershipDataloading"
+    class="wrap-form"
+  >
+    <p-table
+      #DT
+      [value]="grandAllData"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      dataKey="value.id"
+      [showCurrentPageReport]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50, 100, 200]"
+      [paginator]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      (onFilter)="onFilter($event, DT)"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="value.id">
+            ID <p-sortIcon field="value.id"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.email">
+            email <p-sortIcon field="value.email"></p-sortIcon>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+            pSortableColumn="value.numberOfPayments"
+          >
+            NumberOfPayments
+            <p-sortIcon field="value.numberOfPayments"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.typeForDisplay">
+            Membership Type
+            <p-sortIcon field="value.typeForDisplay"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.expirationDate">
+            Expiration Date
+            <p-sortIcon field="value.expirationDate"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.lifetimeDate">
+            Lifetime Date
+            <p-sortIcon field="value.lifetimeDate"></p-sortIcon>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+            pSortableColumn="value.customerId"
+          >
+            customerId
+            <p-sortIcon field="value.customerId"></p-sortIcon>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+            pSortableColumn="value.subscriptionId"
+          >
+            subscriptionId
+            <p-sortIcon field="value.subscriptionId"></p-sortIcon>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+            pSortableColumn="value.subscriptionStatus"
+          >
+            subscriptionStatus
+            <p-sortIcon field="value.subscriptionStatus"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.userInfo.given_name">
+            given_name
+            <p-sortIcon field="value.userInfo.given_name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.userInfo.middle_name">
+            middle_name
+            <p-sortIcon field="value.userInfo.middle_name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.userInfo.family_name">
+            family_name
+            <p-sortIcon field="value.userInfo.family_name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.kseaInfo.aps1">
+            APS1
+            <p-sortIcon field="value.kseaInfo.aps1"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.kseaInfo.aps2">
+            APS2
+            <p-sortIcon field="value.kseaInfo.aps2"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.kseaInfo.aps3">
+            APS3
+            <p-sortIcon field="value.kseaInfo.aps3"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.kseaInfo.group1">
+            Group1
+            <p-sortIcon field="value.kseaInfo.group1"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.kseaInfo.group2">
+            Group2
+            <p-sortIcon field="value.kseaInfo.group2"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.kseaInfo.keywords">
+            Keywords
+            <p-sortIcon field="value.kseaInfo.keywords"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.kseaInfo.localChapter">
+            Local Chapter
+            <p-sortIcon field="value.kseaInfo.localChapter"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.kseaInfo.specialty">
+            Specialty
+            <p-sortIcon field="value.kseaInfo.specialty"></p-sortIcon>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+            pSortableColumn="value.userInfo.address"
+          >
+            Street address
+            <p-sortIcon field="value.userInfo.address"></p-sortIcon>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+            pSortableColumn="value.userInfo.city"
+          >
+            City
+            <p-sortIcon field="value.userInfo.city"></p-sortIcon>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+            pSortableColumn="value.userInfo.state"
+          >
+            State
+            <p-sortIcon field="value.userInfo.state"></p-sortIcon>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+            pSortableColumn="value.userInfo.zipcode"
+          >
+            Zipcode
+            <p-sortIcon field="value.userInfo.zipcode"></p-sortIcon>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+            pSortableColumn="value.userInfo.birthdate"
+          >
+            Birth Date
+            <p-sortIcon field="value.userInfo.birthdate"></p-sortIcon>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+            pSortableColumn="value.userInfo.phone_number"
+          >
+            Phone Number
+            <p-sortIcon field="value.userInfo.phone_number"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.userInfo.title">
+            Title
+            <p-sortIcon field="value.userInfo.title"></p-sortIcon>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+            pSortableColumn="value.userInfo.ukc"
+          >
+            UKC?
+            <p-sortIcon field="value.userInfo.ukc"></p-sortIcon>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+            pSortableColumn="value.userInfo.website"
+          >
+            Website
+            <p-sortIcon field="value.userInfo.website"></p-sortIcon>
+          </th>
+
+          <th pSortableColumn="value.currentJob.employer">
+            Current Job - Employer
+            <p-sortIcon field="value.currentJob.employer"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.currentJob.startDate">
+            Current Job - Start Date
+            <p-sortIcon field="value.currentJob.startDate"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.currentJob.jobTitle">
+            Current Job - JobTitle
+            <p-sortIcon field="value.currentJob.jobTitle"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.currentJob.jobDesc">
+            Current Job - Job Description
+            <p-sortIcon field="value.currentJob.jobDesc"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.currentJob.state">
+            Current Job - state
+            <p-sortIcon field="value.currentJob.state"></p-sortIcon>
+          </th>
+          <th pSortableColumn="value.currentJob.city">
+            Current Job - city
+            <p-sortIcon field="value.currentJob.city"></p-sortIcon>
+          </th>
+          <th *ngIf="permission.type === 'SU'">Edit</th>
+          <th *ngIf="permission.type !== 'SU'">View</th>
+        </tr>
+        <tr>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="value.id"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="value.email"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            <p-columnFilter
+              type="numeric"
+              field="value.numberOfPayments"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="value.typeForDisplay"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="date"
+              field="value.expirationDate"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="date"
+              field="value.lifetimeDate"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            <p-columnFilter
+              type="text"
+              field="value.customerId"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            <p-columnFilter
+              type="text"
+              field="value.subscriptionId"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            <p-columnFilter
+              type="text"
+              field="value.subscriptionStatus"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="value.userInfo.given_name"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="value.userInfo.middle_name"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="value.userInfo.family_name"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th colspan="3">
+            <p-columnFilter
+              type="text"
+              field="value.kseaInfo.apsAll"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th colspan="2">
+            <p-columnFilter
+              type="text"
+              field="value.kseaInfo.groups"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="value.kseaInfo.keywords"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="value.kseaInfo.localChapter"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="value.kseaInfo.specialty"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            <p-columnFilter
+              type="text"
+              field="value.userInfo.address"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            <p-columnFilter
+              type="text"
+              field="value.userInfo.city"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            <p-columnFilter
+              type="text"
+              field="value.userInfo.state"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            <p-columnFilter
+              type="text"
+              field="value.userInfo.zipcode"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            <p-columnFilter
+              type="date"
+              field="value.userInfo.birthdate"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            <p-columnFilter
+              type="text"
+              field="value.userInfo.phone_number"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="value.userInfo.title"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            <p-columnFilter
+              type="text"
+              field="value.userInfo.ukc"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            <p-columnFilter
+              type="text"
+              field="value.userInfo.website"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+
+          <th>
+            <p-columnFilter
+              type="text"
+              field="value.currentJob.employer"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="date"
+              field="value.currentJob.startDate"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="value.currentJob.jobTitle"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="value.currentJob.jobDesc"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="value.currentJob.state"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="value.currentJob.city"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-data>
+        <tr>
+          <td>{{ data.value.id }}</td>
+          <td>{{ data.value.email }}</td>
+          <td
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            {{ data.value.numberOfPayments }}
+          </td>
+          <td>{{ data.value.typeForDisplay }}</td>
+          <td *ngIf="data.value.expirationDate">
+            {{ data.value.expirationDate | date : "MM/dd/yyyy" }}
+          </td>
+          <td *ngIf="!data.value.expirationDate">No Expiration Date</td>
+          <td *ngIf="data.value.lifetimeDate">
+            {{ data.value.lifetimeDate | date : "MM/dd/yyyy" }}
+          </td>
+          <td *ngIf="!data.value.lifetimeDate">No Lifetime Date</td>
+          <td
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            {{ data.value.customerId }}
+          </td>
+          <td
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            {{ data.value.subscriptionId }}
+          </td>
+          <td
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            {{ data.value.subscriptionStatus }}
+          </td>
+          <td>{{ data.value.userInfo.given_name }}</td>
+          <td>{{ data.value.userInfo.middle_name }}</td>
+          <td>{{ data.value.userInfo.family_name }}</td>
+
+          <td>{{ data.value.kseaInfo.aps1 }}</td>
+          <td>{{ data.value.kseaInfo.aps2 }}</td>
+          <td>{{ data.value.kseaInfo.aps3 }}</td>
+          <td>{{ data.value.kseaInfo.group1 }}</td>
+          <td>{{ data.value.kseaInfo.group2 }}</td>
+          <td>{{ data.value.kseaInfo.keywords }}</td>
+          <td>{{ data.value.kseaInfo.localChapter }}</td>
+          <td>{{ data.value.kseaInfo.specialty }}</td>
+
+          <td
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            {{ data.value.userInfo.address }}
+          </td>
+          <td
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            {{ data.value.userInfo.city }}
+          </td>
+          <td
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            {{ data.value.userInfo.state }}
+          </td>
+          <td
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            {{ data.value.userInfo.zipcode }}
+          </td>
+
+          <td
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            {{ data.value.userInfo.birthdate | date : "MM/dd/yyyy" }}
+          </td>
+          <td
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            {{ data.value.userInfo.phone_number }}
+          </td>
+          <td>{{ data.value.userInfo.title }}</td>
+          <td
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            {{ data.value.userInfo.ukc }}
+          </td>
+          <td
+            *ngIf="
+              permission.type === 'SU' ||
+              permission.type === 'HQ' ||
+              permission.type === 'ECDC'
+            "
+          >
+            {{ data.value.userInfo.website }}
+          </td>
+
+          <td>{{ data.value.currentJob.employer }}</td>
+          <td>{{ data.value.currentJob.startDate | date : "MM/dd/yyyy" }}</td>
+          <td>{{ data.value.currentJob.jobTitle }}</td>
+          <td>{{ data.value.currentJob.jobDesc }}</td>
+          <td>{{ data.value.currentJob.state }}</td>
+          <td>{{ data.value.currentJob.city }}</td>
+
+          <td *ngIf="permission.type === 'SU'">
+            <span
+              class="pi pi-pencil"
+              (click)="showDialogForEdit(data, false)"
+            ></span>
+          </td>
+          <td *ngIf="permission.type !== 'SU'">
+            <span
+              class="pi pi-pencil"
+              (click)="showDialogForEdit(data, true)"
+            ></span>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-chart type="bar" [data]="apsData" [options]="basicOptions"></p-chart>
+    <p-chart type="bar" [data]="groupData" [options]="basicOptions"></p-chart>
+    <p-chart type="bar" [data]="chapterData" [options]="basicOptions"></p-chart>
+  </div>
+
+  <div
+    *ngIf="permission && !membershipDataloading && permission.type === 'SU'"
+    class="wrap-form"
+  >
+    <input type="date" id="asOfDate" [(ngModel)]="asOfDate" />
+
+    <p-button
+      icon="pi pi-send"
+      *ngIf="!readOnly"
+      (click)="dailyMembershipHandler()"
+      styleClass="p-button-text"
+      label="DailyCheck"
+    ></p-button>
+
+    <br />
+    <input type="text" id="emailForRefund" [(ngModel)]="emailForRefund" />
+    <p-button
+      icon="pi pi-save"
+      *ngIf="!readOnly"
+      (click)="refund()"
+      styleClass="p-button-text"
+      label="Refund"
+    ></p-button>
+    <br />
+    <textarea [(ngModel)]="logs" disabled></textarea>
+  </div>
+</div>
+
+<p-dialog
+  *ngIf="!userInfoDataloading && !membershipDataloading && selectedData"
+  header="Edit Data"
+  [(visible)]="editDisplay"
+  [modal]="true"
+  [style]="{ width: '70%' }"
+>
+  <p-divider align="center">
+    <span class="p-tag">Personal Info</span>
+  </p-divider>
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon"
+      >Title, Family Name, Middle Name, Given Name</span
+    >
+    <input
+      type="text"
+      [(ngModel)]="selectedData.value.userInfo.family_name"
+      pInputText
+      [disabled]="readOnly"
+      placeholder="Family Name"
+    />
+    <input
+      type="text"
+      [(ngModel)]="selectedData.value.userInfo.middle_name"
+      pInputText
+      [disabled]="readOnly"
+      placeholder="Middle Mame"
+    />
+    <input
+      type="text"
+      [(ngModel)]="selectedData.value.userInfo.given_name"
+      pInputText
+      [disabled]="readOnly"
+      placeholder="Given Name"
+    />
+  </div>
+
+  <div
+    *ngIf="
+      permission.type === 'SU' ||
+      permission.type === 'HQ' ||
+      permission.type === 'ECDC'
+    "
+    class="p-inputgroup"
+  >
+    <span class="p-inputgroup-addon"
+      >Gender, Birthdate, Phone Number, Website</span
+    >
+    <select
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.userInfo.gender"
+    >
+      <option value="Woman">Woman</option>
+      <option value="Man">Man</option>
+      <option value="Transgender">Transgender</option>
+      <option value="Non-binary/non-conforming">
+        Non-binary/non-conforming
+      </option>
+      <option value="Prefer not to respond">Prefer not to respond</option>
+    </select>
+    <input
+      type="date"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.userInfo.birthdate"
+      pInputText
+      placeholder="Birthdate"
+    />
+
+    <input
+      type="text"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.userInfo.phone_number"
+      pInputText
+      placeholder="Phone Number"
+    />
+
+    <input
+      type="text"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.userInfo.website"
+      pInputText
+      placeholder="Website"
+    />
+  </div>
+
+  <div
+    *ngIf="
+      permission.type === 'SU' ||
+      permission.type === 'HQ' ||
+      permission.type === 'ECDC'
+    "
+    class="p-inputgroup"
+  >
+    <span class="p-inputgroup-addon">Address,City,State,ZipCode</span>
+    <input
+      [disabled]="readOnly"
+      type="text"
+      [(ngModel)]="selectedData.value.userInfo.address"
+      pInputText
+      placeholder="Address"
+    />
+    <input
+      type="text"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.userInfo.city"
+      pInputText
+      placeholder="City"
+    />
+    <input
+      type="text"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.userInfo.state"
+      pInputText
+      placeholder="State"
+    />
+    <input
+      type="text"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.userInfo.zipcode"
+      pInputText
+      placeholder="Zipcode"
+    />
+  </div>
+
+  <br />
+
+  <p-divider align="center">
+    <span class="p-tag">Membership Info</span>
+  </p-divider>
+
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon">Membership Type</span>
+    <select [disabled]="readOnly" [(ngModel)]="selectedData.value.type">
+      <option value="Lifetime">Lifetime</option>
+      <option value="Student">Student</option>
+      <option value="Regular">Regular</option>
+      <option value="Unpaid">Unpaid</option>
+    </select>
+  </div>
+
+  <div *ngIf="selectedData.value.type === 'Student'" class="p-inputgroup">
+    <span class="p-inputgroup-addon">Student Type</span>
+    <select
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.schoolInfo.type"
+    >
+      <option value="Undergraduate">Undergraduate</option>
+      <option value="Graduate">Graduate</option>
+    </select>
+  </div>
+
+  <div *ngIf="selectedData.value.type === 'Student'" class="p-inputgroup">
+    <span class="p-inputgroup-addon">School Name</span>
+    <input
+      type="text"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.schoolInfo.name"
+      pInputText
+      placeholder="School Name"
+    />
+  </div>
+
+  <div *ngIf="selectedData.value.type === 'Lifetime'" class="p-inputgroup">
+    <span class="p-inputgroup-addon">Lifetime Start Date</span>
+    <input
+      type="date"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.lifetimeDate"
+      pInputText
+      placeholder="Lifetime Start Date"
+    />
+  </div>
+
+  <div
+    *ngIf="
+      selectedData.value.type === 'Regular' ||
+      selectedData.value.type === 'Student'
+    "
+    class="p-inputgroup"
+  >
+    <span class="p-inputgroup-addon">Expiration Date</span>
+    <input
+      type="date"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.expirationDate"
+      pInputText
+      placeholder="Expiration Date"
+    />
+  </div>
+
+  <div
+    *ngIf="
+      permission.type === 'SU' ||
+      permission.type === 'HQ' ||
+      permission.type === 'ECDC'
+    "
+    class="p-inputgroup"
+  >
+    <span class="p-inputgroup-addon"
+      >customerId, subscriptionId, subscriptionStatus</span
+    >
+    <input
+      [disabled]="readOnly"
+      type="text"
+      [(ngModel)]="selectedData.value.customerId"
+      pInputText
+      placeholder="customerId"
+    />
+    <input
+      type="text"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.subscriptionId"
+      pInputText
+      placeholder="subscriptionId"
+    />
+    <select
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.subscriptionStatus"
+    >
+      <option value="Unsubscribed">Unsubscribed</option>
+      <option value="subscribed">subscribed</option>
+      <option value="canceled">canceled</option>
+    </select>
+  </div>
+
+  <br />
+  <p-table
+    *ngIf="
+      permission.type === 'SU' ||
+      permission.type === 'HQ' ||
+      permission.type === 'ECDC'
+    "
+    [value]="selectedData.value.paymentHistory"
+    [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template pTemplate="header">
+      <th>PaymentAction</th>
+      <th>Description</th>
+      <th>Amount</th>
+      <th>Date</th>
+      <th>Action</th>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <td>
+          <select [disabled]="readOnly" [(ngModel)]="item.action">
+            <option
+              *ngFor="
+                let d of [
+                  'PayRegularMembership',
+                  'RefundRegularMembership',
+                  'PayLifetimeMembership',
+                  'RefundLifetimeMembership',
+                  'PayGraduateStudentMembership',
+                  'RefundGraduateStudentMembership',
+                  'PayUndergraduateStudentMembership',
+                  'RefundUndergraduateStudentMembership',
+                  'PayDonation',
+                  'RefundDonation',
+                  'CancelSubscription',
+                  'ChangeSubscriptionPaymentMethod',
+                  'ResumeSubscription'
+                ]
+              "
+              [value]="d"
+            >
+              {{ d }}
+            </option>
+          </select>
+        </td>
+        <td>
+          <input
+            type="text"
+            [disabled]="readOnly"
+            [(ngModel)]="item.description"
+            pInputText
+            placeholder="Description"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            [disabled]="readOnly"
+            [(ngModel)]="item.amounts"
+            pInputText
+            placeholder="Amount"
+          />
+        </td>
+        <td>
+          <input
+            type="date"
+            [disabled]="readOnly"
+            [(ngModel)]="item.date"
+            pInputText
+            placeholder="Date"
+          />
+        </td>
+        <td>
+          <p-button
+            icon="pi pi-times"
+            *ngIf="!readOnly"
+            (click)="delPaymentHistory(item)"
+            styleClass="p-button-text"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template *ngIf="!readOnly" pTemplate="footer">
+      <tr>
+        <td>
+          <select [(ngModel)]="newPaymentItem.action">
+            <option
+              *ngFor="
+                let d of [
+                  'PayRegularMembership',
+                  'PayLifetimeMembership',
+                  'PayGraduateStudentMembership',
+                  'PayUndergraduateStudentMembership',
+                  'PayDonation',
+                  'CancelSubscription',
+                  'ChangeSubscriptionPaymentMethod',
+                  'ResumeSubscription'
+                ]
+              "
+              [value]="d"
+            >
+              {{ d }}
+            </option>
+          </select>
+        </td>
+        <td>
+          <input
+            type="text"
+            [(ngModel)]="newPaymentItem.description"
+            pInputText
+            placeholder="Description"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            [(ngModel)]="newPaymentItem.amounts"
+            pInputText
+            placeholder="Amount"
+          />
+        </td>
+        <td>
+          <input
+            type="date"
+            [(ngModel)]="newPaymentItem.date"
+            pInputText
+            placeholder="Date"
+          />
+        </td>
+        <td>
+          <button
+            type="button"
+            (click)="addNewPaymentInfo()"
+            class="btn_basic-gray"
+            [disabled]="!newPaymentItem.action || !newPaymentItem.amounts"
+          >
+            +
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <br />
+
+  <p-divider align="center">
+    <span class="p-tag">KSEA Info</span>
+  </p-divider>
+
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon">APS1</span>
+    <select
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.kseaInfo.aps1"
+    >
+      <option *ngFor="let a of kseaInfo.aps" [value]="a.code">
+        {{ a.name }} ({{ a.code }})
+      </option>
+      <option value="None">None</option>
+    </select>
+  </div>
+
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon">APS2</span>
+    <select
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.kseaInfo.aps2"
+    >
+      <option *ngFor="let a of kseaInfo.aps" [value]="a.code">
+        {{ a.name }} ({{ a.code }})
+      </option>
+      <option value="None">None</option>
+    </select>
+  </div>
+
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon">APS3</span>
+    <select
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.kseaInfo.aps3"
+    >
+      <option *ngFor="let a of kseaInfo.aps" [value]="a.code">
+        {{ a.name }} ({{ a.code }})
+      </option>
+      <option value="None">None</option>
+    </select>
+  </div>
+
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon">Group1</span>
+    <select
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.kseaInfo.group1"
+    >
+      <option *ngFor="let g of kseaInfo.groups" [value]="g.code">
+        {{ g.code }}
+      </option>
+      <option value="U">Unknown</option>
+    </select>
+  </div>
+
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon">Group2</span>
+    <select
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.kseaInfo.group2"
+    >
+      <option *ngFor="let g of kseaInfo.groups" [value]="g.code">
+        {{ g.code }}
+      </option>
+      <option value="U">Unknown</option>
+    </select>
+  </div>
+
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon">Local Chapter</span>
+    <select
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.kseaInfo.localChapter"
+    >
+      <option *ngFor="let c of kseaInfo.chapters" [value]="c.name">
+        ({{ c.type }}) {{ c.name }}
+      </option>
+    </select>
+  </div>
+
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon">Specialty</span>
+    <select
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.kseaInfo.specialty"
+    >
+      <option *ngFor="let s of kseaInfo.specialties" [value]="s">
+        {{ s }}
+      </option>
+    </select>
+  </div>
+
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon">Keywords</span>
+    <input
+      type="text"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.kseaInfo.keywords"
+      pInputText
+      placeholder="Keywords"
+    />
+  </div>
+
+  <br />
+
+  <p-divider align="center">
+    <span class="p-tag">Current Job</span>
+  </p-divider>
+
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon"
+      >Employer, Start Date, Job Title, Job Description</span
+    >
+    <input
+      type="text"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.currentJob.employer"
+      pInputText
+      placeholder="Employer"
+    />
+    <input
+      type="date"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.currentJob.startDate"
+      pInputText
+      placeholder="Start Date"
+    />
+    <input
+      type="text"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.currentJob.jobTitle"
+      pInputText
+      placeholder="Job Title"
+    />
+    <input
+      type="text"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.currentJob.jobDesc"
+      pInputText
+      placeholder="Job Description"
+    />
+  </div>
+
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon">City, State</span>
+    <input
+      type="text"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.currentJob.city"
+      pInputText
+      placeholder="City"
+    />
+    <input
+      type="text"
+      [disabled]="readOnly"
+      [(ngModel)]="selectedData.value.currentJob.state"
+      pInputText
+      placeholder="State"
+    />
+  </div>
+
+  <br />
+
+  <p-divider
+    *ngIf="
+      permission.type === 'SU' ||
+      permission.type === 'HQ' ||
+      permission.type === 'ECDC'
+    "
+    align="center"
+  >
+    <span class="p-tag">Job History</span>
+  </p-divider>
+
+  <p-table
+    *ngIf="
+      permission.type === 'SU' ||
+      permission.type === 'HQ' ||
+      permission.type === 'ECDC'
+    "
+    [value]="selectedData.value.jobHistory"
+    [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template pTemplate="header">
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Employer</th>
+      <th>Job Title</th>
+      <th>Job Description</th>
+      <th>City</th>
+      <th>state</th>
+      <th>Action</th>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <td>
+          <input
+            type="date"
+            [disabled]="readOnly"
+            [(ngModel)]="item.startDate"
+            pInputText
+            placeholder="startDate"
+          />
+        </td>
+        <td>
+          <input
+            type="date"
+            [disabled]="readOnly"
+            [(ngModel)]="item.endDate"
+            pInputText
+            placeholder="endDate"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            [disabled]="readOnly"
+            [(ngModel)]="item.employer"
+            pInputText
+            placeholder="Employer"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            [disabled]="readOnly"
+            [(ngModel)]="item.jobTitle"
+            pInputText
+            placeholder="Job Title"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            [disabled]="readOnly"
+            [(ngModel)]="item.jobDesc"
+            pInputText
+            placeholder="Job Description"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            [disabled]="readOnly"
+            [(ngModel)]="item.city"
+            pInputText
+            placeholder="City"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            [disabled]="readOnly"
+            [(ngModel)]="item.state"
+            pInputText
+            placeholder="State"
+          />
+        </td>
+        <td>
+          <p-button
+            *ngIf="!readOnly"
+            icon="pi pi-times"
+            (click)="delJobHistory(item)"
+            styleClass="p-button-text"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template *ngIf="!readOnly" pTemplate="footer">
+      <tr>
+        <td>
+          <input
+            type="date"
+            id="startDate"
+            name="startDate"
+            [(ngModel)]="newJobInfo.startDate"
+          />
+        </td>
+        <td>
+          <input
+            type="date"
+            id="endDate"
+            name="endDate"
+            [(ngModel)]="newJobInfo.endDate"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            id="employer"
+            name="employer"
+            [(ngModel)]="newJobInfo.employer"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            id="city"
+            name="city"
+            [(ngModel)]="newJobInfo.city"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            id="state"
+            name="state"
+            [(ngModel)]="newJobInfo.state"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            id="jobTitle"
+            name="jobTitle"
+            [(ngModel)]="newJobInfo.jobTitle"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            id="jobDesc"
+            name="jobDesc"
+            [(ngModel)]="newJobInfo.jobDesc"
+          />
+        </td>
+        <td>
+          <button
+            type="button"
+            (click)="addJobInfo()"
+            class="btn_basic-gray"
+            [disabled]="!newJobInfo.startDate || !newJobInfo.employer"
+          >
+            +
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <br />
+
+  <p-divider align="center">
+    <span class="p-tag">Education Info</span>
+  </p-divider>
+
+  <p-table
+    [value]="selectedData.value.educationInfo"
+    [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template pTemplate="header">
+      <th>Degree</th>
+      <th>Major</th>
+      <th>School</th>
+      <th>Thesis Title</th>
+      <th>Earned Year</th>
+      <th>Action</th>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <td>
+          <select
+            [disabled]="readOnly"
+            id="degree"
+            [(ngModel)]="item.degree"
+            name="degree"
+          >
+            <option
+              *ngFor="
+                let d of [
+                  'associate degree',
+                  'bachelor degree',
+                  'graduate degree',
+                  'doctorate or professional degree'
+                ]
+              "
+              [value]="d"
+            >
+              {{ d }}
+            </option>
+          </select>
+        </td>
+        <td>
+          <input
+            type="text"
+            [disabled]="readOnly"
+            [(ngModel)]="item.major"
+            pInputText
+            placeholder="Major"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            [disabled]="readOnly"
+            [(ngModel)]="item.school"
+            pInputText
+            placeholder="School"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            [disabled]="readOnly"
+            [(ngModel)]="item.thesisTitle"
+            pInputText
+            placeholder="Thesis Title"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            [disabled]="readOnly"
+            [(ngModel)]="item.yearEarned"
+            pInputText
+            placeholder="Earned Year"
+          />
+        </td>
+        <td>
+          <p-button
+            *ngIf="!readOnly"
+            icon="pi pi-times"
+            (click)="delEducationItem(item)"
+            styleClass="p-button-text"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template *ngIf="!readOnly" pTemplate="footer">
+      <tr>
+        <td>
+          <select id="degree" [(ngModel)]="newEduInfo.degree" name="degree">
+            <option
+              *ngFor="
+                let d of [
+                  'associate degree',
+                  'bachelor degree',
+                  'graduate degree',
+                  'doctorate or professional degree'
+                ]
+              "
+              [value]="d"
+            >
+              {{ d }}
+            </option>
+          </select>
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="newEduInfo.major" />
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="newEduInfo.school" />
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="newEduInfo.thesisTitle" />
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="newEduInfo.yearEarned" />
+        </td>
+        <td>
+          <button
+            type="button"
+            (click)="addEduInfo()"
+            class="btn_basic-gray"
+            [disabled]="!newEduInfo.degree || !newEduInfo.major"
+          >
+            +
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-times"
+      (click)="cancelEdit()"
+      label="Close"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readOnly"
+      icon="pi pi-save"
+      (click)="saveAndCloseEdit()"
+      label="Save & Close"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  header="Email"
+  [(visible)]="emailDisplay"
+  [modal]="true"
+  [style]="{ width: '90%' }"
+>
+  <div class="con-contact">
+    <ul>
+      <li>
+        <label for="Name"></label>
+        <input
+          type="text"
+          style="width: 100%"
+          id="subject"
+          [(ngModel)]="name"
+          placeholder="Name"
+        />
+      </li>
+      <li>
+        <label for="subject"></label>
+        <input
+          type="text"
+          style="width: 100%"
+          id="subject"
+          [(ngModel)]="subject"
+          placeholder="Subject"
+        />
+      </li>
+      <li>
+        <label for="email"></label>
+        <input
+          type="text"
+          style="width: 100%"
+          id="email"
+          [(ngModel)]="email"
+          placeholder="To email address list (csv)"
+        />
+      </li>
+      <!-- tiny edit -->
+      <li> 
+        <editor
+          [init]="{
+            base_url: '/tinymce',
+            suffix: '.min',
+            relative_urls: false,
+            convert_urls: false
+          }"
+          [(ngModel)]="content"
+        ></editor>
+      </li>
+      <li>
+        <textarea class= "textarea_html" [(ngModel)]="content"></textarea>
+      </li>
+      <li>
+        <input #myFileInput type="file" (change)="addFile($event)" />
+        <table *ngIf="fileList">
+          <thead>
+            <th>File Name</th>
+            <th>Action</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of fileList">
+              <td>
+                {{ item.filename }}
+              </td>
+              <td>
+                <button
+                  type="button"
+                  class="btn_basic-gray"
+                  (click)="deleteFile(item)"
+                >
+                  -
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-refresh"
+      (click)="resetEmailForm()"
+      label="Reset"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      icon="pi pi-send"
+      (click)="sendEmail()"
+      [disabled]="emailSending"
+      label="Send"
+      styleClass="p-button-text"
+    >
+      <span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+        *ngIf="emailSending"
+      ></span>
+    </p-button>
+    <p-button
+      icon="pi pi-times"
+      (click)="closeEmailForm()"
+      label="Close"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>

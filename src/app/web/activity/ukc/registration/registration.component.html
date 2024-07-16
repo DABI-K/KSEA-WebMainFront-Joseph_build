@@ -1,0 +1,2649 @@
+<div class="wrap" *ngIf="!loading">
+  <div class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <span>US Korea <wbr /> Conference 2024</span>
+    </div>
+  </div>
+  <div class="wrap-card">
+    <div class="wrap-form">
+      <div>
+        <p *ngIf="registration.hasMembership">
+          As a KSEA member, you are eligible for a $50 discount on your UKC
+          registration fee.
+        </p>
+        <p *ngIf="!registration.hasMembership">
+          We invite you to join the KSEA Membership and enjoy a $50 discount on
+          your UKC registration.
+          <a
+            href="https://www.ksea.org/profile"
+            target="_blank"
+            style="color: blue"
+          >
+            Join KSEA
+          </a>
+        </p>
+      </div>
+      <br />
+      <div *ngIf="registration.specialDiscountCode === 'A'">
+        <p>Your waiver code: {{ registration.specialDiscountCode }}</p>
+        <li>
+          Your waiver code benefit: Your full registration fee and full meal
+          cost will be waived.
+        </li>
+      </div>
+      <div *ngIf="registration.specialDiscountCode === 'B'">
+        <p>Your waiver code: {{ registration.specialDiscountCode }}</p>
+        <li>
+          Your waiver code benefit: Your full registration fee will be waived.
+        </li>
+      </div>
+      <div *ngIf="registration.specialDiscountCode === 'C'">
+        <p>Your waiver code: {{ registration.specialDiscountCode }}</p>
+        <li>
+          Your waiver code benefit: Your full registration fee, as well as
+          Thursday, Friday, and Saturday breakfast and Thursday and Friday
+          lunch, will be waived.
+        </li>
+      </div>
+      <div *ngIf="registration.specialDiscountCode === 'D'">
+        <p>Your waiver code: {{ registration.specialDiscountCode }}</p>
+        <li>Your waiver code benefit: Friday dinner will be waived.</li>
+      </div>
+      <div *ngIf="registration.specialDiscountCode === 'E'">
+        <p>Your waiver code: {{ registration.specialDiscountCode }}</p>
+        <li>Your waiver code benefit: Friday dinner will be waived.</li>
+      </div>
+      <div *ngIf="registration.specialDiscountCode === 'F'">
+        <p>Your waiver code: {{ registration.specialDiscountCode }}</p>
+        <li>Your waiver code benefit: Friday dinner will be waived.</li>
+      </div>
+      <div *ngIf="registration.specialDiscountCode === 'G'">
+        <p>Your waiver code: {{ registration.specialDiscountCode }}</p>
+        <li>
+          Your waiver code benefit: Your full registration fee, Thursday and
+          Friday lunch, and the Thursday Gala dinner will be waived.
+        </li>
+      </div>
+      <div *ngIf="registration.specialDiscountCode === 'H'">
+        <p>Your waiver code: {{ registration.specialDiscountCode }}</p>
+        <li>
+          Your waiver code benefit: Your full registration fee, Thursday and
+          Friday lunch, and the Thursday Gala dinner and Friday Network Dinner
+          will be waived.
+        </li>
+      </div>
+      <div *ngIf="registration.specialDiscountCode === 'I'">
+        <p>Your waiver code: {{ registration.specialDiscountCode }}</p>
+        <li>
+          Your waiver code benefit: Your full registration fee, and the Thursday
+          Gala dinner will be waived.
+        </li>
+      </div>
+      <div *ngIf="registration.specialDiscountCode === 'M'">
+        <p>Your waiver code: {{ registration.specialDiscountCode }}</p>
+        <li>Your waiver code benefit: Your full meal cost will be waived.</li>
+      </div>
+
+      <li *ngIf="checkMultiRegistration()">
+        Number of waiver codes remaining: {{ getNumberOfCodes() }}
+      </li>
+      <li *ngIf="!checkMultiRegistration() && getNumberOfCodes() < 1">
+        You are already registered
+      </li>
+
+      <button
+        [disabled]="getNumberOfCodes() < 1"
+        class="btn-registration"
+        pButton
+        type="button"
+        label="UKC Registration"
+        (click)="newRegistration($event)"
+      ></button>
+
+      <br />
+      <br />
+      <br />
+
+      <p-messages
+        *ngIf="
+          !registration || !registration.list || registration.list.length === 0
+        "
+        severity="info"
+      >
+        <ng-template pTemplate>
+          <img
+            src="https://primefaces.org/cdn/primeng/images/primeng.svg"
+            width="32"
+          />
+          <div class="ml-2">
+            &nbsp; No registration found. Please submit your UKC 2024
+            registration now!
+          </div>
+        </ng-template>
+      </p-messages>
+
+      <p-table
+        class="regist-info-con"
+        *ngIf="
+          registration && registration.list && registration.list.length > 0
+        "
+        [value]="registration.list"
+        [tableStyle]="{ 'min-width': '50rem' }"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Registration ID</th>
+            <th>Name</th>
+            <th>Techincal Group</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Card-Info</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.title }} {{ item.lastName }}, {{ item.firstName }}</td>
+            <td>{{ item.group }}</td>
+            <td>{{ item.date }}</td>
+            <td>${{ item.amount }}</td>
+            <td>{{ item.last4 }}</td>
+            <td>{{ item.status }}</td>
+            <td>
+              <button
+                pButton
+                pRipple
+                type="button"
+                label="View Details"
+                icon="pi pi-eye"
+                class="p-button-info p-button-sm"
+                (click)="viewRegistration(item)"
+                style="
+                  font-size: 0.8rem;
+                  padding: 0.2rem 0.3rem;
+                  margin-left: 0.1cm;
+                "
+              ></button>
+              <button
+                *ngIf="
+                  item.status !== 'CancelRequested' &&
+                  item.status !== 'Canceled'
+                "
+                pButton
+                pRipple
+                type="button"
+                label="Download Receipt"
+                icon="pi pi-save"
+                class="p-button-info p-button-sm"
+                (click)="downloadReceipt(item)"
+                style="
+                  font-size: 0.8rem;
+                  padding: 0.2rem 0.3rem;
+                  margin-left: 0.1cm;
+                "
+              ></button>
+              <button
+                *ngIf="
+                  item.status !== 'CancelRequested' &&
+                  item.status !== 'Canceled'
+                "
+                pButton
+                pRipple
+                type="button"
+                label="Request to cancel"
+                icon="pi pi-times"
+                class="p-button-danger p-button-sm"
+                (click)="cancelRegistration(item)"
+                style="
+                  font-size: 0.8rem;
+                  padding: 0.2rem 0.3rem;
+                  margin-left: 0.1cm;
+                "
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <!-- mobile view 바인딩필요(Jungyub) -->
+      <div
+        *ngIf="
+          registration && registration.list && registration.list.length > 0
+        "
+        class="m-registration-wrap"
+      >
+        <dl *ngFor="let item of registration.list" class="m-regist-info-con">
+          <dt>Registration ID</dt>
+          <dd>{{ item.id }}</dd>
+          <dt>Name</dt>
+          <dd>{{ item.title }} {{ item.lastName }}, {{ item.firstName }}</dd>
+          <dt>Techincal Group</dt>
+          <dd>{{ item.group }}</dd>
+          <dt>Date</dt>
+          <dd>{{ item.date | date : "MM/dd/yyyy" }}</dd>
+          <dt>Amount</dt>
+          <dd>${{ item.amount }}</dd>
+          <dt>Card-Info</dt>
+          <dd>{{ item.last4 }}</dd>
+          <dt>Status</dt>
+          <dd>{{ item.status }}</dd>
+          <dt>Action</dt>
+          <dd>
+            <button
+              pButton
+              pRipple
+              type="button"
+              label="View Details"
+              icon="pi pi-eye"
+              class="p-button-info p-button-sm"
+              (click)="viewRegistration(item)"
+              style="
+                font-size: 0.8rem;
+                padding: 0.2rem 0.3rem;
+                margin-left: 0.1cm;
+              "
+            ></button>
+            <button
+              *ngIf="
+                item.status !== 'CancelRequested' && item.status !== 'Canceled'
+              "
+              pButton
+              pRipple
+              type="button"
+              label="Download Receipt"
+              icon="pi pi-save"
+              class="p-button-info p-button-sm"
+              (click)="downloadReceipt(item)"
+              style="
+                font-size: 0.8rem;
+                padding: 0.2rem 0.3rem;
+                margin-left: 0.1cm;
+              "
+            ></button>
+            <button
+              disabled
+              *ngIf="
+                item.status !== 'CancelRequested' && item.status !== 'Canceled'
+              "
+              pButton
+              pRipple
+              type="button"
+              label="Request to cancel"
+              icon="pi pi-times"
+              class="p-button-danger p-button-sm"
+              (click)="cancelRegistration(item)"
+              style="
+                font-size: 0.8rem;
+                padding: 0.2rem 0.3rem;
+                margin-left: 0.1cm;
+              "
+            ></button>
+          </dd>
+        </dl>
+      </div>
+      <!-- mobile view // -->
+    </div>
+  </div>
+</div>
+
+<p-dialog
+  *ngIf="
+    !loading && registration && registration.userData && selectedItem && display
+  "
+  header="{{
+    readOnly
+      ? selectedItem.id + ' (' + selectedItem.status + ')'
+      : 'UKC Registration'
+  }}"
+  [(visible)]="display"
+  [modal]="true"
+  [style]="{ width: '70%' }"
+>
+  <div
+    *ngIf="stepNum === 0"
+    class="wrap-registration"
+    header="Registration Info"
+  >
+    <h3 class="registration-title">
+      Registration Info
+      <span style="color: red">(All Fields are required in English!)</span>
+    </h3>
+    <p>
+      <input
+        id="email"
+        [disabled]="true"
+        type="text"
+        [style]="{
+          width: '100%'
+        }"
+        class="font-deco-blue"
+        pInputText
+        value="{{ registration.userData.email }}"
+      />
+    </p>
+    <p-splitter [panelSizes]="[20, 35, 45]">
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <span class="p-float-label">
+            <p-dropdown
+              id="title"
+              [autoDisplayFirst]="false"
+              [disabled]="readOnly"
+              [options]="titleOptions"
+              [style]="{ width: '100%' }"
+              [(ngModel)]="selectedItem.title"
+              optionLabel="label"
+              optionValue="value"
+            ></p-dropdown>
+            <label for="title">Title</label>
+          </span>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <span class="p-float-label">
+            <input
+              id="firstName"
+              type="text"
+              [style]="{ width: '100%' }"
+              [disabled]="readOnly"
+              pInputText
+              [(ngModel)]="selectedItem.firstName"
+            />
+            <label for="firstName">First Name</label>
+          </span>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <span class="p-float-label">
+            <input
+              id="lastName"
+              type="text"
+              [style]="{ width: '100%' }"
+              [disabled]="readOnly"
+              pInputText
+              [(ngModel)]="selectedItem.lastName"
+            />
+            <label for="lastName">Last Name</label>
+          </span>
+        </div>
+      </ng-template>
+    </p-splitter>
+    <br />
+    <br />
+    <p-splitter [panelSizes]="[80, 10, 10]">
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <span class="p-float-label">
+            <input
+              id="address"
+              type="text"
+              [style]="{ width: '100%' }"
+              [disabled]="readOnly"
+              pInputText
+              [(ngModel)]="selectedItem.address"
+            />
+            <label for="address">Address</label>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <span class="p-float-label">
+            <input
+              id="zip"
+              type="text"
+              [style]="{ width: '100%' }"
+              [disabled]="readOnly"
+              pInputText
+              [(ngModel)]="selectedItem.zip"
+            />
+            <label for="zip">Zip</label>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <span class="p-float-label">
+            <p-dropdown
+              id="country"
+              [autoDisplayFirst]="false"
+              [disabled]="readOnly"
+              [options]="countryOptions"
+              [style]="{ width: '100%' }"
+              [(ngModel)]="selectedItem.country"
+              optionLabel="label"
+              optionValue="value"
+            ></p-dropdown>
+            <label for="country">Country</label>
+          </span>
+        </div>
+      </ng-template>
+    </p-splitter>
+    <br />
+    <br />
+    <p-splitter [panelSizes]="[50, 50]">
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <span class="p-float-label">
+            <input
+              id="affiliation"
+              type="text"
+              [disabled]="readOnly"
+              pInputText
+              [style]="{ width: '100%' }"
+              [(ngModel)]="selectedItem.affiliation"
+            />
+            <label for="affiliation">Affiliation</label>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <span class="p-float-label">
+            <input
+              id="phone"
+              type="text"
+              [disabled]="readOnly"
+              pInputText
+              [style]="{ width: '100%' }"
+              [(ngModel)]="selectedItem.phone"
+            />
+            <label for="phone">Phone</label>
+          </span>
+        </div>
+      </ng-template>
+    </p-splitter>
+    <div style="text-align: left">
+      <br />
+      <br />
+      <div class="col flex align-items-center justify-content-center">
+        <label class="p-float-label"> What is your Technical Group?</label>
+        <br />
+        <p-dropdown
+          inputId="dropdown"
+          [autoDisplayFirst]="false"
+          [disabled]="readOnly"
+          [options]="groupsList"
+          [style]="{ width: '100%' }"
+          [(ngModel)]="selectedItem.group"
+          optionLabel="name"
+          optionValue="acronym"
+        ></p-dropdown>
+      </div>
+    </div>
+    <br />
+    <br />
+    <p-splitter [panelSizes]="[50, 25, 25]">
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <label class="p-float-label"> What is your position?</label>
+          <br />
+          <p-selectButton
+            id="level"
+            [options]="levelOptions"
+            [disabled]="readOnly"
+            [(ngModel)]="selectedItem.level"
+            optionLabel="label"
+            optionValue="value"
+          ></p-selectButton>
+        </div>
+      </ng-template>
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <label class="p-float-label"> Do you participate in FIRE 2024?</label>
+          <br />
+          <p-selectButton
+            id="fire"
+            [options]="booleanOptions"
+            [disabled]="readOnly"
+            [(ngModel)]="selectedItem.isFire"
+            optionLabel="label"
+            optionValue="value"
+          ></p-selectButton>
+        </div>
+      </ng-template>
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <label class="p-float-label"> Do you participate in SEED 2024?</label>
+          <br />
+          <p-selectButton
+            id="sid"
+            [options]="booleanOptions"
+            [disabled]="readOnly"
+            [(ngModel)]="selectedItem.isSeed"
+            optionLabel="label"
+            optionValue="value"
+          ></p-selectButton>
+        </div>
+      </ng-template>
+    </p-splitter>
+    <br />
+    <br />
+    <p-splitter [panelSizes]="[20, 40, 40]">
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <label class="p-float-label"> Do you participate in IES 2024?</label>
+          <br />
+          <p-selectButton
+            id="fire"
+            [options]="booleanOptions"
+            [disabled]="readOnly"
+            [(ngModel)]="selectedItem.isIES"
+            optionLabel="label"
+            optionValue="value"
+          ></p-selectButton>
+        </div>
+      </ng-template>
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <label class="p-float-label">
+            Are you an alumni of the KOFST YGF or YPF? Please check 'Yes' if
+            you want to attend the YGF/YPF alumni meeting at UKC 2024.</label
+          >
+          <br />
+          <p-selectButton
+            id="fire"
+            [options]="booleanOptions"
+            [disabled]="readOnly"
+            [(ngModel)]="selectedItem.isYGF"
+            optionLabel="label"
+            optionValue="value"
+          ></p-selectButton>
+        </div>
+      </ng-template>
+      <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+          <label class="p-float-label">
+            Are you an alumni of Seoul National University? Please check 'Yes'
+            if you want to attend the alumni meeting with the SNU President at
+            UKC 2024</label
+          >
+          <br />
+          <p-selectButton
+            id="fire"
+            [options]="booleanOptions"
+            [disabled]="readOnly"
+            [(ngModel)]="selectedItem.isSNU"
+            optionLabel="label"
+            optionValue="value"
+          ></p-selectButton>
+        </div>
+      </ng-template>
+    </p-splitter>
+    <div class="wrap-total">
+      <div class="con-info-total">
+        <div
+          *ngIf="
+            selectedItem.specialDiscountCode === 'F' &&
+            selectedItem.level === 'Regular'
+          "
+        >
+          FIRE Regular fee: <span>${{ calRegistrationFee() }}</span>
+        </div>
+        <div
+          *ngIf="
+            selectedItem.specialDiscountCode !== 'F' ||
+            selectedItem.level !== 'Regular'
+          "
+        >
+          {{ this.selectedItem.level }} fee:
+          <span>${{ calRegistrationFee() }}</span>
+        </div>
+
+        <div *ngIf="selectedItem.hasMembership">
+          KSEA Membership Discount: <span>($50)</span>
+        </div>
+        <div *ngIf="selectedItem.isEarlyBird">
+          Earlybird Discount: <span> ($200)</span>
+        </div>
+        <div
+          *ngIf="selectedItem.isUKCPresenter && !selectedItem.isFIREPresenter"
+        >
+          UKC Presenter Discount:<span> ($100)</span>
+        </div>
+        <div
+          *ngIf="selectedItem.isFIREPresenter && !selectedItem.isUKCPresenter"
+        >
+          FIRE Presenter Discount: <span> ($100)</span>
+        </div>
+        <div
+          *ngIf="selectedItem.isFIREPresenter && selectedItem.isUKCPresenter"
+        >
+          UKC & FIRE Presenter Discount: <span> ($100)</span>
+        </div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'A'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'B'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'C'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'H'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'G'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'I'">Fully waived</div>
+      </div>
+      <hr />
+      <div class="con-info-total">
+        <div>
+          Registration fee:
+          <span class="amount-num">${{ calDiscountRegistrationFee() }}</span>
+        </div>
+      </div>
+
+      <hr />
+      <div class="con-total">
+        Registration fee(${{ calDiscountRegistrationFee() }}) + Meal plan
+        fee(${{ calDiscountMealPrice() }}) + Activities (${{ calActPrice() }}) =
+        Total <span class="total-num">${{ calTotalPrice() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="stepNum === 1" header="Meal Plan" class="wrap-registration">
+    <h3 class="registration-title">Meal Plan</h3>
+    <h3 class="registration-guide">
+      <li>
+        - You have the flexibility to purchase meals for yourself and your
+        companions, allowing you to select as many meals as desired.
+      </li>
+    </h3>
+    <h3 class="registration-guide">
+      <li>
+        - Onsite purchase price: Breakfast ($30), Lunch ($60), Gala Dinner ($150),
+        Networking Dinner ($100)
+      </li>
+    </h3>
+    <h3 class="registration-guide">
+      <li>
+        - If you would like to purchase meals separately from the UKC registration fee, please skip this and  
+        <a
+          href="https://form.jotform.com/241577908105157"
+          target="_blank"
+          style="color: blue"
+          > visit here.</a
+        >
+        A registration number, which will be provided after completing this registration, is required.
+      </li>
+    </h3>
+    <h3 class="registration-guide">
+      <li>
+        - Participants are required to notify the event organizer of any dietary restrictions or allergies at least 30 days prior to the event. Notifications can be made through ukc2024@ksea.org and must include specific details about the dietary needs.
+      </li>
+    </h3>
+    
+    <table class="table-registration" style="width: 100%">
+      <colgroup>
+        <col />
+        <col />
+        <col width="20%" />
+        <col width="20%" />
+        <col width="20%" />
+      </colgroup>
+      <tr>
+        <th colspan="2"></th>
+        <th>8/22 Thursday</th>
+        <th>8/23 Friday</th>
+        <th>8/24 Saturday</th>
+      </tr>
+      <tr>
+        <td>Breakfast</td>
+        <td *ngIf="selectedItem.isOnline">Continental Breakfast ($25)</td>
+        <td *ngIf="!selectedItem.isOnline">Continental Breakfast ($30)</td>
+        <td>
+          <div class="select-num">
+            <input
+              pInputText
+              [disabled]="false"
+              id="thursday_breakfast"
+              type="number"
+              min="0"
+              [(ngModel)]="selectedItem.thursday_breakfast"
+            />
+            <label htmlFor="thursday_breakfast">Continental Breakfast</label>
+          </div>
+        </td>
+        <td>
+          <div class="select-num">
+            <input
+              pInputText
+              [disabled]="false"
+              id="friday_breakfast"
+              type="number"
+              min="0"
+              [(ngModel)]="selectedItem.friday_breakfast"
+            />
+            <label htmlFor="friday_breakfast">Continental Breakfast</label>
+          </div>
+        </td>
+        <td>
+          <div class="select-num">
+            <input
+              pInputText
+              [disabled]="false"
+              id="saturday_breakfast"
+              type="number"
+              min="0"
+              [(ngModel)]="selectedItem.saturday_breakfast"
+            />
+            <label htmlFor="saturday_breakfast">Continental Breakfast</label>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Lunch</td>
+        <td *ngIf="selectedItem.isOnline">3 Course Plated Lunch ($40)</td>
+        <td *ngIf="!selectedItem.isOnline">3 Course Plated Lunch ($60)</td>
+        <td>
+          <div class="select-num">
+            <input
+              pInputText
+              [disabled]="false"
+              id="thursday_lunch_Chicken"
+              type="number"
+              min="0"
+              [(ngModel)]="selectedItem.thursday_lunch_Chicken"
+            />
+            <label htmlFor="thursday_lunch_Chicken">Chicken</label>
+          </div>
+          <br />
+          <div class="select-num">
+            <input
+              pInputText
+              [disabled]="false"
+              id="thursday_lunch_beef"
+              type="number"
+              min="0"
+              [(ngModel)]="selectedItem.thursday_lunch_beef"
+            />
+            <label htmlFor="thursday_lunch_beef">Beef</label>
+          </div>
+          <br />
+          <div class="select-num">
+            <input
+              pInputText
+              [disabled]="false"
+              id="thursday_lunch_vegan"
+              type="number"
+              min="0"
+              [(ngModel)]="selectedItem.thursday_lunch_vegan"
+            />
+            <label htmlFor="thursday_lunch_vegan">Vegan</label>
+          </div>
+        </td>
+        <td>
+          <div class="select-num">
+            <input
+              pInputText
+              [disabled]="false"
+              id="friday_lunch_beef"
+              type="number"
+              min="0"
+              [(ngModel)]="selectedItem.friday_lunch_beef"
+            />
+            <label htmlFor="friday_lunch_beef">Beef</label>
+          </div>
+          <br />
+          <div class="select-num">
+            <input
+              pInputText
+              [disabled]="false"
+              id="friday_lunch_fish"
+              type="number"
+              min="0"
+              [(ngModel)]="selectedItem.friday_lunch_fish"
+            />
+            <label htmlFor="friday_lunch_fish">Fish</label>
+          </div>
+          <br />
+          <div class="select-num">
+            <input
+              pInputText
+              [disabled]="false"
+              id="friday_lunch_vegan"
+              type="number"
+              min="0"
+              [(ngModel)]="selectedItem.friday_lunch_vegan"
+            />
+            <label htmlFor="friday_lunch_vegan">Vegan</label>
+          </div>
+        </td>
+        <td style="background-color: rgb(223, 205, 205)"></td>
+      </tr>
+      <tr>
+        <td rowspan="2">Dinner</td>
+        <td *ngIf="selectedItem.isOnline">Gala Dinner ($80)<br /></td>
+        <td *ngIf="!selectedItem.isOnline">Gala Dinner ($150)<br /></td>
+        <td>
+          <div class="select-num">
+            <input
+              pInputText
+              [disabled]="false"
+              id="thursday_dinner_gala_beef"
+              type="number"
+              min="0"
+              [(ngModel)]="selectedItem.thursday_dinner_gala_beef"
+            />
+            <label htmlFor="thursday_dinner_gala_beef">Beef</label>
+          </div>
+          <br />
+          <div class="select-num">
+            <input
+              pInputText
+              [disabled]="false"
+              id="thursday_dinner_gala_fish"
+              type="number"
+              min="0"
+              [(ngModel)]="selectedItem.thursday_dinner_gala_fish"
+            />
+            <label htmlFor="thursday_dinner_gala_pork">Fish</label>
+          </div>
+          <br />
+          <div class="select-num">
+            <input
+              pInputText
+              [disabled]="false"
+              id="thursday_dinner_gala_vegan"
+              type="number"
+              min="0"
+              [(ngModel)]="selectedItem.thursday_dinner_gala_vegan"
+            />
+            <label htmlFor="thursday_dinner_gala_vegan">Vegan</label>
+          </div>
+        </td>
+        <td style="background-color: rgb(223, 205, 205)"></td>
+        <td style="background-color: rgb(223, 205, 205)"></td>
+      </tr>
+      <tr>
+        <td *ngIf="selectedItem.isOnline" style="font-weight: normal">
+          Networking Dinner ($30)
+        </td>
+        <td *ngIf="!selectedItem.isOnline" style="font-weight: normal">
+          Networking Dinner ($100)
+        </td>
+        <td style="background-color: rgb(223, 205, 205)"></td>
+        <td>
+          <div class="select-num">
+            <input
+              pInputText
+              [disabled]="false"
+              id="friday_dinner_network_beef"
+              type="number"
+              min="0"
+              [(ngModel)]="selectedItem.friday_dinner_network_beef"
+            />
+            <label htmlFor="friday_dinner_network_beef">Beef</label>
+          </div>
+          <br />
+          <div class="select-num">
+            <input
+              pInputText
+              [disabled]="false"
+              id="friday_dinner_network_pork"
+              type="number"
+              min="0"
+              [(ngModel)]="selectedItem.friday_dinner_network_pork"
+            />
+            <label htmlFor="friday_dinner_network_pork">Pork</label>
+          </div>
+        </td>
+        <td style="background-color: rgb(223, 205, 205)"></td>
+      </tr>
+    </table>
+    <br />
+    <br />
+    <div class="wrap-total">
+      <div class="con-info-total">
+        <div>
+          Meal price: <span>${{ calMealPrice() }}</span>
+        </div>
+      </div>
+
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'A'"
+        class="con-info-total border-dot"
+      >
+        Meal free (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+      <div
+      *ngIf="selectedItem.specialDiscountCode === 'M'"
+      class="con-info-total border-dot"
+    >
+      Meal free (One meal each)
+
+      <div>
+        Meal plan discount amounts:
+        <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+      </div>
+    </div>
+
+
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'C'"
+        class="con-info-total border-dot"
+      >
+        Breakfast & Lunch free (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'D'"
+        class="con-info-total border-dot"
+      >
+        Networking Dinner free: (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'E'"
+        class="con-info-total border-dot"
+      >
+        Networking Dinner free: (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'F'"
+        class="con-info-total border-dot"
+      >
+        Networking Dinner free: (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'H'"
+        class="con-info-total border-dot"
+      >
+        Lunch and Dinner free: (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'G'"
+        class="con-info-total border-dot"
+      >
+        Lunch and Gala Dinner free: (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'I'"
+        class="con-info-total border-dot"
+      >
+        Gala Dinner free: (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+
+      <hr />
+      <div class="con-total">
+        Registration fee(${{ calDiscountRegistrationFee() }}) + Meal plan
+        fee(${{ calDiscountMealPrice() }}) + Activities (${{ calActPrice() }}) =
+        Total <span class="total-num">${{ calTotalPrice() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="stepNum === 2"
+    header="Additional Activities"
+    class="wrap-registration"
+  >
+    <h3 class="registration-title">Additional Activities</h3>
+    <h2 class="registration-guide">
+      At the registration desk, you can pick up printed UKC program books. You
+      can purchase more than one if needed.
+    </h2>
+    <table class="table-registration" style="width: 100%">
+      <tr>
+        <th>Activity</th>
+        <th>Unit Price</th>
+        <th>Quantity</th>
+      </tr>
+      <tr>
+        <td>
+          <p>Printed UKC program book</p>
+          <span class="info-text"
+            >**If you have purchased a UKC Program book, please remember to pick
+            it up at the registration desk.
+          </span>
+        </td>
+        <td>$10</td>
+        <td>
+          <input
+            style="width: 100%"
+            pInputText
+            [disabled]="readOnly"
+            id="programBook"
+            type="number"
+            min="0"
+            [(ngModel)]="selectedItem.programBook"
+          />
+        </td>
+      </tr>
+    </table>
+    <br />
+    <br />
+    <div class="wrap-total">
+      <div class="con-info-total">
+        <div>
+          Activities price: <span>${{ calActPrice() }}</span>
+        </div>
+      </div>
+
+      <hr />
+      <div class="con-total">
+        Registration fee(${{ calDiscountRegistrationFee() }}) + Meal plan
+        fee(${{ calDiscountMealPrice() }}) + Activities (${{ calActPrice() }}) =
+        Total<span class="total-num"> ${{ calTotalPrice() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="stepNum === 3" header="Review" class="wrap-registration">
+    <h3 class="registration-title">Review</h3>
+    <ul class="list-disc">
+      <li>
+        <span>Name:</span>{{ selectedItem.title }} {{ selectedItem.lastName }},
+        {{ selectedItem.firstName }}
+      </li>
+      <li><span>Email: </span>{{ registration.userData.email }}</li>
+      <li>
+        <span>Address:</span>{{ selectedItem.address }}, {{ selectedItem.zip }},
+        {{ selectedItem.country }}
+      </li>
+      <li><span>Affiliation: </span>{{ selectedItem.affiliation }}</li>
+      <li><span>Phone:</span>{{ selectedItem.phone }}</li>
+      <li><span>Position:</span>{{ selectedItem.level }}</li>
+      <li><span>FIRE:</span>{{ selectedItem.isFire ? "YES" : "NO" }}</li>
+      <li><span>SEED: </span>{{ selectedItem.isSeed ? "YES" : "NO" }}</li>
+      <li><span>IES: </span>{{ selectedItem.isIES ? "YES" : "NO" }}</li>
+      <li><span>YGF/YPF: </span>{{ selectedItem.isYGF ? "YES" : "NO" }}</li>
+      <li><span>SNU: </span>{{ selectedItem.isSNU ? "YES" : "NO" }}</li>
+      <li><span>Group: </span>{{ selectedItem.group }}</li>
+    </ul>
+
+    <br />
+    <table class="table-registration" style="width: 100%">
+      <tr>
+        <th colspan="2"></th>
+        <th>8/22 Thursday</th>
+        <th>8/23 Friday</th>
+        <th>8/24 Saturday</th>
+      </tr>
+      <tr>
+        <td>Breakfast</td>
+        <td *ngIf="selectedItem.isOnline">Continental Breakfast ($25)</td>
+        <td *ngIf="!selectedItem.isOnline">Continental Breakfast ($30)</td>
+        <td>
+          {{ selectedItem.thursday_breakfast }}
+        </td>
+        <td>
+          {{ selectedItem.friday_breakfast }}
+        </td>
+        <td>
+          {{ selectedItem.saturday_breakfast }}
+        </td>
+      </tr>
+      <tr>
+        <td>Lunch</td>
+        <td *ngIf="selectedItem.isOnline">3 Course Plated Lunch ($40)</td>
+        <td *ngIf="!selectedItem.isOnline">3 Course Plated Lunch ($60)</td>
+        <td>
+          Chicken: {{ selectedItem.thursday_lunch_Chicken }}
+          <br />
+          Vegan: {{ selectedItem.thursday_lunch_vegan }}
+          <br />
+          Beef: {{ selectedItem.thursday_lunch_beef }}
+        </td>
+        <td>
+          Beef: {{ selectedItem.friday_lunch_beef }}
+          <br />
+          Fish: {{ selectedItem.friday_lunch_fish }}
+          <br />
+          Vegan: {{ selectedItem.friday_lunch_vegan }}
+        </td>
+        <td style="background-color: rgb(223, 205, 205)"></td>
+      </tr>
+      <tr>
+        <td rowspan="2">Dinner</td>
+        <td *ngIf="selectedItem.isOnline">Gala Dinner ($80)</td>
+        <td *ngIf="!selectedItem.isOnline">Gala Dinner ($150)</td>
+        <td>
+          Beef: {{ selectedItem.thursday_dinner_gala_beef }}
+          <br />
+          Fish: {{ selectedItem.thursday_dinner_gala_fish }}
+          <br />
+          Vegan: {{ selectedItem.thursday_dinner_gala_vegan }}
+        </td>
+        <td style="background-color: rgb(223, 205, 205)"></td>
+        <td style="background-color: rgb(223, 205, 205)"></td>
+      </tr>
+      <tr>
+        <td *ngIf="selectedItem.isOnline" style="font-weight: normal">
+          Networking Dinner ($30)
+        </td>
+        <td *ngIf="!selectedItem.isOnline" style="font-weight: normal">
+          Networking Dinner ($100)
+        </td>
+        <td style="background-color: rgb(223, 205, 205)"></td>
+        <td>
+          Beef: {{ selectedItem.friday_dinner_network_beef }}
+          <br />
+          Pork: {{ selectedItem.friday_dinner_network_pork }}
+        </td>
+        <td style="background-color: rgb(223, 205, 205)"></td>
+      </tr>
+    </table>
+    <br />
+    <table class="table-registration" style="width: 100%">
+      <tr>
+        <th>Activity</th>
+        <th>Unit Price</th>
+        <th>Quantity</th>
+      </tr>
+      <tr>
+        <td>Printed UKC program book</td>
+        <td>$10</td>
+        <td>
+          {{ selectedItem.programBook }}
+        </td>
+      </tr>
+    </table>
+    <div class="wrap-total">
+      <div class="con-info-total">
+        <div
+          *ngIf="
+            selectedItem.specialDiscountCode === 'F' &&
+            selectedItem.level === 'Regular'
+          "
+        >
+          FIRE Regular fee: <span>${{ calRegistrationFee() }}</span>
+        </div>
+        <div
+          *ngIf="
+            selectedItem.specialDiscountCode !== 'F' ||
+            selectedItem.level !== 'Regular'
+          "
+        >
+          {{ this.selectedItem.level }} fee:
+          <span>${{ calRegistrationFee() }}</span>
+        </div>
+
+        <div *ngIf="selectedItem.hasMembership">
+          KSEA Membership Discount: <span>($50)</span>
+        </div>
+        <div *ngIf="selectedItem.isEarlyBird">
+          Earlybird Discount: <span>($200)</span>
+        </div>
+        <div
+          *ngIf="selectedItem.isUKCPresenter && !selectedItem.isFIREPresenter"
+        >
+          UKC Presenter Discount: <span>($100)</span>
+        </div>
+        <div
+          *ngIf="selectedItem.isFIREPresenter && !selectedItem.isUKCPresenter"
+        >
+          FIRE Presenter Discount: <span>($100)</span>
+        </div>
+        <div
+          *ngIf="selectedItem.isFIREPresenter && selectedItem.isUKCPresenter"
+        >
+          UKC & FIRE Presenter Discount: <span>($100)</span>
+        </div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'A'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'B'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'C'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'H'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'G'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'I'">Fully waived</div>
+      </div>
+      <hr />
+      <div class="con-info-total">
+        <div>
+          Meal price: <span>${{ calMealPrice() }}</span>
+        </div>
+
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'A'"
+          class="con-info-total border-dot"
+        >
+          Meal free (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+        <div
+        *ngIf="selectedItem.specialDiscountCode === 'M'"
+        class="con-info-total border-dot"
+      >
+        Meal free (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'C'"
+          class="con-info-total border-dot"
+        >
+          Breakfast & Lunch free (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'D'"
+          class="con-info-total border-dot"
+        >
+          Networking Dinner free: (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'E'"
+          class="con-info-total border-dot"
+        >
+          Networking Dinner free: (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'F'"
+          class="con-info-total border-dot"
+        >
+          Networking Dinner free: (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'H'"
+          class="con-info-total border-dot"
+        >
+          Lunch and Dinner free: (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'G'"
+          class="con-info-total border-dot"
+        >
+          Lunch and Gala Dinner free: (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'I'"
+          class="con-info-total border-dot"
+        >
+          Gala Dinner free: (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="con-info-total">
+        <div>
+          Activities price: <span>${{ calActPrice() }}</span>
+        </div>
+      </div>
+
+      <hr />
+      <div class="con-total">
+        Registration fee(${{ calDiscountRegistrationFee() }}) + Meal plan
+        fee(${{ calDiscountMealPrice() }}) + Activities (${{ calActPrice() }}) =
+        Total <span class="total-num">${{ calTotalPrice() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="stepNum === 4" header="Payment Info" class="wrap-registration">
+    <h3 class="registration-title">Payment Info</h3>
+    <div *ngIf="calTotalPrice() > 0">
+      <ngx-stripe-card
+        class="stripe"
+        [options]="cardOptions"
+        [elementsOptions]="elementsOptions"
+      ></ngx-stripe-card>
+
+      <div *ngIf="errorMessage" class="alert alert-warning">
+        {{ errorMessage | json }}
+      </div>
+    </div>
+    <div *ngIf="calTotalPrice() <= 0">
+      No payment required. Please click to submit.
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      *ngIf="readOnly"
+      icon="pi pi-times"
+      (click)="display = false"
+      [disabled]="paymentLoading"
+      label="Close"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readOnly"
+      icon="pi pi-times"
+      (click)="display = false"
+      [disabled]="paymentLoading"
+      label="Cancel"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readOnly && stepNum > 0"
+      icon="pi pi-caret-left"
+      [disabled]="paymentLoading"
+      (click)="stepNum = stepNum - 1"
+      label="Back"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readOnly && stepNum < 4 && stepNum > 0"
+      icon="pi pi-caret-right"
+      [disabled]="paymentLoading"
+      (click)="stepNum = stepNum + 1"
+      label="Next"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readOnly && stepNum === 0 && !isInvalid()"
+      icon="pi pi-caret-right"
+      [disabled]="paymentLoading"
+      (click)="stepNum = stepNum + 1"
+      label="Next"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readOnly && stepNum === 0 && isInvalid()"
+      icon="pi pi-caret-right"
+      [disabled]="true"
+      label="Next"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readOnly && stepNum === 4"
+      icon="pi pi-dollar"
+      [disabled]="paymentLoading"
+      (click)="payAndSubmit()"
+      label="Submit"
+      styleClass="p-button-text"
+      ><span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+        *ngIf="paymentLoading"
+      ></span
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- mobile dialog 바인딩 필요(Jungyub) -->
+<p-dialog
+  *ngIf="
+    !loading &&
+    registration &&
+    registration.userData &&
+    selectedItem &&
+    mobileDisplay
+  "
+  [(visible)]="mobileDisplay"
+  [modal]="true"
+  class="ukc-mobile-dialog"
+  [draggable]="false"
+  [resizable]="false"
+  header="{{
+    readOnly
+      ? selectedItem.id + ' (' + selectedItem.status + ')'
+      : 'UKC Registration'
+  }}"
+>
+  <div
+    *ngIf="stepNum === 0"
+    class="wrap-registration"
+    header="Registration Info"
+  >
+    <h3 class="registration-title">
+      Registration Info<br />
+      <span style="color: red; font-size: 0.785rem"
+        >(All Fields are required in English!)</span
+      >
+    </h3>
+    <p>
+      <input
+        id="email"
+        [disabled]="true"
+        type="text"
+        [style]="{
+          width: '100%'
+        }"
+        class="font-deco-blue"
+        pInputText
+        value="{{ registration.userData.email }}"
+      />
+    </p>
+    <div class="warp-apply-form">
+      <div>
+        <label for="title">Title</label>
+        <p-dropdown
+          id="title"
+          [autoDisplayFirst]="false"
+          [disabled]="readOnly"
+          [options]="titleOptions"
+          [style]="{ width: '100%' }"
+          [(ngModel)]="selectedItem.title"
+          optionLabel="label"
+          optionValue="value"
+        ></p-dropdown>
+      </div>
+      <div>
+        <label for="firstName">First Name</label>
+        <input
+          id="firstName"
+          type="text"
+          [style]="{ width: '100%' }"
+          [disabled]="readOnly"
+          pInputText
+          [(ngModel)]="selectedItem.firstName"
+        />
+      </div>
+      <div>
+        <label for="lastName">Last Name</label>
+        <input
+          id="lastName"
+          type="text"
+          [style]="{ width: '100%' }"
+          [disabled]="readOnly"
+          pInputText
+          [(ngModel)]="selectedItem.lastName"
+        />
+      </div>
+      <div>
+        <label for="address">Address</label>
+        <input
+          id="address"
+          type="text"
+          [style]="{ width: '100%' }"
+          [disabled]="readOnly"
+          pInputText
+          [(ngModel)]="selectedItem.address"
+        />
+      </div>
+      <div>
+        <label for="zip">Zip</label>
+        <input
+          id="zip"
+          type="text"
+          [style]="{ width: '100%' }"
+          [disabled]="readOnly"
+          pInputText
+          [(ngModel)]="selectedItem.zip"
+        />
+      </div>
+      <div>
+        <label for="country">Country</label>
+        <p-dropdown
+          id="country"
+          [autoDisplayFirst]="false"
+          [disabled]="readOnly"
+          [options]="countryOptions"
+          [style]="{ width: '100%' }"
+          [(ngModel)]="selectedItem.country"
+          optionLabel="label"
+          optionValue="value"
+        ></p-dropdown>
+      </div>
+      <div>
+        <label for="affiliation">Affiliation</label>
+        <input
+          id="affiliation"
+          type="text"
+          [disabled]="readOnly"
+          pInputText
+          [style]="{ width: '100%' }"
+          [(ngModel)]="selectedItem.affiliation"
+        />
+      </div>
+      <div>
+        <label for="phone">Phone</label>
+        <input
+          id="phone"
+          type="text"
+          [disabled]="readOnly"
+          pInputText
+          [style]="{ width: '100%' }"
+          [(ngModel)]="selectedItem.phone"
+        />
+      </div>
+      <div>
+        <label class="p-float-label"> What is your Technical Group?</label>
+        <p-dropdown
+          inputId="dropdown"
+          [autoDisplayFirst]="false"
+          [disabled]="readOnly"
+          [options]="groupsList"
+          [style]="{ width: '100%' }"
+          [(ngModel)]="selectedItem.group"
+          optionLabel="name"
+          optionValue="acronym"
+        ></p-dropdown>
+      </div>
+      <div>
+        <label class="p-float-label"> What is your position?</label>
+        <p-selectButton
+          id="level"
+          [options]="levelOptions"
+          [disabled]="readOnly"
+          [(ngModel)]="selectedItem.level"
+          optionLabel="label"
+          optionValue="value"
+        ></p-selectButton>
+      </div>
+      <div>
+        <label class="p-float-label"> Do you participate in FIRE 2024?</label>
+        <p-selectButton
+          id="fire"
+          [options]="booleanOptions"
+          [disabled]="readOnly"
+          [(ngModel)]="selectedItem.isFire"
+          optionLabel="label"
+          optionValue="value"
+        ></p-selectButton>
+      </div>
+      <div>
+        <label class="p-float-label"> Do you participate in SEED 2024?</label>
+        <p-selectButton
+          id="sid"
+          [options]="booleanOptions"
+          [disabled]="readOnly"
+          [(ngModel)]="selectedItem.isSeed"
+          optionLabel="label"
+          optionValue="value"
+        ></p-selectButton>
+      </div>
+      <div>
+        <label class="p-float-label"> Do you participate in IES 2024?</label>
+        <p-selectButton
+          id="sid"
+          [options]="booleanOptions"
+          [disabled]="readOnly"
+          [(ngModel)]="selectedItem.isIES"
+          optionLabel="label"
+          optionValue="value"
+        ></p-selectButton>
+      </div>
+      <div>
+        <label class="p-float-label">
+          Are you an alumni of the KOFST YGF or YPF? Please check 'Yes' if you
+          want to attend the YGF/YPF alumni meeting at UKC 2024.</label
+        >
+        <p-selectButton
+          id="sid"
+          [options]="booleanOptions"
+          [disabled]="readOnly"
+          [(ngModel)]="selectedItem.isYGF"
+          optionLabel="label"
+          optionValue="value"
+        ></p-selectButton>
+      </div>
+      <div>
+        <label class="p-float-label">
+          Are you an alumni of Seoul National University? Please check 'Yes' if
+          you want to attend the alumni meeting with the SNU President at UKC
+          2024</label
+        >
+        <p-selectButton
+          id="sid"
+          [options]="booleanOptions"
+          [disabled]="readOnly"
+          [(ngModel)]="selectedItem.isSNU"
+          optionLabel="label"
+          optionValue="value"
+        ></p-selectButton>
+      </div>
+    </div>
+    <div class="wrap-total">
+      <div class="con-info-total">
+        <div
+          *ngIf="
+            selectedItem.specialDiscountCode === 'F' &&
+            selectedItem.level === 'Regular'
+          "
+        >
+          FIRE Regular fee: <span>${{ calRegistrationFee() }}</span>
+        </div>
+        <div
+          *ngIf="
+            selectedItem.specialDiscountCode !== 'F' ||
+            selectedItem.level !== 'Regular'
+          "
+        >
+        {{ this.selectedItem.level }} fee:
+          <span>${{ calRegistrationFee() }}</span>
+        </div>
+
+        <div *ngIf="selectedItem.hasMembership">
+          KSEA Membership Discount: <span>($50)</span>
+        </div>
+        <div *ngIf="selectedItem.isEarlyBird">
+          Earlybird Discount: <span> ($200)</span>
+        </div>
+        <div
+          *ngIf="selectedItem.isUKCPresenter && !selectedItem.isFIREPresenter"
+        >
+          UKC Presenter Discount:<span> ($100)</span>
+        </div>
+        <div
+          *ngIf="selectedItem.isFIREPresenter && !selectedItem.isUKCPresenter"
+        >
+          FIRE Presenter Discount: <span> ($100)</span>
+        </div>
+        <div
+          *ngIf="selectedItem.isFIREPresenter && selectedItem.isUKCPresenter"
+        >
+          UKC & FIRE Presenter Discount: <span> ($100)</span>
+        </div>
+
+        <div *ngIf="selectedItem.specialDiscountCode === 'A'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'B'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'C'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'H'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'G'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'I'">Fully waived</div>
+      </div>
+
+      <hr />
+      <div class="con-info-total">
+        <div>
+          Registration fee:
+          <span class="amount-num">${{ calDiscountRegistrationFee() }}</span>
+        </div>
+      </div>
+
+      <hr />
+      <div class="con-total">
+        Registration fee(${{ calDiscountRegistrationFee() }}) + Meal plan
+        fee(${{ calDiscountMealPrice() }}) + Activities (${{ calActPrice() }}) =
+        Total <span class="total-num">${{ calTotalPrice() }}</span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="stepNum === 1" header="Meal Plan" class="wrap-registration">
+    <h3 class="registration-title">Meal Plan</h3>
+    <h3 class="registration-guide">
+      <li>
+        - You have the flexibility to purchase meals for yourself and your
+        companions, allowing you to select as many meals as desired.
+      </li>
+    </h3>
+    <h3 class="registration-guide">
+      <li>
+        - Onsite purchase price: Breakfast ($30), Lunch ($60), Gala Dinner ($150),
+        Networking Dinner ($100)
+      </li>
+    </h3>
+    <h3 class="registration-guide">
+      <li>
+        - If you would like to purchase meals separately from the UKC registration fee, please skip this and  
+        <a
+          href="https://form.jotform.com/241577908105157"
+          target="_blank"
+          style="color: blue"
+          > visit here.</a
+        >
+        A registration number, which will be provided after completing this registration, is required.
+      </li>
+    </h3>
+    <h3 class="registration-guide">
+      <li>
+        - Participants are required to notify the event organizer of any dietary restrictions or allergies at least 30 days prior to the event. Notifications can be made through ukc2024@ksea.org and must include specific details about the dietary needs.
+      </li>
+    </h3>
+    <!-- <h2 class="registration-guide">
+      Apologies, but the meal option for the event has already sold out. While
+      you may not be able to select it during online registration, I recommend
+      checking at the registration desk upon arrival as we might have some extra
+      meals available for you.
+    </h2> -->
+    <div class="warp-apply-form">
+      <div class="m-wrap-meal-apply">
+        <div class="m-con-meal-select">
+          <h4 class="m-stitle">8/22 Thursday</h4>
+          <div class="m-con-meal-detail">
+            <div class="m-con-meal-info">
+              <h5>Breakfast</h5>
+              <p *ngIf="selectedItem.isOnline">Continental Breakfast ($25)</p>
+              <p *ngIf="!selectedItem.isOnline">Continental Breakfast ($30)</p>
+            </div>
+            <div class="m-meal-select">
+              <label htmlFor="thursday_breakfast">Breakfast</label>
+              <input
+                pInputText
+                [disabled]="false"
+                id="thursday_breakfast"
+                type="number"
+                min="0"
+                [(ngModel)]="selectedItem.thursday_breakfast"
+              />
+            </div>
+          </div>
+          <div class="m-con-meal-detail">
+            <div class="m-con-meal-info">
+              <h5>Lunch</h5>
+              <p *ngIf="selectedItem.isOnline">3 Course Plated Lunch ($40)</p>
+              <p *ngIf="!selectedItem.isOnline">3 Course Plated Lunch ($60)</p>
+            </div>
+            <div class="m-meal-select">
+              <label htmlFor="thursday_lunch_Chicken">Chicken</label>
+              <input
+                pInputText
+                [disabled]="false"
+                id="thursday_lunch_Chicken"
+                type="number"
+                min="0"
+                [(ngModel)]="selectedItem.thursday_lunch_Chicken"
+              />
+            </div>
+            <div class="m-meal-select">
+              <label htmlFor="thursday_lunch_vegan">Vegan</label>
+              <input
+                pInputText
+                [disabled]="false"
+                id="thursday_lunch_vegan"
+                type="number"
+                min="0"
+                [(ngModel)]="selectedItem.thursday_lunch_vegan"
+              />
+            </div>
+            <div class="m-meal-select">
+              <label htmlFor="thursday_lunch_beef">Beef</label>
+              <input
+                pInputText
+                [disabled]="false"
+                id="thursday_lunch_beef"
+                type="number"
+                min="0"
+                [(ngModel)]="selectedItem.thursday_lunch_beef"
+              />
+            </div>
+          </div>
+          <div class="m-con-meal-detail">
+            <div class="m-con-meal-info">
+              <h5>Dinner</h5>
+              <p *ngIf="selectedItem.isOnline">Gala Dinner ($80)</p>
+              <p *ngIf="!selectedItem.isOnline">Gala Dinner ($150)</p>
+            </div>
+            <div class="m-meal-select">
+              <label htmlFor="thursday_dinner_gala_beef">Beef</label>
+              <input
+                pInputText
+                [disabled]="false"
+                id="thursday_dinner_gala_beef"
+                type="number"
+                min="0"
+                [(ngModel)]="selectedItem.thursday_dinner_gala_beef"
+              />
+            </div>
+            <div class="m-meal-select">
+              <label htmlFor="thursday_dinner_gala_fish">Fish</label>
+              <input
+                pInputText
+                [disabled]="false"
+                id="thursday_dinner_gala_fish"
+                type="number"
+                min="0"
+                [(ngModel)]="selectedItem.thursday_dinner_gala_fish"
+              />
+            </div>
+            <div class="m-meal-select">
+              <label htmlFor="thursday_dinner_gala_vegan">Vegan</label>
+              <input
+                pInputText
+                [disabled]="false"
+                id="thursday_dinner_gala_vegan"
+                type="number"
+                min="0"
+                [(ngModel)]="selectedItem.thursday_dinner_gala_vegan"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="m-con-meal-select">
+          <h4 class="m-stitle">8/4 Friday</h4>
+          <div class="m-con-meal-detail">
+            <div class="m-con-meal-info">
+              <h5>Breakfast</h5>
+              <p *ngIf="selectedItem.isOnline">Continental Breakfast ($25)</p>
+              <p *ngIf="!selectedItem.isOnline">Continental Breakfast ($30)</p>
+            </div>
+            <div class="m-meal-select">
+              <label htmlFor="friday_breakfast">Continental Breakfast</label>
+              <input
+                pInputText
+                [disabled]="false"
+                id="friday_breakfast"
+                type="number"
+                min="0"
+                [(ngModel)]="selectedItem.friday_breakfast"
+              />
+            </div>
+          </div>
+          <div class="m-con-meal-detail">
+            <div class="m-con-meal-info">
+              <h5>Lunch</h5>
+              <p *ngIf="selectedItem.isOnline">3 Course Plated Lunch ($40)</p>
+              <p *ngIf="!selectedItem.isOnline">3 Course Plated Lunch ($60)</p>
+            </div>
+            <div class="m-meal-select">
+              <label htmlFor="friday_lunch_beef">Beef</label>
+              <input
+                pInputText
+                [disabled]="false"
+                id="friday_lunch_beef"
+                type="number"
+                min="0"
+                [(ngModel)]="selectedItem.friday_lunch_beef"
+              />
+            </div>
+            <div class="m-meal-select">
+              <label htmlFor="friday_lunch_fish">Fish</label>
+              <input
+                pInputText
+                [disabled]="false"
+                id="friday_lunch_fish"
+                type="number"
+                min="0"
+                [(ngModel)]="selectedItem.friday_lunch_fish"
+              />
+            </div>
+            <div class="m-meal-select">
+              <label htmlFor="friday_lunch_vegan">Vegan</label>
+              <input
+                pInputText
+                [disabled]="false"
+                id="friday_lunch_vegan"
+                type="number"
+                min="0"
+                [(ngModel)]="selectedItem.friday_lunch_vegan"
+              />
+            </div>
+          </div>
+          <div class="m-con-meal-detail">
+            <div class="m-con-meal-info">
+              <h5>Dinner</h5>
+              <p *ngIf="selectedItem.isOnline">Network Dinner ($35)</p>
+              <p *ngIf="!selectedItem.isOnline">Network Dinner ($100)</p>
+            </div>
+            <div class="m-meal-select">
+              <label htmlFor="friday_dinner_network_beef">Beef</label>
+              <input
+                pInputText
+                [disabled]="false"
+                id="friday_dinner_network_beef"
+                type="number"
+                min="0"
+                [(ngModel)]="selectedItem.friday_dinner_network_beef"
+              />
+            </div>
+            <div class="m-meal-select">
+              <label htmlFor="friday_dinner_network_pork">Pork</label>
+              <input
+                pInputText
+                [disabled]="false"
+                id="friday_dinner_network_pork"
+                type="number"
+                min="0"
+                [(ngModel)]="selectedItem.friday_dinner_network_pork"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="m-con-meal-select">
+          <h4 class="m-stitle">8/5 Saturday</h4>
+          <div class="m-con-meal-detail">
+            <div class="m-con-meal-info">
+              <h5>Breakfast</h5>
+              <p *ngIf="selectedItem.isOnline">Continental Breakfast ($25)</p>
+              <p *ngIf="!selectedItem.isOnline">Continental Breakfast ($30)</p>
+            </div>
+            <div class="m-meal-select">
+              <label htmlFor="saturday_breakfast">Continental Breakfast</label>
+              <input
+                pInputText
+                [disabled]="false"
+                id="saturday_breakfast"
+                type="number"
+                min="0"
+                [(ngModel)]="selectedItem.saturday_breakfast"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wrap-total">
+      <div class="con-info-total">
+        <div>
+          Meal price: <span>${{ calMealPrice() }}</span>
+        </div>
+      </div>
+
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'A'"
+        class="con-info-total border-dot"
+      >
+        Meal free (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+      <div
+      *ngIf="selectedItem.specialDiscountCode === 'M'"
+      class="con-info-total border-dot"
+    >
+      Meal free (One meal each)
+
+      <div>
+        Meal plan discount amounts:
+        <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+      </div>
+    </div>
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'C'"
+        class="con-info-total border-dot"
+      >
+        Breakfast & Lunch free (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'D'"
+        class="con-info-total border-dot"
+      >
+        Networking Dinner free: (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'E'"
+        class="con-info-total border-dot"
+      >
+        Networking Dinner free: (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'F'"
+        class="con-info-total border-dot"
+      >
+        Networking Dinner free: (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'H'"
+        class="con-info-total border-dot"
+      >
+        Lunch and Dinner free: (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'G'"
+        class="con-info-total border-dot"
+      >
+        Lunch and Gala Dinner free: (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+
+      <div
+        *ngIf="selectedItem.specialDiscountCode === 'I'"
+        class="con-info-total border-dot"
+      >
+        Gala Dinner free: (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+
+      <hr />
+      <div class="con-total">
+        Registration fee(${{ calDiscountRegistrationFee() }}) + Meal plan
+        fee(${{ calDiscountMealPrice() }}) + Activities (${{ calActPrice() }}) =
+        Total <span class="total-num">${{ calTotalPrice() }}</span>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="stepNum === 2"
+    header="Additional Activities"
+    class="wrap-registration"
+  >
+    <h3 class="registration-title">Additional Activities</h3>
+    <h3 class="registration-guide">
+      At the registration desk, you can pick up printed UKC program books. You
+      can purchase more than one if needed.
+    </h3>
+    <div class="warp-apply-form">
+      <div class="m-wrap-meal-apply">
+        <div class="m-con-meal-select">
+          <h4 class="m-stitle">Activities</h4>
+          <div class="m-con-meal-detail">
+            <div class="m-con-meal-info">
+              <h5>Printed UKC program book</h5>
+              <span class="info-text"
+                >**If you have purchased a UKC Program book, please remember to
+                pick it up at the registration desk.
+              </span>
+            </div>
+            <div class="m-meal-select">
+              <label htmlFor="programBook">
+                <span>$10</span>
+              </label>
+              <input
+                pInputText
+                [disabled]="readOnly"
+                id="programBook"
+                type="number"
+                min="0"
+                [(ngModel)]="selectedItem.programBook"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wrap-total">
+      <div class="con-info-total">
+        <div>
+          Activities price: <span>${{ calActPrice() }}</span>
+        </div>
+      </div>
+
+      <hr />
+      <div class="con-total">
+        Registration fee(${{ calDiscountRegistrationFee() }}) + Meal plan
+        fee(${{ calDiscountMealPrice() }}) + Activities (${{ calActPrice() }}) =
+        Total<span class="total-num"> ${{ calTotalPrice() }}</span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="stepNum === 3" header="Review" class="wrap-registration">
+    <h3 class="registration-title">Review</h3>
+    <ul class="list-disc">
+      <li>
+        <span>Name:</span>{{ selectedItem.title }} {{ selectedItem.lastName }},
+        {{ selectedItem.firstName }}
+      </li>
+      <li><span>Email: </span>{{ registration.userData.email }}</li>
+      <li>
+        <span>Address:</span>{{ selectedItem.address }}, {{ selectedItem.zip }},
+        {{ selectedItem.country }}
+      </li>
+      <li><span>Affiliation: </span>{{ selectedItem.affiliation }}</li>
+      <li><span>Phone:</span>{{ selectedItem.phone }}</li>
+      <li><span>Position:</span>{{ selectedItem.level }}</li>
+      <li><span>FIRE:</span>{{ selectedItem.isFire ? "YES" : "NO" }}</li>
+      <li><span>SEED: </span>{{ selectedItem.isSeed ? "YES" : "NO" }}</li>
+      <li><span>IES: </span>{{ selectedItem.isIES ? "YES" : "NO" }}</li>
+      <li><span>YGF/YPF: </span>{{ selectedItem.isYGF ? "YES" : "NO" }}</li>
+      <li><span>SNU: </span>{{ selectedItem.isSNU ? "YES" : "NO" }}</li>
+      <li><span>Group: </span>{{ selectedItem.group }}</li>
+    </ul>
+    <div>
+      <h4 class="m-stitle">Meal plan</h4>
+      <ul class="m-con-list-selected">
+        <li>
+          8/22 Thursday
+          <ul class="m-list-selected">
+            <li>
+              <div>
+                <p>Breakfast</p>
+                <span *ngIf="selectedItem.isOnline"
+                  >Continental Breakfast ($25)</span
+                >
+                <span *ngIf="!selectedItem.isOnline"
+                  >Continental Breakfast ($30)</span
+                >
+              </div>
+              <div>
+                <span>{{ selectedItem.thursday_breakfast }}</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <p>Lunch</p>
+                <span *ngIf="selectedItem.isOnline"
+                  >3 Course Plated Lunch ($40)</span
+                >
+                <span *ngIf="!selectedItem.isOnline"
+                  >3 Course Plated Lunch ($60)</span
+                >
+              </div>
+              <div>
+                <ul class="m-list-selected-detail">
+                  <li>
+                    <span>Chicken : </span>
+                    <span>
+                      {{ selectedItem.thursday_lunch_Chicken }}
+                    </span>
+                  </li>
+                  <li>
+                    <span>Vegan : </span>
+                    <span>
+                      {{ selectedItem.thursday_lunch_vegan }}
+                    </span>
+                  </li>
+                  <li>
+                    <span>Beef : </span>
+                    <span>
+                      {{ selectedItem.thursday_lunch_beef }}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <div>
+                <p>Dinner</p>
+                <span *ngIf="selectedItem.isOnline">Gala Dinner ($80)</span>
+                <span *ngIf="!selectedItem.isOnline">Gala Dinner ($150)</span>
+              </div>
+              <div>
+                <ul class="m-list-selected-detail">
+                  <li>
+                    <span>Beef : </span>
+                    <span>
+                      {{ selectedItem.thursday_dinner_gala_beef }}
+                    </span>
+                  </li>
+                  <li>
+                    <span>Fish : </span>
+                    <span>
+                      {{ selectedItem.thursday_dinner_gala_fish }}
+                    </span>
+                  </li>
+                  <li>
+                    <span>Vegan : </span>
+                    <span>
+                      {{ selectedItem.thursday_dinner_gala_vegan }}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <li>
+          8/23 Friday
+          <ul class="m-list-selected">
+            <li>
+              <div>
+                <p>Breakfast</p>
+                <span *ngIf="selectedItem.isOnline"
+                  >Continental Breakfast ($25)</span
+                >
+                <span *ngIf="!selectedItem.isOnline"
+                  >Continental Breakfast ($30)</span
+                >
+              </div>
+              <div>
+                {{ selectedItem.thursday_breakfast }}
+              </div>
+            </li>
+            <li>
+              <div>
+                <p>Lunch</p>
+                <span *ngIf="selectedItem.isOnline"
+                  >3 Course Plated Lunch ($40)</span
+                >
+                <span *ngIf="!selectedItem.isOnline"
+                  >3 Course Plated Lunch ($60)</span
+                >
+              </div>
+              <div>
+                <ul class="m-list-selected-detail">
+                  <li>
+                    <span>Beef : </span>
+                    <span>
+                      {{ selectedItem.friday_lunch_beef }}
+                    </span>
+                  </li>
+                  <li>
+                    <span>Vegan : </span>
+                    <span>
+                      {{ selectedItem.friday_lunch_vegan }}
+                    </span>
+                  </li>
+                  <li>
+                    <span>Fish : </span>
+                    <span>
+                      {{ selectedItem.friday_lunch_fish }}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <div>
+                <p>Dinner</p>
+                <span *ngIf="selectedItem.isOnline" style="font-weight: normal">
+                  Network Dinner ($30)</span
+                >
+                <span
+                  *ngIf="!selectedItem.isOnline"
+                  style="font-weight: normal"
+                >
+                  Network Dinner ($100)</span
+                >
+              </div>
+              <div>
+                <ul class="m-list-selected-detail">
+                  <li>
+                    <span>Beef : </span>
+                    <span>
+                      {{ selectedItem.friday_dinner_network_beef }}
+                    </span>
+                  </li>
+                  <li>
+                    <span>Pork : </span>
+                    <span>
+                      {{ selectedItem.friday_dinner_network_pork }}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <li>
+          8/24 Saturday
+          <ul class="m-list-selected">
+            <li>
+              <div>
+                <p>Breakfast</p>
+                <span *ngIf="selectedItem.isOnline"
+                  >Continental Breakfast ($25)</span
+                >
+                <span *ngIf="!selectedItem.isOnline"
+                  >Continental Breakfast ($30)</span
+                >
+              </div>
+              <div>
+                {{ selectedItem.saturday_breakfast }}
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="m-stitle">Activity</h4>
+      <ul class="m-con-list-selected">
+        <li>
+          <ul class="m-list-activity-selected">
+            <li>
+              <p>Printed UKC program book</p>
+              <div class="m-list-activity-selected-detail">
+                <div>
+                  <p>
+                    <span>$10</span>
+                  </p>
+                </div>
+                <div>
+                  {{ selectedItem.programBook }}
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap-total">
+      <div class="con-info-total">
+        <div
+          *ngIf="
+            selectedItem.specialDiscountCode === 'F' &&
+            selectedItem.level === 'Regular'
+          "
+        >
+          FIRE Regular fee: <span>${{ calRegistrationFee() }}</span>
+        </div>
+        <div
+          *ngIf="
+            selectedItem.specialDiscountCode !== 'F' ||
+            selectedItem.level !== 'Regular'
+          "
+        >
+          {{ this.selectedItem.level }} fee:
+          <span>${{ calRegistrationFee() }}</span>
+        </div>
+
+        <div *ngIf="selectedItem.hasMembership">
+          KSEA Membership Discount: <span>($50)</span>
+        </div>
+        <div *ngIf="selectedItem.isEarlyBird">
+          Earlybird Discount: <span>($200)</span>
+        </div>
+        <div
+          *ngIf="selectedItem.isUKCPresenter && !selectedItem.isFIREPresenter"
+        >
+          UKC Presenter Discount: <span>($100)</span>
+        </div>
+        <div
+          *ngIf="selectedItem.isFIREPresenter && !selectedItem.isUKCPresenter"
+        >
+          FIRE Presenter Discount: <span>($100)</span>
+        </div>
+        <div
+          *ngIf="selectedItem.isFIREPresenter && selectedItem.isUKCPresenter"
+        >
+          UKC & FIRE Presenter Discount: <span>($100)</span>
+        </div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'A'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'B'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'C'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'H'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'G'">Fully waived</div>
+        <div *ngIf="selectedItem.specialDiscountCode === 'I'">Fully waived</div>
+      </div>
+      <hr />
+      <div class="con-info-total">
+        <div>
+          Meal price: <span>${{ calMealPrice() }}</span>
+        </div>
+
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'A'"
+          class="con-info-total border-dot"
+        >
+          Meal free (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+        <div
+        *ngIf="selectedItem.specialDiscountCode === 'M'"
+        class="con-info-total border-dot"
+      >
+        Meal free (One meal each)
+
+        <div>
+          Meal plan discount amounts:
+          <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+        </div>
+      </div>
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'C'"
+          class="con-info-total border-dot"
+        >
+          Breakfast & Lunch free (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'D'"
+          class="con-info-total border-dot"
+        >
+          Networking Dinner free: (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'E'"
+          class="con-info-total border-dot"
+        >
+          Networking Dinner free: (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'F'"
+          class="con-info-total border-dot"
+        >
+          Networking Dinner free: (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'H'"
+          class="con-info-total border-dot"
+        >
+          Lunch and Dinner free: (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'G'"
+          class="con-info-total border-dot"
+        >
+          Lunch and Gala Dinner free: (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+
+        <div
+          *ngIf="selectedItem.specialDiscountCode === 'I'"
+          class="con-info-total border-dot"
+        >
+          Gala Dinner free: (One meal each)
+
+          <div>
+            Meal plan discount amounts:
+            <span>(${{ calMealPrice() - calDiscountMealPrice() }})</span>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="con-info-total">
+        <div>
+          Activities price: <span>${{ calActPrice() }}</span>
+        </div>
+      </div>
+
+      <hr />
+      <div class="con-total">
+        Registration fee(${{ calDiscountRegistrationFee() }}) + Meal plan
+        fee(${{ calDiscountMealPrice() }}) + Activities (${{ calActPrice() }}) =
+        Total <span class="total-num">${{ calTotalPrice() }}</span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="stepNum === 4" header="Payment Info" class="wrap-registration">
+    <h3 class="registration-title">Payment Info</h3>
+    <div *ngIf="calTotalPrice() > 0">
+      <ngx-stripe-card
+        class="stripe"
+        [options]="cardOptions"
+        [elementsOptions]="elementsOptions"
+      ></ngx-stripe-card>
+
+      <div *ngIf="errorMessage" class="alert alert-warning">
+        {{ errorMessage | json }}
+      </div>
+    </div>
+    <div *ngIf="calTotalPrice() <= 0">
+      No payment required. Please click to submit.
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button
+      *ngIf="readOnly"
+      icon="pi pi-times"
+      (click)="display = false"
+      [disabled]="paymentLoading"
+      label="Close"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readOnly"
+      icon="pi pi-times"
+      (click)="display = false"
+      [disabled]="paymentLoading"
+      label="Cancel"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readOnly && stepNum > 0"
+      icon="pi pi-caret-left"
+      [disabled]="paymentLoading"
+      (click)="stepNum = stepNum - 1"
+      label="Back"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readOnly && stepNum < 4 && stepNum > 0"
+      icon="pi pi-caret-right"
+      [disabled]="paymentLoading"
+      (click)="stepNum = stepNum + 1"
+      label="Next"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readOnly && stepNum === 0 && !isInvalid()"
+      icon="pi pi-caret-right"
+      [disabled]="paymentLoading"
+      (click)="stepNum = stepNum + 1"
+      label="Next"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readOnly && stepNum === 0 && isInvalid()"
+      icon="pi pi-caret-right"
+      [disabled]="true"
+      label="Next"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readOnly && stepNum === 4"
+      icon="pi pi-dollar"
+      [disabled]="paymentLoading"
+      (click)="payAndSubmit()"
+      label="Submit"
+      styleClass="p-button-text"
+      ><span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+        *ngIf="paymentLoading"
+      ></span
+    ></p-button>
+  </ng-template>
+</p-dialog>
+<p-toast> </p-toast>
+<p-confirmDialog
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  rejectButtonStyleClass="p-button-text"
+></p-confirmDialog>

@@ -1,0 +1,47 @@
+.sub-title {
+  margin-bottom: 2.5em;
+}
+.sub-title > h4 {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-top: 1.5em;
+  line-height: 2;
+}
+.con-member-act {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 5rem;
+}
+.con-list {
+  text-align: left;
+  list-style: disc;
+  line-height: 2;
+}
+.con-benefit {
+  padding: 3em 0;
+  padding-bottom: 6em;
+}
+.tabel_lifetime {
+  width: 100%;
+}
+.basic-table td:nth-child(2) {
+  text-align: center;
+}
+.basic-table tr:hover {
+  background-color: transparent;
+}
+.basic-table td {
+  cursor: auto;
+}
+@media screen and (max-width: 500px) {
+  .wrap-lifetime-member {
+    display: none;
+  }
+  .con-member-act {
+    flex-direction: column;
+    img {
+      width: 80vw;
+    }
+  }
+}

@@ -1,0 +1,265 @@
+<div class="wrap">
+  <div class="wrap-sign">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+    </div>
+    <div class="con-signin" *ngIf="!isConfirm">
+      <h2>Sign up</h2>
+      <div *ngIf="errorMessage" class="alert alert-warning">
+        <strong>WARNING!</strong><br> 
+        {{ errorMessage | json }}<br><br><br><br>
+        <ul>Password Rules:</ul>
+        <li>Password minimum length: 8</li>
+        <li>Contains at least 1 number</li>
+        <li>Contains at least 1 number</li>
+        <li>Contains at least 1 special character</li>
+        <li>Contains at least 1 uppercase letter</li>
+        <li>Contains at least 1 lowercase letter</li>
+      </div>
+      <div class="input-g-sigin">
+        <div>
+          <label for="email" class="form-label">ID<Sup>*</Sup>:</label>
+          <input
+            pInputText
+            type="text"
+            id="username"
+            name="username"
+            [(ngModel)]="user.username"
+            class="form-control form-control-sm"
+          />
+        </div>
+        <div>
+          <label for="password" class="form-label">Password<Sup>*</Sup>:</label>
+          <div class="con-pw">
+            <input
+              pInputText
+              [type]="user.showPassword ? 'text' : 'password'"
+              id="password"
+              name="password"
+              #password="ngModel"
+              [(ngModel)]="user.password"
+              class="form-control form-control-sm"
+            />
+            <button
+              type="button"
+              class="btn-view btn-outline-secondary"
+              (click)="user.showPassword = !user.showPassword"
+            >
+              <i
+                class="bi"
+                [ngClass]="{
+                  'bi-eye-fill': !user.showPassword,
+                  'bi-eye-slash-fill': user.showPassword
+                }"
+              ></i>
+            </button>
+          </div>
+        </div>
+        <div>
+          <label for="email" class="form-label">Email<Sup>*</Sup>:</label>
+          <input
+            pInputText
+            type="email"
+            id="email"
+            name="email"
+            #email="ngModel"
+            [(ngModel)]="user.email"
+            class="form-control form-control-sm"
+          />
+        </div>
+        <div>
+          <label
+            style="width: 49.5%; float: left"
+            for="firstName"
+            class="form-label"
+            >First Name<Sup>*</Sup>:</label
+          >
+          <label
+            style="width: 49.5%; float: right"
+            for="lastName"
+            class="form-label"
+            >Last Name<Sup>*</Sup>:</label
+          >
+          <input
+            pInputText
+            style="width: 49.5%; float: left"
+            type="text"
+            id="firstName"
+            name="firstName"
+            #firstName="ngModel"
+            [(ngModel)]="user.given_name"
+            class="form-control form-control-sm"
+          />
+
+          <input
+            pInputText
+            style="width: 49.5%; float: right"
+            type="text"
+            id="lastName"
+            name="lastName"
+            #firstName="ngModel"
+            [(ngModel)]="user.family_name"
+            class="form-control form-control-sm"
+          />
+        </div>
+        <div>
+          <label
+            style="width: 49%; float: left"
+            for="address"
+            class="form-label"
+            >Address<Sup>*</Sup>:</label
+          >
+          <label
+            style="width: 19%; float: left; margin-left: 0.05cm"
+            for="city"
+            class="form-label"
+            >City<Sup>*</Sup>:</label
+          >
+          <label
+            style="width: 13%; float: left; margin-left: 0.05cm"
+            for="state"
+            class="form-label"
+            >State<Sup>*</Sup>:</label
+          >
+          <label
+            style="width: 15%; float: right"
+            for="zipcode"
+            class="form-label"
+            >Zip<Sup>*</Sup>:</label
+          >
+          <input
+            pInputText
+            style="width: 49%; float: left"
+            type="text"
+            id="address"
+            name="address"
+            #address="ngModel"
+            [(ngModel)]="user.address"
+            class="form-control form-control-sm"
+          />
+          <input
+            pInputText
+            style="width: 19%; float: left; margin-left: 0.05cm"
+            type="text"
+            id="city"
+            name="city"
+            #city="ngModel"
+            [(ngModel)]="user['custom:city']"
+            class="form-control form-control-sm"
+          />
+          <input
+            pInputText
+            style="width: 13%; float: left; margin-left: 0.05cm"
+            type="text"
+            id="state"
+            name="state"
+            #state="ngModel"
+            [(ngModel)]="user['custom:state']"
+            class="form-control form-control-sm"
+          />
+          <input
+            pInputText
+            style="width: 15%; float: right"
+            type="text"
+            id="zipcode"
+            name="zipcode"
+            #zipcode="ngModel"
+            [(ngModel)]="user['custom:zipcode']"
+            class="form-control form-control-sm"
+          />
+        </div>
+        <!--If you wish to add a check box for the new users, please add below comments.-->
+        <!-- 
+          <div>
+          <label
+            style="width: 95%; float: left; font-size: xx-small"
+            class="form-label"
+            >Consent for Signup: By signing up for KSEA membership, you agree to
+            consent to the sharing of your technical expertise. Shared
+            information will be solely utilized in collaborative projects
+            initiated by KSEA and its sponsors. The shared information aims to
+            connect KSEA members with sponsors to identify suitable individuals
+            for research projects, program reviews, and other activities that
+            promote the vision and goals of KSEA.</label
+          >
+          <input
+            style="width: 5%; float: right"
+            type="checkbox"
+            id="consent"
+            name="consent"
+            [(ngModel)]="user.consent"
+          />
+        </div> 
+        -->
+      </div>
+
+      <!-- <button
+      type="button"
+      (click)="signUp()"
+      class="btn_blue"
+      [disabled]="loading || !isFulled() || !user.consent"    <-- ADD THIS to the below code and remove below 
+    > -->
+
+      <button
+        type="button"
+        (click)="signUp()"
+        class="btn_blue"
+        [disabled]="loading || !isFulled()"
+      >
+        <span
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+          *ngIf="loading"
+        ></span>
+        Sign up
+      </button>
+    </div>
+    <p class="sign-info">
+      <span (click)="goSignIn()"> Do you have an account? Sign in. </span>
+    </p>
+
+    <div class="con-signin" *ngIf="isConfirm">
+      <h2>Sign up</h2>
+      <div *ngIf="errorMessage" class="alert alert-warning">
+        <strong>Warning!</strong> {{ errorMessage | json }}
+      </div>
+      <div class="input-g-sigin">
+        <div>
+          <label for="code" class="form-label"
+            >Please provide the 6-digit code you received via email:</label
+          >
+          <input
+            type="text"
+            id="code"
+            name="code"
+            #code="ngModel"
+            [(ngModel)]="user.code"
+            class="form-control form-control-sm"
+          />
+        </div>
+      </div>
+      <button
+        type="button"
+        (click)="confirmSignUp()"
+        class="btn_blue"
+        [disabled]="loading"
+      >
+        <span
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+          *ngIf="loading"
+        ></span>
+        Confirm
+      </button>
+      <div>
+        <br />
+        <label for="code" class="form-label"
+          >Once you've signed in, please review your payment and membership
+          details.</label
+        >
+      </div>
+    </div>
+  </div>
+</div>

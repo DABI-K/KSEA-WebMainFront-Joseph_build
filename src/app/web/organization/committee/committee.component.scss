@@ -1,0 +1,85 @@
+.committee {
+  padding: 0 10vw;
+  padding-bottom: 10em;
+}
+.member-tab {
+  display: flex;
+  justify-content: flex-start;
+  background-color: #0702fc;
+  color: #fff;
+  column-gap: 2rem;
+  padding: 1.4em 2rem;
+  margin-bottom: 3em;
+}
+.member-tab div {
+  cursor: pointer;
+  font-weight: bold;
+}
+.member-tab div:hover {
+  color: #f9fd2a;
+}
+.member-tab .selected {
+  color: #f9fd2a;
+}
+.member-table h4 {
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 2em 0;
+  padding-bottom: 1em;
+}
+.member-table table {
+  width: 100%;
+  margin-bottom: 5em;
+}
+.member-table table th,
+td {
+  padding: 1em;
+  border-right: 1px solid #fff;
+}
+.member-table table th {
+  background-color: #aaaab6;
+  color: #fff;
+  text-align: center;
+}
+.member-table table td {
+  line-height: 1.5;
+}
+.member-table table tr:nth-child(even) {
+  background-color: #f6f6f6;
+}
+.member-table table tr:nth-child(odd) {
+  background-color: #f0f1f2;
+}
+.member-table table td > img {
+  width: 1.3rem;
+  cursor: pointer;
+}
+.table-committee .th:nth-child(1) {
+  width: 20%;
+}
+.table-committee th:nth-child(2) {
+  width: 15%;
+}
+.table-committee th:nth-child(3) {
+  width: 15%;
+}
+.table-committee th:nth-child(4) {
+  width: 25%;
+}
+.table-committee th:nth-child(5) {
+  width: 25%;
+}
+a {
+  color: #0702fc;
+  text-decoration: underline;
+}
+@media screen and (max-width: 500px) {
+  .member-table table th,
+  td {
+    padding: 1em 0.5rem;
+  }
+  .member-table {
+    overflow-x: auto;
+    margin-bottom: 1em;
+  }
+}

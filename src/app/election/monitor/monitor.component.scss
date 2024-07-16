@@ -1,0 +1,21 @@
+.wrap-table-3sheaf {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 2rem;
+  margin-top: 3em;
+}
+table {
+  width: 100%;
+  color: 3D3D3D;
+}
+th {
+  font-weight: bold;
+  padding: 1.2em 1rem;
+  background-color: #ececec;
+}
+td {
+  line-height: 2.5;
+}
+tr:nth-child(odd) {
+  background-color: #f6f6f6;
+}

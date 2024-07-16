@@ -1,0 +1,29 @@
+<button
+  type="button"
+  class="btn_blue"
+  (click)="loadPaymentData()"
+  [disabled]="loading"
+>
+  <span
+    class="spinner-border spinner-border-sm"
+    role="status"
+    aria-hidden="true"
+    *ngIf="loading"
+  ></span>
+  Load Payment
+</button>
+
+<button
+  type="button"
+  class="btn_blue"
+  (click)="loadUserData()"
+  [disabled]="loading"
+>
+  <span
+    class="spinner-border spinner-border-sm"
+    role="status"
+    aria-hidden="true"
+    *ngIf="loading"
+  ></span>
+  Load UserData
+</button>

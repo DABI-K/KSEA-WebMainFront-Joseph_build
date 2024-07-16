@@ -1,0 +1,69 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-about-header></app-about-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>About</li>
+    <li>Contact</li>
+  </ul>
+  <div class="scon-center">
+    <h2 class="font-ksea">Contact</h2>
+    <h3>Korean-American Scientists and Engineers Association (KSEA)</h3>
+    <div class="con-contact">
+      <ul>
+        <li>
+          <label for="name"></label>
+          <input
+            type="text"
+            id="name"
+            [(ngModel)]="name"
+            placeholder="Full name"
+          />
+        </li>
+        <li>
+          <label for="email"></label>
+          <input
+            type="text"
+            id="email"
+            [(ngModel)]="email"
+            placeholder="Your email address"
+          />
+        </li>
+        <li>
+          <label for="subject"></label>
+          <input
+            type="text"
+            id="subject"
+            [(ngModel)]="subject"
+            placeholder="Subject"
+          />
+        </li>
+        <li>
+          <editor
+            [init]="{
+              base_url: '/tinymce',
+              suffix: '.min'
+            }"
+            [(ngModel)]="content"
+          ></editor>
+        </li>
+      </ul>
+    </div>
+    <button
+      class="btn_blue"
+      [disabled]="loading"
+      (click)="sendEmail()"
+      type="submit"
+    >
+      <span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+        *ngIf="loading"
+      ></span
+      >Send message
+    </button>
+  </div>
+
+  <app-footer></app-footer>
+</div>

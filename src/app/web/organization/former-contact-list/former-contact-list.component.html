@@ -1,0 +1,48 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-organization-header></app-organization-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>Organization</li>
+    <li>Former President Contact List</li>
+  </ul>
+  <div class="scon-center">
+    <h2 class="font-ksea">Former President Contact List</h2>
+    <h3>Korean-American Scientists and Engineers Association (KSEA)</h3>
+    <div class="scon-center organization">
+      <div *ngIf="kseaInfo" class="member-table">
+        <table class="table-former">
+          <tr>
+            <th>Term</th>
+            <th>Name/Affiliation</th>
+            <th>Location</th>
+            <th>Contacts</th>
+            <th>Interview</th>
+          </tr>
+          <tr *ngFor="let item of kseaInfo.formerPresidents">
+            <td>{{ ordinal_suffix_of(item.term) }}</td>
+            <td>{{ item.name }}, {{ item.affiliation }}</td>
+            <td>{{ item.address }}</td>
+            <td>
+              <div *ngIf="item.office_phone && item.office_phone !== ''">
+                (O) {{ item.office_phone }}<br />
+              </div>
+              <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+            </td>
+            <td>
+              <div *ngIf="item.url; else noUrl">
+                <a href="{{item.url}}" target="_blank">
+                  <img src="assets/images/sns_youtube.png" width= "25" height= "25" alt="Youtube Link">
+                </a>
+              </div>
+              <ng-template #noUrl>
+                &nbsp;
+              </ng-template>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

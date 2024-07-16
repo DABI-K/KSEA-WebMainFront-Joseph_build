@@ -1,0 +1,300 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-donation-header></app-donation-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>Donation</li>
+  </ul>
+  <div class="wrap-con">
+    <div class="wrap-card">
+      We at the KSEA are deeply grateful for your generous support. Your
+      contribution helps us to further our mission and expand the KSEA. Donors
+      like you truly make a difference and allow us to achieve our goals.
+    </div>
+    <div class="wrap-card-blue">
+      The minimum amount for online donation is $20.00. Your donation is tax
+      deductible.
+    </div>
+    <div class="wrap-card">
+      <table class="table-donation">
+        <tr>
+          <th>Programs</th>
+        </tr>
+        <tr>
+          <td>
+            <div>
+              <h3>Chapter Support</h3>
+              <p>
+                Your donation will be allocated to our local chapters to support
+                their activities. If you would like to specify a particular
+                chapter to receive your contribution, please get in touch with
+                our headquarter at finance@ksea.org.
+              </p>
+            </div>
+            <div>
+              <label for="Chapter"></label>
+              <input
+                type="number"
+                min="0"
+                step="10"
+                id="Chapter"
+                placeholder="0"
+                [(ngModel)]="donationData.chapter"
+              />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div>
+              <h3>Education Support</h3>
+              <p>
+                Education is at the heart of KSEA’s values. Your contribution
+                will help to fund our educational initiatives, including the
+                National Math & Science Competition, scholarships and awards,
+                the Distinguished Guest Series, workshops, and more.
+              </p>
+            </div>
+            <div>
+              <label for="education"></label>
+              <input
+                type="number"
+                min="0"
+                step="10"
+                id="education"
+                placeholder="0"
+                [(ngModel)]="donationData.education"
+              />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div>
+              <h3>Next Generation Support</h3>
+              <p>
+                Our Next (Young) Generation community is constantly expanding
+                with new initiatives to connect and support one another. Your
+                contribution will help to foster the growth and development of
+                our future generations.
+              </p>
+            </div>
+            <div>
+              <label for="nextGeneration"></label>
+              <input
+                type="number"
+                min="0"
+                step="10"
+                id="nextGeneration"
+                placeholder="0"
+                [(ngModel)]="donationData.nextGeneration"
+              />
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <div>
+              <h3>Innovation and Entrepreneurship Support</h3>
+              <p>
+                KSEA is committed to supporting our members in their efforts to
+                commercialize technology by promoting entrepreneurship. Your
+                support will help us to continue our work in educating and
+                incubating the next generation of entrepreneurs.
+              </p>
+            </div>
+            <div>
+              <label for="innovationEntrepreneurship"></label>
+              <input
+                type="number"
+                min="0"
+                step="10"
+                id="innovationEntrepreneurship"
+                placeholder="0"
+                [(ngModel)]="donationData.innovationEntrepreneurship"
+              />
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <div>
+              <h3>Mid-Career Member Support</h3>
+              <p>
+                KSEA offers programs to support its mid-career professionals for
+                their career development in both academia and industry. This
+                growing population requires significant resources and guidance
+                from our experienced members. You can help strengthen KSEA’s
+                support for its mid-career members.
+              </p>
+            </div>
+            <div>
+              <label for="midCareer"></label>
+              <input
+                type="number"
+                min="0"
+                step="10"
+                id="midCareer"
+                placeholder="0"
+                [(ngModel)]="donationData.midCareer"
+              />
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <div>
+              <h3>Senior Member Support</h3>
+              <p>
+                KSEA offers programs to support its senior members in their
+                continued professional growth and retirement life. Our
+                experienced members have a wealth of knowledge and expertise to
+                share, and your contribution can help us provide them with the
+                resources they need to continue making an impact in their
+                fields.
+              </p>
+            </div>
+            <div>
+              <label for="seniorMember"></label>
+              <input
+                type="number"
+                min="0"
+                step="10"
+                id="seniorMember"
+                placeholder="0"
+                [(ngModel)]="donationData.seniorMember"
+              />
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <div>
+              <h3>General Support</h3>
+              <p>
+                By donating to KSEA’s areas of greatest need, you enable the
+                Association to bolster its most important priorities and
+                confidently tackle new challenges and opportunities.
+              </p>
+            </div>
+            <div>
+              <label for="general"></label>
+              <input
+                type="number"
+                min="0"
+                step="10"
+                id="general"
+                placeholder="0"
+                [(ngModel)]="donationData.general"
+              />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="">
+            Total : <span class="font-bold">$ {{ subTotal() }}</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <ul class="list-donation">
+              <li>
+                <label for="anonymousDonation">Anonymous Donation </label>
+                <input
+                  type="checkbox"
+                  name=""
+                  id="anonymousDonation"
+                  [(ngModel)]="donationData.isAnonymousDonation"
+                />
+              </li>
+              <li>
+                <label for="donationMemory">Donation In Memory Of </label>
+                <input
+                  type="text"
+                  id="donationMemory"
+                  [(ngModel)]="donationData.donationMemory"
+                />
+              </li>
+              <li>
+                <label for="donationHonor">Donation In Honor Of </label>
+                <input
+                  type="text"
+                  id="donationHonor"
+                  [(ngModel)]="donationData.donationHonor"
+                />
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="wrap-card">
+      <h3>Order Details</h3>
+      <p>
+        Enter your email address in the Confirmation Email to receive a
+        confirmation. Please use the same email address for your KSEA membership
+        in order to link your donation to your KSEA membership.
+      </p>
+      <ul class="list-donation" style="margin-top: 1em">
+        <li>
+          <label for="confirmationEmail">Confirmation Email * </label>
+          <input
+            type="text"
+            id="confirmationEmail"
+            [(ngModel)]="donationData.confirmationEmail"
+          />
+        </li>
+      </ul>
+    </div>
+    <div
+      *ngIf="subTotal() >= 20 && donationData.confirmationEmail"
+      class="wrap-card"
+    >
+      <h3>Payment*</h3>
+      <ngx-stripe-card
+        class="stripe"
+        [options]="cardOptions"
+        [elementsOptions]="elementsOptions"
+      ></ngx-stripe-card>
+
+      <div *ngIf="errorMessage" class="alert alert-warning">
+        {{ errorMessage | json }}
+      </div>
+    </div>
+
+    <div class="wrap-card-blue">
+      <p>
+        *If you wish to link your donation to your account, please log in or
+        create an account to KSEA’s website. If you do not log in, your donation
+        will not be individually recognized and will only be acknowledged as a
+        general donor.
+      </p>
+    </div>
+
+    <div class="wrap-donation-footer">
+      <button
+        class="btn-donation"
+        [disabled]="
+          subTotal() < 20 || !donationData.confirmationEmail || paymentLoading
+        "
+        (click)="payAndSubmit()"
+      >
+        Checkout
+        <span
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+          *ngIf="paymentLoading"
+        ></span>
+      </button>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>
+
+<p-toast></p-toast>

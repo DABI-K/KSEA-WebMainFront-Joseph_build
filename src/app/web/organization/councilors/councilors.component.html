@@ -1,0 +1,107 @@
+<div class="wrap">
+  <app-nav></app-nav>
+  <app-organization-header></app-organization-header>
+  <ul class="history">
+    <li routerLink="/" routerLinkActive="active">Home</li>
+    <li>Organization</li>
+    <li>KSEA Councilors</li>
+  </ul>
+  <div class="scon-center">
+    <h2 class="font-ksea">KSEA Councilors</h2>
+    <h3>Korean-American Scientists and Engineers Association (KSEA)</h3>
+  </div>
+  <div class="scon-left pd10">
+    <div class="member-table">
+      <h4>KSEA Officers</h4>
+      <table class="table-lcpc-c3">
+        <tr>
+          <th>Officers</th>
+          <th>Name</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of kseaInfo.officers">
+          <td>{{ item.officer }}</td>
+          <td>{{ item.name }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>Former President Councilors</h4>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of kseaInfo.formerPresidentCouncilors">
+          <td>{{ item.name }}</td>
+          <td>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h4>Technical Group Councilor</h4>
+      <table>
+        <tr>
+          <th>Technical Group</th>
+          <th>Tech Group Councilors</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of kseaInfo.groups">
+          <td>{{ item.code }}. {{ item.name }}</td>
+          <td>{{ item.councilors }}</td>
+          <td>
+            <div *ngIf="item.phone && item.phone !== ''">
+              (P){{ item.phone }}<br />
+            </div>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <h3>Chapter Presidents Councilors</h3>
+      <h4>Super Chapters</h4>
+
+      <table class="table-lcpc-c3">
+        <tr>
+          <th>Chapter</th>
+          <th>Chapter President</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filterChapters('Super Chapter')">
+          <td>{{ item.name }}</td>
+          <td>{{ item.president }}</td>
+          <td>
+            <div *ngIf="item.phone && item.phone !== ''">
+              (P){{ item.phone }}<br />
+            </div>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+
+      <table class="table-lcpc">
+        <tr>
+          <th>Region</th>
+          <th>Chapter</th>
+          <th>Chapter President</th>
+          <th>Contacts</th>
+        </tr>
+        <tr *ngFor="let item of filterChapters('Council')">
+          <td>{{ item.region }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.president }}</td>
+          <td>
+            <div *ngIf="item.phone && item.phone !== ''">
+              (P){{ item.phone }}<br />
+            </div>
+            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

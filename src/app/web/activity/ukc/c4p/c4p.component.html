@@ -1,0 +1,294 @@
+<div class="wrap" *ngIf="!loading">
+  <div class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <span>US Korea Conference 2024</span>
+
+          <!--temporary button-->
+          <!-- <button
+            style="float: left; background-color: transparent; 
+            border-color: transparent; font-size: 1px;
+            height: 1px;
+            width: 1px;"
+            pButton
+            type="button"
+            label="."
+            (click)="newSubmission($event)">
+          </button> -->
+    </div>
+  </div>
+  <div class="wrap-form">
+    <button
+      style="float: right"
+      pButton
+      type="button"
+      label="New Submission"
+      (click)="newSubmission($event)"
+      enabled></button>
+    <br />
+    <br />
+    <br />
+
+    <p-messages
+      *ngIf="!result || !result.papers || result.papers.length === 0"
+      severity="info"
+    >
+      <ng-template pTemplate>
+        <img
+          src="https://primefaces.org/cdn/primeng/images/primeng.svg"
+          width="32"
+        />
+        <div class="ml-2">
+          &nbsp; You haven't submitted any papers yet. Please click the 'New Submission' button to upload your paper. Multiple paper submissions may apply.
+        </div>
+      </ng-template>
+    </p-messages>
+
+    <p-table
+      *ngIf="result && result.papers && result.papers.length > 0"
+      [value]="result.papers"
+      [tableStyle]="{ 'min-width': '50rem' }"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Submission ID</th>
+          <th>Title</th>
+          <th>Group</th>
+          <th>Type</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-paper>
+        <tr>
+          <td>{{ paper.id }}</td>
+          <td>{{ paper.title }}</td>
+          <td>{{ paper.group.acronym }}</td>
+          <td>{{ paper.preference }}</td>
+          <td>{{ paper.date }}</td>
+          <td>{{ paper.status }}</td>
+          <td>
+            <button
+              pButton
+              pRipple
+              type="button"
+              label="View"
+              icon="pi pi-eye"
+              class="p-button-info p-button-sm"
+              (click)="viewPaper(paper)"
+              style="
+                font-size: 0.8rem;
+                padding: 0.2rem 0.3rem;
+                margin-left: 0.1cm;
+              "
+            ></button>
+            <button
+              *ngIf="
+                paper.status !== 'withdrawn' && paper.status !== 'Transfered'
+              "
+              pButton
+              pRipple
+              type="button"
+              label="Withdraw"
+              icon="pi pi-times"
+              class="p-button-danger p-button-sm"
+              (click)="withdrawPaper(paper)"
+              style="
+                font-size: 0.8rem;
+                padding: 0.2rem 0.3rem;
+                margin-left: 0.1cm;
+              "
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<p-dialog
+  *ngIf="!loading"
+  header="{{
+    readOnly
+      ? selectedPaper.id + ' (' + selectedPaper.status + ')'
+      : 'New Paper'
+  }}"
+  [(visible)]="display"
+  [modal]="true"
+  [style]="{ width: '70%' }"
+>
+  <br />
+  <br />
+  <span class="p-float-label">
+    <input
+      id="float-input"
+      disabled
+      type="text"
+      pInputText
+      [style]="{ width: '100%' }"
+      value="{{ user.attributes.family_name }}, {{
+        user.attributes.given_name
+      }}"
+    />
+    <label for="float-input">Name</label>
+  </span>
+  <br />
+  <br />
+  <span class="p-float-label">
+    <input
+      id="float-input"
+      disabled
+      type="text"
+      pInputText
+      [style]="{ width: '100%' }"
+      value="{{ user.attributes.email }}"
+    />
+    <label for="float-input">Email</label>
+  </span>
+  <br />
+  <br />
+  <span class="p-float-label">
+    <input
+      id="float-input"
+      type="text"
+      [disabled]="readOnly"
+      pInputText
+      [style]="{ width: '100%' }"
+      [(ngModel)]="selectedPaper.affiliation"
+    />
+    <label for="float-input">Affiliation</label>
+  </span>
+  <br />
+  <br />
+  <span class="p-float-label">
+    <p-dropdown
+      inputId="dropdown"
+      [autoDisplayFirst]="false"
+      [disabled]="readOnly"
+      [options]="specificFilter(kseaInfo.groups)"
+      [style]="{ width: '100%' }"
+      [(ngModel)]="selectedPaper.group"
+      optionLabel="label"
+    ></p-dropdown>
+    <label for="float-input">Technical Group</label>
+  </span>
+
+  <br />
+  <br />
+  <span class="p-float-label">
+    <input
+      id="float-input"
+      type="text"
+      pInputText
+      [disabled]="readOnly"
+      [style]="{ width: '100%' }"
+      [(ngModel)]="selectedPaper.title"
+    />
+    <label for="float-input">Presentation title</label>
+  </span>
+  <br />
+  <br />
+  <span class="p-float-label">
+    <textarea
+      id="float-input"
+      [disabled]="readOnly"
+      rows="5"
+      cols="30"
+      [(ngModel)]="selectedPaper.summary"
+      pInputTextarea
+    ></textarea>
+    <label for="float-input">Summary</label>
+  </span>
+  <br />
+  <br />
+
+  <h5>Preference type:</h5>
+  <br />
+  <p-selectButton
+    [options]="preferenceOptions"
+    [disabled]="readOnly"
+    [(ngModel)]="selectedPaper.preference"
+    optionLabel="label"
+    optionValue="value"
+  ></p-selectButton>
+  <br />
+  <br />
+
+  <h5>
+    Upload paper (PDF only,
+    <a
+      style="color: blue"
+      href="https://ksea-ukc.s3.amazonaws.com/UKC2024_One_Page_Paper_Template.docx"
+      target="_blank"
+    >
+      UKC Paper template Link</a
+    >):
+  </h5>
+  <div *ngIf="!readOnly" class="filebox">
+    <label for="file"
+      ><span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+        *ngIf="paperFileloading"
+      ></span>
+      Upload Paper</label
+    >
+    <input
+      #myPaperFileInput
+      type="file"
+      accept="application/pdf"
+      (change)="addPaperFile($event)"
+      id="file"
+    />
+  </div>
+  <div *ngIf="selectedPaper.paperURL" class="file-link">
+    <a href="{{ selectedPaper.paperURL }}" target="_blank"
+      >View your uploaded paper.</a
+    >
+  </div>
+
+  <br *ngIf="selectedPaper.id" />
+  <br *ngIf="selectedPaper.id" />
+  <span *ngIf="selectedPaper.id" class="p-float-label">
+    <textarea
+      id="float-input"
+      disabled
+      rows="5"
+      cols="30"
+      [(ngModel)]="selectedPaper.notes"
+      pInputTextarea
+    ></textarea>
+    <label for="float-input">Decision Notes</label>
+  </span>
+  <ng-template pTemplate="footer">
+    <p-button
+      *ngIf="readOnly"
+      icon="pi pi-times"
+      (click)="display = false"
+      label="Close"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readOnly"
+      icon="pi pi-times"
+      (click)="display = false"
+      label="Cancel"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      *ngIf="!readOnly"
+      icon="pi pi-check"
+      (click)="checkAndSubmit()"
+      label="Submit"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+<p-toast></p-toast>
+<p-confirmDialog
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  rejectButtonStyleClass="p-button-text"
+></p-confirmDialog>

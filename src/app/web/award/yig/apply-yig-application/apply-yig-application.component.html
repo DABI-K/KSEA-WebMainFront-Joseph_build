@@ -1,0 +1,438 @@
+<div class="wrap" *ngIf="yigDef && membership && !isMembershipExpired() && membership.type !='Unpaid'">
+  <div style="width: 100% !important" class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <span>{{ yigDef.title }}</span>
+    </div>
+    <div>
+      <ul>
+        <li>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a
+            href="https://award.ksea.org/yig-young-investigator-grants"
+            target="_blank"
+            style="padding: 3px"
+          >
+            <button class="btn-view">Instruction</button>
+          </a>
+          <a
+            href="https://www.ksea.org"
+            target="_blank"
+            style="padding: 3px"
+          >
+            <button class="btn-view">KSEA Home</button>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+
+    <div class="wrap-form">
+      <div *ngIf="flag">
+            <p>Submission Status: Submitted</p>
+            <br>
+            <br>
+            <br>
+      </div>
+      <div *ngIf="!flag">
+            <p>Submission Status: Not Submitted</p>
+            <br>
+            <br>
+            <br>
+      </div>
+
+
+      <div class="info-applicant">
+        <div *ngIf="result.comments">
+          <span class="p-float-label">
+            <textarea
+              id="float-input"
+              disabled
+              rows="10"
+              cols="30"
+              [(ngModel)]="result.comments"
+              pInputTextarea
+            ></textarea>
+            <label for="float-input">Comments</label>
+          </span>
+        </div>
+      </div>
+      <br />
+      <ul class="list-form">
+        <li>
+          <span style="display: inline" class="p-float-label">
+            <input
+              id="float-input"
+              type="text"
+              disabled
+              pInputText
+              [style]="{ width: '100%' }"
+              [(ngModel)]="result.username"
+            />
+            <label for="float-input">Username</label>
+          </span>
+        </li>
+        <li>
+          <span style="display: inline" class="p-float-label">
+            <input
+              id="float-input"
+              type="text"
+              disabled
+              pInputText
+              [style]="{ width: '100%' }"
+              [(ngModel)]="result.email"
+            />
+            <label for="float-input">email</label>
+          </span>
+        </li>
+        <li>
+          <span style="display: inline" class="p-float-label">
+            <input
+              id="float-input"
+              type="text"
+              pInputText
+              [style]="{ width: '50%' }"
+              [(ngModel)]="result.firstName"
+            />
+            <label for="float-input">First Name</label>
+          </span>
+          <span style="display: inline" class="p-float-label">
+            <input
+              id="float-input"
+              type="text"
+              pInputText
+              [style]="{ width: '50%' }"
+              [(ngModel)]="result.lastName"
+            />
+            <label for="float-input">Last Name</label>
+          </span>
+        </li>
+        <li>
+          <span style="display: inline" class="p-float-label">
+            <p-inputMask
+              mask="(999) 999-9999"
+              [style]="{ width: '100%' }"
+              [(ngModel)]="result.phoneNumber"
+              placeholder="(999) 999-9999"
+            ></p-inputMask>
+            <label for="float-input">Phone Number</label>
+          </span>
+        </li>
+
+        <li>
+          <span style="display: inline" class="p-float-label">
+            <input
+              id="float-input"
+              type="text"
+              pInputText
+              [style]="{ width: '100%' }"
+              [(ngModel)]="result.address"
+            />
+            <label for="float-input">Mailing Address</label>
+          </span>
+        </li>
+
+        <li *ngFor="let item of yigDef.application_items; index as i">
+          <div *ngIf="item.type === 'choices'">
+            <p>{{ item.question }}</p>
+            <div class="msg-error" *ngIf="false">Please choose one answer.</div>
+
+            <select
+              *ngIf="item.numberOfChoices === 1"
+              name="item_{{ i + 1 }}"
+              id="item_{{ i + 1 }}"
+              [(ngModel)]="result.answers[i]"
+            >
+              <option
+                *ngFor="let alternative of item.listAlternatives"
+                value="{{ alternative }}"
+              >
+                {{ alternative }}
+              </option>
+            </select>
+          </div>
+        </li>
+
+        <p>Current Status</p>
+        <br />
+        <li>
+          <span style="display: inline" class="p-float-label">
+            <input
+              id="float-input"
+              type="text"
+              pInputText
+              [style]="{ width: '100%' }"
+              [(ngModel)]="result.affiliatedOrganization"
+            />
+            <label for="float-input">Name of the Affiliated Organization</label>
+          </span>
+        </li>
+
+        <li>
+          <span style="display: inline" class="p-float-label">
+            <input
+              id="float-input"
+              type="text"
+              pInputText
+              [style]="{ width: '100%' }"
+              [(ngModel)]="result.jobTitle"
+            />
+            <label for="float-input">Job Title</label>
+          </span>
+        </li>
+
+        <li>
+          <span style="display: inline" class="p-float-label">
+            <input
+              id="float-input"
+              type="text"
+              pInputText
+              [style]="{ width: '100%' }"
+              [(ngModel)]="result.majorOrSpeciality"
+            />
+            <label for="float-input">Major or Speciality</label>
+          </span>
+        </li>
+
+        <p>Ph.D Degree Earned</p>
+        <br />
+        <li>
+          <span style="display: inline" class="p-float-label">
+            <input
+              id="float-input"
+              type="text"
+              pInputText
+              [style]="{ width: '100%' }"
+              [(ngModel)]="result.monthYear"
+            />
+            <label for="float-input">Month/Year (i.e. 05/2021)</label>
+          </span>
+        </li>
+
+        <li>
+          <span style="display: inline" class="p-float-label">
+            <input
+              id="float-input"
+              type="text"
+              pInputText
+              [style]="{ width: '100%' }"
+              [(ngModel)]="result.institutionName"
+            />
+            <label for="float-input">Name of the institution</label>
+          </span>
+        </li>
+      </ul>
+      <p>
+        Please upload a single PDF file that includes Application form, 
+        Curriculum vitae and Research/technology development plan.
+      </p>
+      <div class="msg-error" *ngIf="false">Please upload file.</div>
+
+      <div class="filebox">
+        <label for="file"
+          ><span
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+            *ngIf="cvFileloading"
+          ></span>
+          Upload PDF file</label
+        >
+        <input
+          #myCVFileInput
+          type="file"
+          accept="application/pdf"
+          (change)="addApplicationFile($event)"
+          id="file"
+        />
+      </div>
+      <div *ngIf="result.fileURL" class="file-link">
+        <a href="{{ result.fileURL }}" target="_blank"
+          >View your uploaded file</a
+        >
+      </div>
+
+      <p>Please provide three recommenders information. <br>
+        Reference letters should be e-mailed to <a href="mailto:sejong@ksea.org">sejong@ksea.org</a> 
+        by a writer with the subject of “YIG Reference Letter” by December 23, 2023.<br>
+        Kindly note that we do not send notifications to reference writers.</p>
+      <div class="msg-error" *ngIf="false">Please input information.</div>
+      <table class="scholar-table">
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th>Name</th>
+          <th>Affiliation</th>
+          <th>Email</th>
+        </tr>
+        <tr>
+          <td>1st</td>
+          <td>
+            <input
+              style="width: 90%"
+              type="text"
+              [(ngModel)]="result.firstRecommenderTitle"
+              pInputText
+            />
+          </td>
+          <td>
+            <input
+              style="width: 90%"
+              type="text"
+              [(ngModel)]="result.firstRecommenderName"
+              pInputText
+            />
+          </td>
+          <td>
+            <input
+              style="width: 90%"
+              type="text"
+              [(ngModel)]="result.firstRecommenderAffiliation"
+              pInputText
+            />
+          </td>
+          <td>
+            <input
+              style="width: 90%"
+              type="text"
+              [(ngModel)]="result.firstRecommenderEmail"
+              pInputText
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>2nd</td>
+          <td>
+            <input
+              style="width: 90%"
+              type="text"
+              [(ngModel)]="result.secondRecommenderTitle"
+              pInputText
+            />
+          </td>
+          <td>
+            <input
+              style="width: 90%"
+              type="text"
+              [(ngModel)]="result.secondRecommenderName"
+              pInputText
+            />
+          </td>
+          <td>
+            <input
+              style="width: 90%"
+              type="text"
+              [(ngModel)]="result.secondRecommenderAffiliation"
+              pInputText
+            />
+          </td>
+          <td>
+            <input
+              style="width: 90%"
+              type="text"
+              [(ngModel)]="result.secondRecommenderEmail"
+              pInputText
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>3rd</td>
+          <td>
+            <input
+              style="width: 90%"
+              type="text"
+              [(ngModel)]="result.thirdRecommenderTitle"
+              pInputText
+            />
+          </td>
+          <td>
+            <input
+              style="width: 90%"
+              type="text"
+              [(ngModel)]="result.thirdRecommenderName"
+              pInputText
+            />
+          </td>
+          <td>
+            <input
+              style="width: 90%"
+              type="text"
+              [(ngModel)]="result.thirdRecommenderAffiliation"
+              pInputText
+            />
+          </td>
+          <td>
+            <input
+              style="width: 90%"
+              type="text"
+              [(ngModel)]="result.thirdRecommenderEmail"
+              pInputText
+            />
+          </td>
+        </tr>
+      </table>
+      <div class="footer-submit">
+        <!-- <button
+          [disabled]="loading"
+          class="btn_blue"
+          (click)="submit()"
+          type="submit"
+        > -->
+        <button
+          class="btn_blue"
+          (click)="submit()"
+          type="submit"
+          disabled
+        >
+          <span
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+            *ngIf="loading"
+          ></span>
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" *ngIf="yigDef && !membership || membership.type === 'Unpaid'">
+  <div style="width: 100% !important" class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <span>{{ yigDef.title }}</span>
+    </div>
+  </div>
+    <div style="width: 50%" class="wrap-con">
+      <div class="info-applicant">
+          <ul class="logo">
+            <li>
+                You don't have a membership. {{ yigDef.title }} is only for paid
+                members. Please purchase a membership at  
+                <a href="https://www.ksea.org/profile" target="_blank">https://www.ksea.org/profile</a>.
+            </li>
+          </ul>
+      </div>
+    </div>
+ </div>
+
+<div class="wrap" *ngIf="yigDef && membership && isMembershipExpired()">
+  <div style="width: 100% !important" class="wrap-con">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="KSEA logo" />
+      <span>{{ yigDef.title }}</span>
+    </div>
+  </div>
+  <div style="width: 50%" class="wrap-con">
+    <div class="info-applicant">
+        <ul class="logo">
+          <li>
+            Your membership is expired. {{ yigDef.title }} is only for paid
+            members. Please purchase a membership at  
+            <a href="https://www.ksea.org/profile" target="_blank">https://www.ksea.org/profile</a>.
+          </li>
+        </ul>
+    </div>
+  </div>
+</div>

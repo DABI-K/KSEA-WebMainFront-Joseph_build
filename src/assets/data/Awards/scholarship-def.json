@@ -1,0 +1,126 @@
+{
+  "id": "2023",
+  "description": "First, please update your information (education and job history) in your KSEA membership page for this application",
+  "title": "2023 Scholarship Application",
+  "url": "",
+  "applicationEligibilityEndDate": "2022-12-19T00:00:00.000-0400",
+  "applicationEligibilityStartDate": "2021-03-01T00:00:00.000-0400",
+  "applicationEndDate": "2023-05-31T23:59:59.000-0400",
+  "applicationStartDate": "2022-11-01T00:00:00.000-0400",
+
+
+  "choice": [{
+      "index": 0,
+      "listAlternatives": [
+        "US Citizen",
+        "Permanent resident",
+        "Student Visa"
+      ],
+      "numberOfChoices": 1,
+      "question": "What is your status?"
+    },
+    {
+      "index": 1,
+      "listAlternatives": [
+        "Undergraduate scholarship",
+        "Undergraduate scholarship",
+        "Postdoctor scholarship"
+      ],
+      "numberOfChoices": 1,
+      "question": "Which one are you applying for?"
+    },
+    {
+      "index": 2,
+      "listAlternatives": [
+        "Freshman",
+        "Sophomore",
+        "Junior",
+        "Senior",
+        "Master",
+        "Dotorate",
+        "Postdoctor"
+      ],
+      "numberOfChoices": 1,
+      "question": "What grade are you in?"
+    }
+  ],
+
+  "shortAnswer": [{
+    "index": 0,
+    "answer": "",
+    "question": "What is your current school?",
+    "description": "Briefly describe your current school and year."
+  }],
+
+
+  "longAnswer": [{
+    "index": 0,
+    "answer": "",
+    "question": "List all extracurricular activities and honors and awards within recent 4 years in each category?",
+    "description": "Each extracurricular activity must be described by (1) organization, (2) job title and role, (3) period, and (4) total hours participated. It is recommended to attach a letter from the event organizer or supervisor describing details about your role and dedication during the activity (Optional)."
+  }],
+
+
+
+  "tableInfo": [{
+      "question": "Please provide your GPA for each semester.",
+      "tableIndex": 0,
+      "rowIndex": 9,
+      "columnIndex": 3,
+      "columnTitle": [{
+          "index": 0,
+          "name": "Year",
+          "description": "2002"
+        },
+        {
+          "index": 1,
+          "name": "Semester",
+          "description": "Spring or second quarter"
+        },
+        {
+          "index": 2,
+          "name": "GPA",
+          "description": "4.5/5"
+        }
+      ]
+    },
+
+    {
+      "question": "Please provide recommenders information.",
+      "tableIndex": 1,
+      "rowIndex": 3,
+      "columnIndex": 4,
+      "columnTitle": [{
+          "index": 0,
+          "name": "Name"
+        },
+        {
+          "index": 1,
+          "name": "Position and Institution"
+        },
+        {
+          "index": 2,
+          "name": "email"
+        },
+        {
+          "index": 3,
+          "name": "Phone number"
+        }
+      ]
+    }
+  ],
+
+
+
+  "fileUploads": [{
+      "index": 0,
+      "fileLink": "",
+      "question": "Please upload File0"
+    },
+    {
+      "index": 1,
+      "fileLink": "",
+      "question": "Please upload File1"
+    }
+  ]
+}
